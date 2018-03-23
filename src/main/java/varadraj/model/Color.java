@@ -1,5 +1,6 @@
 package varadraj.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,7 +14,10 @@ public class Color {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long colorID;
+	
+	@Column(unique=true)
 	private String name;
+	
 	private int red;
 	private int green;
 	private int blue;

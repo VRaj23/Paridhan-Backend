@@ -29,5 +29,9 @@ public class BrandService {
 		Brand raymonds = new Brand("Raymonds");
 		brandRepo.save(raymonds);
 	}
+	
+	public Brand findByName(String name) {
+		return brandRepo.findByName(name);
+	}
 
 }

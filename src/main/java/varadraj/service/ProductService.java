@@ -7,11 +7,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import varadraj.model.Brand;
+import varadraj.model.Color;
+import varadraj.model.PriceCategory;
 import varadraj.model.ProductHeader;
 import varadraj.model.ProductLine;
 import varadraj.model.ProductModel;
 import varadraj.model.ProductType;
+import varadraj.model.Size;
 import varadraj.repository.ProductHeaderRepository;
 import varadraj.repository.ProductLineRepository;
 
@@ -24,6 +27,14 @@ public class ProductService {
 	private ProductLineRepository pLRepo;
 	@Autowired
 	private ProductTypeService pTypeService;
+	@Autowired
+	private BrandService brandService;
+	@Autowired
+	private PriceCategoryService priceService;
+	@Autowired
+	private ColorService colorService;
+	@Autowired
+	private SizeService sizeService;
 
 	
 	public List<ProductHeader> getAllHeader(){
@@ -53,19 +64,31 @@ public class ProductService {
 	
 	public void addDummyProductData() {
 		ProductType shirt = pTypeService.findByDescription("Shirt");
-		ProductHeader header = new ProductHeader(shirt, 299.0,true,LocalDateTime.now());
-		ProductLine line1 = new ProductLine("Shirt_1", true, LocalDateTime.now(), header);
-		header.getProductLine().add(line1);
-		ProductLine line2 = new ProductLine("Shirt_2", true, LocalDateTime.now(), header);
-		header.getProductLine().add(line2);
-		pHRepo.save(header);
+		Brand polo = brandService.findByName("Polo");
+		PriceCategory rs_0_499 = priceService.findByUpperLimit(499);
+		ProductHeader header1 = new ProductHeader(shirt, 299.0,rs_0_499, polo, true,LocalDateTime.now());
+		
+		Color red = colorService.findByName("Red");
+		Size m = sizeService.findSize("M");
+		ProductLine line1 = new ProductLine(header1, "Polo_Shirt_499", true, red, m, LocalDateTime.now());
+		header1.getProductLine().add(line1);
+		
+		Color black = colorService.findByName("Black");
+		Size l = sizeService.findSize("L");
+		ProductLine line2 = new ProductLine(header1, "Polo_Shirt_499", true, black, l, LocalDateTime.now());
+		header1.getProductLine().add(line2);
+		
+		pHRepo.save(header1);
 		
 		ProductType pant = pTypeService.findByDescription("Pant");
-		ProductHeader header2 = new ProductHeader(pant, 499.0,true,LocalDateTime.now());
-		ProductLine pant1 = new ProductLine("Pant_1", false, LocalDateTime.now(), header2);
-		header.getProductLine().add(pant1);
-		ProductLine pant2 = new ProductLine("Pant_2", true, LocalDateTime.now(), header2);
-		header.getProductLine().add(pant2);
+		Brand spykar = brandService.findByName("Spykar");
+		PriceCategory rs_0_999 = priceService.findByUpperLimit(999);
+		ProductHeader header2 = new ProductHeader(pant, 899.0,rs_0_999,spykar,true,LocalDateTime.now());
+		
+		ProductLine line3 = new ProductLine(header2, "Spykar_Pant_899", true, black, l, LocalDateTime.now());
+		header2.getProductLine().add(line3);
+		
 		pHRepo.save(header2);
+		
 	}
 }

@@ -21,24 +21,43 @@ public class ProductLine {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long line_id;
-	private String name;
-	private boolean availability = true;
-	private LocalDateTime creation_datetime;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "header_id")
 	@JsonManagedReference
 	private ProductHeader productHeader;
 	
+	private String name;
+	private boolean availability = true;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "color_id")
+	private Color color;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "size_id")
+	private Size size;
+	
+	private LocalDateTime creation_datetime;
+	private LocalDateTime last_update_datetime;
+	
+	
 	public ProductLine() {}
 
-	public ProductLine(String name, boolean availability, LocalDateTime creation_datetime,
-			ProductHeader productHeader) {
+	
+	public ProductLine(ProductHeader productHeader, String name, boolean availability, Color color, Size size,
+			LocalDateTime creation_datetime) {
 		super();
+		this.productHeader = productHeader;
 		this.name = name;
 		this.availability = availability;
+		this.color = color;
+		this.size = size;
 		this.creation_datetime = creation_datetime;
-		this.productHeader = productHeader;
+		this.last_update_datetime = creation_datetime;
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -97,6 +116,36 @@ public class ProductLine {
 
 	public void setCreation_datetime(LocalDateTime creation_datetime) {
 		this.creation_datetime = creation_datetime;
+	}
+
+
+	public Color getColor() {
+		return color;
+	}
+
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+
+	public Size getSize() {
+		return size;
+	}
+
+
+	public void setSize(Size size) {
+		this.size = size;
+	}
+
+
+	public LocalDateTime getLast_update_datetime() {
+		return last_update_datetime;
+	}
+
+
+	public void setLast_update_datetime(LocalDateTime last_update_datetime) {
+		this.last_update_datetime = last_update_datetime;
 	}
 	
 	

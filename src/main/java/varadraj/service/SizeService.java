@@ -21,6 +21,10 @@ public class SizeService {
 		return sizes;
 	}
 	
+	public Size findSize(String sizeChar) {
+		return sizeRepo.findBySizeCharacter(sizeChar);
+	}
+	
 	public void populateData() {
 		Size s = new Size("S",38);
 		sizeRepo.save(s);

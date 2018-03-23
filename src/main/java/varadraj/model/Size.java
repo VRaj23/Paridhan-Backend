@@ -1,5 +1,6 @@
 package varadraj.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +14,7 @@ public class Size {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long sizeID;
+	@Column(unique=true)
 	private String sizeCharacter;
 	private int sizeNumber;
 	

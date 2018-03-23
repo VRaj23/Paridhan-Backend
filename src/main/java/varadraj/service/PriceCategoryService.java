@@ -27,4 +27,8 @@ public class PriceCategoryService {
 		PriceCategory pc2 = new PriceCategory(500, 999);
 		pcRepo.save(pc2);
 	}
+	
+	public PriceCategory findByUpperLimit(int upperLimit) {
+		return pcRepo.findByUpperLimit(upperLimit);
+	}
 }

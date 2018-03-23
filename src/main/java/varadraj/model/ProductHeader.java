@@ -30,22 +30,38 @@ public class ProductHeader {
 	private ProductType productType;
 	private double price;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="price_Category_id")
+	private PriceCategory priceCategory;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="brand_id")
+	private Brand brand;
+	
 	private boolean enabled = true;
 	private LocalDateTime creation_datetime;
+	private LocalDateTime last_update_datetime;
 	
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="productHeader",fetch=FetchType.LAZY)
 	@JsonBackReference
 	private Set<ProductLine> productLine = new HashSet<>();
 	
-	public ProductHeader(){}
+	public ProductHeader(){}	
 	
-	public ProductHeader(ProductType productType, double price, boolean enabled, LocalDateTime creation_datetime) {
+
+	public ProductHeader(ProductType productType, double price, PriceCategory priceCategory, Brand brand,
+			boolean enabled, LocalDateTime creation_datetime) {
 		super();
 		this.productType = productType;
 		this.price = price;
+		this.priceCategory = priceCategory;
+		this.brand = brand;
 		this.enabled = enabled;
 		this.creation_datetime = creation_datetime;
+		this.last_update_datetime = creation_datetime;
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -115,6 +131,36 @@ public class ProductHeader {
 
 	public void setProductLine(Set<ProductLine> productLine) {
 		this.productLine = productLine;
+	}
+
+
+	public PriceCategory getPriceCategory() {
+		return priceCategory;
+	}
+
+
+	public void setPriceCategory(PriceCategory priceCategory) {
+		this.priceCategory = priceCategory;
+	}
+
+
+	public Brand getBrand() {
+		return brand;
+	}
+
+
+	public void setBrand(Brand brand) {
+		this.brand = brand;
+	}
+
+
+	public LocalDateTime getLast_update_datetime() {
+		return last_update_datetime;
+	}
+
+
+	public void setLast_update_datetime(LocalDateTime last_update_datetime) {
+		this.last_update_datetime = last_update_datetime;
 	}
 
 	

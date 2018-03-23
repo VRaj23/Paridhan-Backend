@@ -32,4 +32,8 @@ public class ColorService {
 		colorRepo.save(blue);
 				
 	}
+	
+	public Color findByName(String name) {
+		return colorRepo.findByName(name);
+	}
 }
