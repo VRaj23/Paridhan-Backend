@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import varadraj.model.Brand;
 import varadraj.model.Color;
@@ -19,6 +22,7 @@ import varadraj.service.PriceCategoryService;
 import varadraj.service.ProductService;
 import varadraj.service.ProductTypeService;
 import varadraj.service.SizeService;
+import varadraj.storage.StorageService;
 
 @RestController
 @CrossOrigin
@@ -36,6 +40,8 @@ public class RetailShopController {
 	private SizeService sizeService;
 	@Autowired
 	private PriceCategoryService priceService;
+	@Autowired
+	private StorageService storageService;
 	
 	@RequestMapping("/")
 	public String hello() {
@@ -72,6 +78,11 @@ public class RetailShopController {
 		return productService.getAllProducts();
 	}
 
+	@PostMapping("/upload")
+	public void handleFileUpload(@RequestParam("file") MultipartFile file){
+        storageService.store(file);
+        
+    }
 
 	@RequestMapping("/addDummyData")
 	public void addDummyDate() {
