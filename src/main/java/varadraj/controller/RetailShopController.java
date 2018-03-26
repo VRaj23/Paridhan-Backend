@@ -23,6 +23,7 @@ import varadraj.service.ProductService;
 import varadraj.service.ProductTypeService;
 import varadraj.service.SizeService;
 import varadraj.storage.StorageService;
+import varadraj.util.ImageUtil;
 
 @RestController
 @CrossOrigin
@@ -79,8 +80,12 @@ public class RetailShopController {
 	}
 
 	@PostMapping("/upload")
-	public void handleFileUpload(@RequestParam("file") MultipartFile file){
+	public String handleFileUpload(@RequestParam("file") MultipartFile file){
+		if (ImageUtil.fileIsNotImage(file))
+			return "Upload Failed because file is not an image";
+		//Resize Image
         storageService.store(file);
+        return "Image Uploaded";
         
     }
 

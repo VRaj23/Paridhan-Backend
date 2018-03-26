@@ -11,20 +11,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import varadraj.service.ImageService;
+
 @Service
 public class StorageService implements StorageServiceInterface{
 	
-	private final Path uploadedFileStorageLocation;
+	private final String uploadFolder;
+	
+	@Autowired
+	private ImageService imageService;
 
 	@Autowired
 	public StorageService(StorageProperties storageProperties) {
-		this.uploadedFileStorageLocation = Paths.get(storageProperties.getUploadFolder()); 
+		//this.uploadedFileStorageLocation = Paths.get(storageProperties.getUploadFolder());
+		this.uploadFolder = storageProperties.getUploadFolder();
 	}
 
 	@Override
 	public void init() {
 		try {
-			Files.createDirectories(uploadedFileStorageLocation);
+			Files.createDirectories(Paths.get(this.uploadFolder));
 		}catch(IOException e) {
 			System.out.println("UNABLE TO CREATE UPLOAD FOLDER");
 		}
@@ -39,12 +45,15 @@ public class StorageService implements StorageServiceInterface{
 	                System.out.println("FILE IS EMPTY. UNABLE TO SAVE " + filename);
 	            }
 	            if (filename.contains("..")) {
-	                //Security check
-	                System.out.println(
-	                        "FILE SHOULD NOT CONTAIN '..'"
-	                                + filename);
+	            //Security check
+	                System.out.println("FILE SHOULD NOT CONTAIN '..'" + filename);
 	            }
-	            Files.copy(file.getInputStream(), this.uploadedFileStorageLocation.resolve(filename),
+	            Long imageID = imageService.addImageReturnID();
+	            String imageDir = imageID.toString();
+	            Path imagePath = Paths.get(this.uploadFolder,imageDir);
+	            Files.createDirectories(imagePath);
+	            Files.copy(file.getInputStream(), 
+	            		imagePath.resolve(filename),
 	                    StandardCopyOption.REPLACE_EXISTING);
 	        }
 	        catch (IOException e) {
@@ -53,4 +62,5 @@ public class StorageService implements StorageServiceInterface{
 		
 	}
 
+	
 }
