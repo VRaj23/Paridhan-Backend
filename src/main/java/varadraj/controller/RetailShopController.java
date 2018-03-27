@@ -92,10 +92,10 @@ public class RetailShopController {
 	@RequestMapping("/addDummyData")
 	public void addDummyDate() {
 		brandService.addDummyBrandData();
-		sizeService.populateData();
-		colorService.addColorDummyData();
 		pTypeService.addDummyTypeData();
+		colorService.addColorDummyData();
 		priceService.addDummyPriceCategoryData();
+		sizeService.addDummySizeData();		
 		productService.addDummyProductData();
 	}
 

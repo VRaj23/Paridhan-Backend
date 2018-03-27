@@ -16,9 +16,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="product_header")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","priceCategory","last_update_datetime"})
 public class ProductHeader {
 
 	@Id
@@ -28,6 +30,7 @@ public class ProductHeader {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "type_id")
 	private ProductType productType;
+	
 	private double price;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

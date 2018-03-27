@@ -11,11 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="product_line")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", 
+	"availability", "last_update_datetime","productHeader"})
 public class ProductLine {
 
 	@Id
