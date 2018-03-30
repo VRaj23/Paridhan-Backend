@@ -32,6 +32,10 @@ public class ProductTypeService {
 		return types;
 	}
 	
+	public ProductType getType(Long typeID) {
+		return pTRepo.findByTypeID(typeID);
+	}
+	
 	public ProductType findByDescription(String description) {
 		return pTRepo.findByDescription(description);
 	}

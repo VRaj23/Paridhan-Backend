@@ -6,6 +6,6 @@ public interface StorageServiceInterface {
 	
     void init();
 
-    void store(MultipartFile file);
+    boolean store(MultipartFile file, String imageDir);
 
 }

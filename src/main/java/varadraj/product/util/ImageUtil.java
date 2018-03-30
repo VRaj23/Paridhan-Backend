@@ -8,22 +8,26 @@ import javax.imageio.ImageIO;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class ImageUtil {
 
+public class ImageUtil {
+	
+	
 	public static void ResizeImage(File image) throws IOException {
 		BufferedImage bImage = ImageIO.read(image);
+		bImage.getHeight();
 	}
 
-	public static boolean fileIsNotImage(MultipartFile file) {
+
+	public static boolean isImage(MultipartFile file) {
 		String mimetype = file.getContentType();
 		if(mimetype == null)
-			return true;
-		else if(mimetype.startsWith("image")) {
 			return false;
+		else if(mimetype.startsWith("image")) {
+			return true;
 		}
 		else {
 			System.out.println("File of type "+mimetype+" is not an image");
-			return true;
+			return false;
 		}
 	}
 }

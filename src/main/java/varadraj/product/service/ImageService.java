@@ -14,9 +14,12 @@ public class ImageService {
 
 	@Autowired
 	private ImageRepository imageRepo;
+	@Autowired
+	private ProductTypeService productTypeService;
 	
-	public Long addImageReturnID() {
-		ImageModel image = new ImageModel();
+	public Long addImageReturnID(Long imageTypeID, String filename) {
+		System.out.println("adding "+filename+" to Database "+imageTypeID.toString());
+		ImageModel image = new ImageModel(productTypeService.getType(imageTypeID),filename);
 		imageRepo.save(image);
 		return image.getImageID();
 	}

@@ -11,19 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import varadraj.product.service.ImageService;
 
 @Service
 public class StorageService implements StorageServiceInterface{
 	
 	private final String uploadFolder;
-	
-	@Autowired
-	private ImageService imageService;
 
 	@Autowired
 	public StorageService(StorageProperties storageProperties) {
-		//this.uploadedFileStorageLocation = Paths.get(storageProperties.getUploadFolder());
 		this.uploadFolder = storageProperties.getUploadFolder();
 	}
 
@@ -36,28 +31,39 @@ public class StorageService implements StorageServiceInterface{
 		}
 		
 	}
+	
+	public String getFilename(MultipartFile file) {
+		return StringUtils.cleanPath(file.getOriginalFilename());
+	}
+	
+	public boolean isValidFile(MultipartFile file) {
+		String filename = getFilename(file);
+		if (file.isEmpty()) {
+            System.out.println("FILE IS EMPTY. UNABLE TO SAVE " + filename);
+            return false;
+        }
+		if (filename.contains("..")) { //Security check
+            System.out.println("FILE SHOULD NOT CONTAIN '..'" + filename);
+            return false;
+        }
+		return true;
+	}
 
 	@Override
-	public void store(MultipartFile file) {
-		 String filename = StringUtils.cleanPath(file.getOriginalFilename());
-	        try {
-	            if (file.isEmpty()) {
-	                System.out.println("FILE IS EMPTY. UNABLE TO SAVE " + filename);
-	            }
-	            if (filename.contains("..")) {
-	            //Security check
-	                System.out.println("FILE SHOULD NOT CONTAIN '..'" + filename);
-	            }
-	            Long imageID = imageService.addImageReturnID();
-	            String imageDir = imageID.toString();
-	            Path imagePath = Paths.get(this.uploadFolder,imageDir);
+	public boolean store(MultipartFile file,String fileDir) {
+			String filename = getFilename(file);
+	        try {	            
+	            Path imagePath = Paths.get(this.uploadFolder,fileDir);
 	            Files.createDirectories(imagePath);
 	            Files.copy(file.getInputStream(), 
 	            		imagePath.resolve(filename),
 	                    StandardCopyOption.REPLACE_EXISTING);
+	            return true;
+	            
 	        }
 	        catch (IOException e) {
 	            System.out.println("UNABLE TO SAVE FILE" + filename);
+	            return false;
 	        }
 		
 	}

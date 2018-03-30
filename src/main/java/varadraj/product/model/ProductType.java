@@ -16,7 +16,8 @@ public class ProductType {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long type_id;
+	@Column(name="type_id")
+	private long typeID;
 	
 	@Column(unique=true)
 	private String description;
@@ -31,7 +32,7 @@ public class ProductType {
 
 	public ProductType(long type_id, String description) {
 		super();
-		this.type_id = type_id;
+		this.typeID = type_id;
 		this.description = description;
 	}
 	
@@ -44,19 +45,19 @@ public class ProductType {
 		
 		final ProductType pt = (ProductType) obj;
 		
-		if(this.getType_id() != pt.getType_id())
+		if(this.getTypeID() != pt.getTypeID())
 			return false;
 		
 		return true;
 	}
 
 
-	public long getType_id() {
-		return type_id;
+	public long getTypeID() {
+		return typeID;
 	}
 
 	public void setType_id(long type_id) {
-		this.type_id = type_id;
+		this.typeID = type_id;
 	}
 
 	public String getDescription() {
