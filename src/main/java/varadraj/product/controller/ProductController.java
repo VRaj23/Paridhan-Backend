@@ -3,7 +3,13 @@ package varadraj.product.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import varadraj.product.model.Brand;
 import varadraj.product.model.Color;
 import varadraj.product.model.ProductHeader;
+import varadraj.product.model.ProductLine;
 import varadraj.product.model.ProductModel;
 import varadraj.product.model.ProductType;
 import varadraj.product.model.Size;
@@ -76,8 +83,13 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/header")
-	public List<ProductHeader> getAllHeaders() {
-		return productService.getAllHeader();		
+	public List<ProductHeader> getAllHeaders(@RequestParam("t") String typeID) {
+		return productService.findByTypeID(typeID);		
+	}
+	
+	@RequestMapping("/line")
+	public List<ProductLine> getAllLines(@RequestParam("h") String header_id){
+		return productService.getAllLines(header_id);
 	}
 	
 	@RequestMapping("/products")
@@ -97,6 +109,16 @@ public class ProductController {
 		}
 		return "Could not save image";
     }
+	
+	@GetMapping("/download/{imageID}")
+	public ResponseEntity<Resource> getFile(@PathVariable long imageID){
+		Resource image = storageService.loadFile(imageID);
+		HttpHeaders header = new HttpHeaders();
+		header.setContentType(MediaType.IMAGE_PNG);
+		return ResponseEntity.ok()
+				.headers(header)
+				.body(image);
+	}
 
 	@RequestMapping("/addDummyData")
 	public void addDummyDate() {

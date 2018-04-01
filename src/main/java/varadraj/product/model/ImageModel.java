@@ -9,12 +9,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 
 @Entity
 @Table(name="product_image")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","name"})
 public class ImageModel {
 
 	@Id
@@ -24,6 +26,7 @@ public class ImageModel {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "type_id")
+	@JsonBackReference
 	private ProductType productType;
 	
 	private String name;

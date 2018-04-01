@@ -13,9 +13,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import varadraj.product.serializer.ProductLineSerializer;
 
 @Entity
 @Table(name="product_line")
+@JsonSerialize(using = ProductLineSerializer.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", 
 	"availability", "last_update_datetime","productHeader"})
 public class ProductLine {

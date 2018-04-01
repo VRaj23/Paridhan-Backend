@@ -29,4 +29,8 @@ public class ImageService {
 		imageRepo.findAll().forEach(images::add);
 		return images;
 	}
+	
+	public String getImageName(long imageID) {
+		return imageRepo.findByImageID(imageID).getName();
+	}
 }

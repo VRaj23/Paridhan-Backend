@@ -21,19 +21,15 @@ public class Color {
 	@Column(unique=true)
 	private String name;
 	
-	private int red;
-	private int green;
-	private int blue;
+	private String value;
 	
 	public Color() {}
 
-	public Color(String name, int red, int green, int blue) {
+	public Color(String name, String value) {
 		super();
 		this.name = name;
-		this.red = red%256;
-		this.green = green%256;
-		this.blue = blue%256;
-	}	
+		this.value = value;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -64,29 +60,14 @@ public class Color {
 		this.name = name;
 	}
 
-	public int getRed() {
-		return red;
+	public String getValue() {
+		return value;
 	}
 
-	public void setRed(int red) {
-		this.red = red;
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public int getGreen() {
-		return green;
-	}
 
-	public void setGreen(int green) {
-		this.green = green;
-	}
-
-	public int getBlue() {
-		return blue;
-	}
-
-	public void setBlue(int blue) {
-		this.blue = blue;
-	}
-	
 	
 }

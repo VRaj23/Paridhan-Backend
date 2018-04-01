@@ -1,21 +1,28 @@
 package varadraj.product.storage;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import varadraj.product.service.ImageService;
 
 
 @Service
 public class StorageService implements StorageServiceInterface{
 	
 	private final String uploadFolder;
+	@Autowired
+	private ImageService imageService;
 
 	@Autowired
 	public StorageService(StorageProperties storageProperties) {
@@ -66,6 +73,23 @@ public class StorageService implements StorageServiceInterface{
 	            return false;
 	        }
 		
+	}
+
+	public Resource loadFile(long imageID) {
+		try {
+			String imageDir = new Long(imageID).toString();
+			Path dirPath = Paths.get(this.uploadFolder,imageDir);
+			String imageName = imageService.getImageName(imageID);
+			Path imagePath = dirPath.resolve(imageName);
+			Resource resource = new UrlResource(imagePath.toUri());
+			if (resource.exists() || resource.isReadable()) {
+				return resource;
+			} else {
+				throw new RuntimeException("FAIL!");
+			}
+		} catch (MalformedURLException e) {
+			throw new RuntimeException("FAIL!");
+		}
 	}
 
 	

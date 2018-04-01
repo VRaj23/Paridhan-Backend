@@ -3,9 +3,11 @@ package varadraj.product.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import varadraj.product.model.Brand;
 import varadraj.product.model.Color;
@@ -40,6 +42,22 @@ public class ProductService {
 	public List<ProductHeader> getAllHeader(){
 		List<ProductHeader> headers = new ArrayList<>();
 		pHRepo.findAll().forEach(headers::add);
+		return headers;
+	}
+	
+	public List<ProductLine> getAllLines(String header_id){
+		List<ProductLine> lines = new ArrayList<>();
+		Optional<ProductHeader> ph = pHRepo.findById(new Long(header_id));
+		if(ph.isPresent()) {
+			pLRepo.findByProductHeader(ph.get()).forEach(lines::add);
+		}
+		return lines;
+	}
+	
+	public List<ProductHeader> findByTypeID(String typeID) {
+		List<ProductHeader> headers = new ArrayList<>();
+		ProductType type = pTypeService.findByTypeID(new Long(typeID));
+		pHRepo.findByProductType(type).forEach(headers::add);;
 		return headers;
 	}
 	
@@ -91,4 +109,6 @@ public class ProductService {
 		pHRepo.save(header2);
 		
 	}
+
+
 }

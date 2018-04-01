@@ -17,9 +17,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import varadraj.product.serializer.ProductHeaderSerializer;
 
 @Entity
 @Table(name="product_header")
+@JsonSerialize(using = ProductHeaderSerializer.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler","priceCategory","last_update_datetime"})
 public class ProductHeader {
 
@@ -40,6 +44,10 @@ public class ProductHeader {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="brand_id")
 	private Brand brand;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "image_id")
+	private ImageModel primaryImage;
 	
 	private boolean enabled = true;
 	private LocalDateTime creation_datetime;
@@ -164,6 +172,16 @@ public class ProductHeader {
 
 	public void setLast_update_datetime(LocalDateTime last_update_datetime) {
 		this.last_update_datetime = last_update_datetime;
+	}
+
+
+	public ImageModel getPrimaryImage() {
+		return primaryImage;
+	}
+
+
+	public void setPrimaryImage(ImageModel primaryImage) {
+		this.primaryImage = primaryImage;
 	}
 
 	

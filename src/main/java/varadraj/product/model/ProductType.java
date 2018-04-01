@@ -2,12 +2,16 @@ package varadraj.product.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "product_type")
@@ -22,17 +26,19 @@ public class ProductType {
 	@Column(unique=true)
 	private String description;
 	
-	public ProductType() {}
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="image_id")
+	@JsonManagedReference
+	private ImageModel typeImage;
 	
+	public ImageModel getTypeImage() {
+		return typeImage;
+	}
+
+	public ProductType() {}
 		
 	public ProductType(String description) {
 		super();
-		this.description = description;
-	}
-
-	public ProductType(long type_id, String description) {
-		super();
-		this.typeID = type_id;
 		this.description = description;
 	}
 	
@@ -68,5 +74,12 @@ public class ProductType {
 		this.description = description;
 	}
 	
-	
+	public void setTypeImage(ImageModel typeImage) {
+		this.typeImage = typeImage;
+	}
+
+
+	public void setTypeID(long typeID) {
+		this.typeID = typeID;
+	}
 }
