@@ -1,5 +1,6 @@
 package varadraj.product.util;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,9 +13,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageUtil {
 	
 	
-	public static void ResizeImage(File image) throws IOException {
-		BufferedImage bImage = ImageIO.read(image);
-		bImage.getHeight();
+	public static BufferedImage ResizeImage(File image) throws IOException {
+		BufferedImage original = ImageIO.read(image);
+        BufferedImage resize = new BufferedImage(385,480,original.getType());
+        Graphics2D g2d = resize.createGraphics();
+        g2d.drawImage(original,0,0,385,480,null);
+        g2d.dispose();
+        return resize;
 	}
 
 

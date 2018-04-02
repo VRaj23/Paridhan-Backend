@@ -84,7 +84,7 @@ public class ProductService {
 		ProductType shirt = pTypeService.findByDescription("Shirt");
 		Brand polo = brandService.findByName("Polo");
 		PriceCategory rs_0_499 = priceService.findByUpperLimit(499);
-		ProductHeader header1 = new ProductHeader(shirt, 299.0,rs_0_499, polo, true,LocalDateTime.now());
+		ProductHeader header1 = new ProductHeader(shirt, 299.0,0,rs_0_499, polo, true,LocalDateTime.now());
 		
 		Color red = colorService.findByName("Red");
 		Size m = sizeService.findSize("M");
@@ -101,7 +101,7 @@ public class ProductService {
 		ProductType pant = pTypeService.findByDescription("Pant");
 		Brand spykar = brandService.findByName("Spykar");
 		PriceCategory rs_0_999 = priceService.findByUpperLimit(999);
-		ProductHeader header2 = new ProductHeader(pant, 899.0,rs_0_999,spykar,true,LocalDateTime.now());
+		ProductHeader header2 = new ProductHeader(pant, 899.0,0,rs_0_999,spykar,true,LocalDateTime.now());
 		
 		ProductLine line3 = new ProductLine(header2, "Spykar_Pant_899", true, black, l, LocalDateTime.now());
 		header2.getProductLine().add(line3);

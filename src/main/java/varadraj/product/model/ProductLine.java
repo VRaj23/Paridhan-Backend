@@ -21,7 +21,7 @@ import varadraj.product.serializer.ProductLineSerializer;
 @Table(name="product_line")
 @JsonSerialize(using = ProductLineSerializer.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", 
-	"availability", "last_update_datetime","productHeader"})
+	"availability", "productHeader"})
 public class ProductLine {
 
 	@Id
@@ -45,7 +45,6 @@ public class ProductLine {
 	private Size size;
 	
 	private LocalDateTime creation_datetime;
-	private LocalDateTime last_update_datetime;
 	
 	
 	public ProductLine() {}
@@ -60,7 +59,6 @@ public class ProductLine {
 		this.color = color;
 		this.size = size;
 		this.creation_datetime = creation_datetime;
-		this.last_update_datetime = creation_datetime;
 	}
 
 
@@ -142,16 +140,6 @@ public class ProductLine {
 
 	public void setSize(Size size) {
 		this.size = size;
-	}
-
-
-	public LocalDateTime getLast_update_datetime() {
-		return last_update_datetime;
-	}
-
-
-	public void setLast_update_datetime(LocalDateTime last_update_datetime) {
-		this.last_update_datetime = last_update_datetime;
 	}
 	
 	

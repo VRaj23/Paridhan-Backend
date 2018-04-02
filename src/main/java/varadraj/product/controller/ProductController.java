@@ -1,5 +1,6 @@
 package varadraj.product.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,8 +104,11 @@ public class ProductController {
 		
 		if(storageService.isValidFile(file) && ImageUtil.isImage(file)) {
 			Long imageID = imageService.addImageReturnID(new Long(productTypeID),storageService.getFilename(file));
-			if(storageService.store(file, imageID.toString())) {
-				return "Image Uploaded";
+			try {
+				storageService.storeImage(file, imageID.toString());
+				return "Image uploaded successfully";
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 		return "Could not save image";

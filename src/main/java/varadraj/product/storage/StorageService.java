@@ -1,11 +1,15 @@
 package varadraj.product.storage;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+
+import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -15,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import varadraj.product.service.ImageService;
+import varadraj.product.util.ImageUtil;
 
 
 @Service
@@ -55,12 +60,35 @@ public class StorageService implements StorageServiceInterface{
         }
 		return true;
 	}
-
+	
+	private Path createFolder(String directoryName) throws IOException {
+		Path imagePath = Paths.get(this.uploadFolder,directoryName);
+		return Files.createDirectories(imagePath);
+	}
+	
+	private File MultipartFile2File(MultipartFile mFile,String storagePath) throws IOException {
+		 	File file = new File(storagePath,"original_"+mFile.getOriginalFilename());
+		    file.createNewFile(); 
+		    FileOutputStream fos = new FileOutputStream(file); 
+		    fos.write(mFile.getBytes());
+		    fos.close(); 
+		    return file;
+	}
+	
 	@Override
-	public boolean store(MultipartFile file,String fileDir) {
+	public void storeImage(MultipartFile mFile, String imageDir) throws IOException {
+		String filename = getFilename(mFile);
+		String storagePath = this.createFolder(imageDir).toString(); 
+		File image = this.MultipartFile2File(mFile,storagePath);
+		BufferedImage resizedImage = ImageUtil.ResizeImage(image);
+		ImageIO.write(resizedImage, "jpg", new File(storagePath,filename));
+		
+	}
+	
+/*	public boolean store(MultipartFile file,String folderName) {
 			String filename = getFilename(file);
 	        try {	            
-	            Path imagePath = Paths.get(this.uploadFolder,fileDir);
+	            Path imagePath = Paths.get(this.uploadFolder,folderName);
 	            Files.createDirectories(imagePath);
 	            Files.copy(file.getInputStream(), 
 	            		imagePath.resolve(filename),
@@ -73,7 +101,7 @@ public class StorageService implements StorageServiceInterface{
 	            return false;
 	        }
 		
-	}
+	}*/
 
 	public Resource loadFile(long imageID) {
 		try {
@@ -91,6 +119,5 @@ public class StorageService implements StorageServiceInterface{
 			throw new RuntimeException("FAIL!");
 		}
 	}
-
 	
 }
