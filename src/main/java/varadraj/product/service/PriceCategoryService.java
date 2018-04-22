@@ -14,21 +14,24 @@ public class PriceCategoryService {
 
 	@Autowired
 	private PriceCategoryRepository pcRepo;
+
+//CREATE
+	public void addPriceCategory(PriceCategory priceCategory) {
+		pcRepo.save(priceCategory);
+	}
 	
+//READ
 	public List<PriceCategory> getAllPriceCategory(){
 		List<PriceCategory> categories = new ArrayList<>();
 		pcRepo.findAll().forEach(categories::add);
 		return categories;
 	}
 	
-	public void addDummyPriceCategoryData() {
-		PriceCategory pc1 = new PriceCategory(0, 499);
-		pcRepo.save(pc1);
-		PriceCategory pc2 = new PriceCategory(500, 999);
-		pcRepo.save(pc2);
-	}
-	
 	public PriceCategory findByUpperLimit(int upperLimit) {
 		return pcRepo.findByUpperLimit(upperLimit);
 	}
+	
+//UPDATE
+	
+//DELETE	
 }

@@ -15,23 +15,24 @@ public class BrandService {
 	@Autowired
 	private BrandRepository brandRepo;
 	
+//CREATE
+	public void addBrand(Brand brand) {
+		brandRepo.save(brand);
+	}
+	
+//READ
 	public List<Brand> getAllBrand(){
 		List<Brand> brands = new ArrayList<>();
 		brandRepo.findAll().forEach(brands::add);
 		return brands;
-	}
-	
-	public void addDummyBrandData() {
-		Brand spykar = new Brand("Spykar");
-		brandRepo.save(spykar);
-		Brand polo = new Brand("Polo");
-		brandRepo.save(polo);
-		Brand raymonds = new Brand("Raymonds");
-		brandRepo.save(raymonds);
-	}
+	}	
 	
 	public Brand findByName(String name) {
 		return brandRepo.findByName(name);
 	}
+	
+//UPDATE
+	
+//DELETE
 
 }

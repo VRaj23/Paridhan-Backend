@@ -14,8 +14,9 @@ public class ProductHeaderSerializer extends JsonSerializer<ProductHeader>{
 	public void serialize(ProductHeader header, JsonGenerator jsonGen, 
 			SerializerProvider serializers) throws IOException {
 		jsonGen.writeStartObject();
-		jsonGen.writeNumberField("headerID",header.getHeader_id());
+		jsonGen.writeNumberField("headerID",header.getHeaderID());
 		jsonGen.writeNumberField("price", header.getPrice());
+		jsonGen.writeNumberField("discount", header.getDiscountPercent());
 		jsonGen.writeStringField("brand", header.getBrand().getName());
 		jsonGen.writeNumberField("imageID", header.getPrimaryImage().getImageID());
 		jsonGen.writeEndObject();

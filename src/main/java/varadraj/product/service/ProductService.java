@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import varadraj.product.model.Brand;
 import varadraj.product.model.Color;
@@ -45,9 +44,9 @@ public class ProductService {
 		return headers;
 	}
 	
-	public List<ProductLine> getAllLines(String header_id){
+	public List<ProductLine> getAllLines(String headerID){
 		List<ProductLine> lines = new ArrayList<>();
-		Optional<ProductHeader> ph = pHRepo.findById(new Long(header_id));
+		Optional<ProductHeader> ph = pHRepo.findById(new Long(headerID));
 		if(ph.isPresent()) {
 			pLRepo.findByProductHeader(ph.get()).forEach(lines::add);
 		}
@@ -78,37 +77,5 @@ public class ProductService {
 		}
 		return products;
 	}
-	
-	
-	public void addDummyProductData() {
-		ProductType shirt = pTypeService.findByDescription("Shirt");
-		Brand polo = brandService.findByName("Polo");
-		PriceCategory rs_0_499 = priceService.findByUpperLimit(499);
-		ProductHeader header1 = new ProductHeader(shirt, 299.0,0,rs_0_499, polo, true,LocalDateTime.now());
-		
-		Color red = colorService.findByName("Red");
-		Size m = sizeService.findSize("M");
-		ProductLine line1 = new ProductLine(header1, "Polo_Shirt_499", true, red, m, LocalDateTime.now());
-		header1.getProductLine().add(line1);
-		
-		Color black = colorService.findByName("Black");
-		Size l = sizeService.findSize("L");
-		ProductLine line2 = new ProductLine(header1, "Polo_Shirt_499", true, black, l, LocalDateTime.now());
-		header1.getProductLine().add(line2);
-		
-		pHRepo.save(header1);
-		
-		ProductType pant = pTypeService.findByDescription("Pant");
-		Brand spykar = brandService.findByName("Spykar");
-		PriceCategory rs_0_999 = priceService.findByUpperLimit(999);
-		ProductHeader header2 = new ProductHeader(pant, 899.0,0,rs_0_999,spykar,true,LocalDateTime.now());
-		
-		ProductLine line3 = new ProductLine(header2, "Spykar_Pant_899", true, black, l, LocalDateTime.now());
-		header2.getProductLine().add(line3);
-		
-		pHRepo.save(header2);
-		
-	}
-
 
 }

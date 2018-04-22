@@ -14,7 +14,7 @@ public class ProductLineSerializer extends JsonSerializer<ProductLine>{
 	public void serialize(ProductLine line, JsonGenerator jsonGen, 
 			SerializerProvider serializers) throws IOException {
 		jsonGen.writeStartObject();
-		jsonGen.writeNumberField("lineID", line.getLine_id());
+		jsonGen.writeNumberField("lineID", line.getLineID());
 		jsonGen.writeStringField("color", line.getColor().getValue());
 		jsonGen.writeNumberField("sizeNum", line.getSize().getSizeNumber());
 		jsonGen.writeStringField("sizeChar", line.getSize().getSizeCharacter());

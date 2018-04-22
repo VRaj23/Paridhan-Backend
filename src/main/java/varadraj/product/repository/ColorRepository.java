@@ -6,6 +6,7 @@ import varadraj.product.model.Color;
 
 public interface ColorRepository extends CrudRepository<Color, Long>{
 	
-	public Color findByName(String name);
+	public Color findByColorID(long colorID);
+	public Color findByValue(String value);
 
 }

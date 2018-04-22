@@ -2,6 +2,7 @@ package varadraj.product.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,7 +27,8 @@ public class ProductLine {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long line_id;
+	@Column(name="line_id")
+	private long lineID;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "header_id")
@@ -72,7 +74,7 @@ public class ProductLine {
 		
 		final ProductLine pl = (ProductLine) obj;
 		
-		if(this.getLine_id() != pl.getLine_id())
+		if(this.getLineID() != pl.getLineID())
 			return false;
 		
 		return true;
@@ -87,12 +89,12 @@ public class ProductLine {
 	}
 
 
-	public long getLine_id() {
-		return line_id;
+	public long getLineID() {
+		return lineID;
 	}
 
-	public void setLine_id(long line_id) {
-		this.line_id = line_id;
+	public void setLineID(long lineID) {
+		this.lineID = lineID;
 	}
 
 	public String getName() {

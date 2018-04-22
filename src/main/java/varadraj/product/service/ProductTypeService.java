@@ -17,15 +17,13 @@ public class ProductTypeService {
 
 	@Autowired
 	private ProductTypeRepository pTRepo;
-	
-	public void addDummyTypeData() {
-		ProductType shirt = new ProductType("Shirt");
-		pTRepo.save(shirt);
-		
-		ProductType pant = new ProductType("Pant");
-		pTRepo.save(pant);
+
+//CREATE
+	public void addProductType(ProductType productType) {
+		pTRepo.save(productType);
 	}
-	
+
+//READ
 	public List<ProductType> getAllTypes(){
 		List<ProductType> types = new ArrayList<>();
 		pTRepo.findAll().forEach(types::add);
@@ -42,5 +40,21 @@ public class ProductTypeService {
 
 	public ProductType findByTypeID(Long typeID) {
 		return pTRepo.findByTypeID(typeID);
+	}
+	
+//UPDATE
+	public void updateProductType(ProductType oldType,ProductType newType) {
+		if(newType.getDescription() == null)
+			newType.setDescription(oldType.getDescription());
+		if(newType.getTypeImage() == null)
+			newType.setTypeImage(oldType.getTypeImage());
+		
+		pTRepo.save(newType);
+		
+	}
+	
+//DELETE
+	public void deleteProductType(long productTypeID) {
+		pTRepo.delete(this.findByTypeID(productTypeID));
 	}
 }

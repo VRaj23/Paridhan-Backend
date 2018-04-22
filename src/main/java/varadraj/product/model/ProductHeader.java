@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,13 +30,16 @@ public class ProductHeader {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long header_id;
+	@Column(name="header_id")
+	private long headerID;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "type_id")
 	private ProductType productType;
 	
 	private double price;
+	
+	@Column(name="discount_percent")
 	private double discountPercent = 0;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -83,18 +87,18 @@ public class ProductHeader {
 		
 		final ProductHeader ph = (ProductHeader) obj;
 		
-		if(this.getHeader_id() != ph.getHeader_id())
+		if(this.getHeaderID() != ph.getHeaderID())
 			return false;
 		
 		return true;
 	}
 
-	public long getHeader_id() {
-		return header_id;
+	public long getHeaderID() {
+		return headerID;
 	}
 
-	public void setHeader_id(long header_id) {
-		this.header_id = header_id;
+	public void setHeaderID(long headerID) {
+		this.headerID = headerID;
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL)

@@ -15,34 +15,31 @@ public class ColorService {
 	@Autowired
 	private ColorRepository colorRepo;
 	
+//CREATE
+	public void addColor(Color color) {
+		colorRepo.save(color);
+	}
+	
+//READ
 	public List<Color> getAllColor(){
 		List<Color> colors = new ArrayList<>();
 		colorRepo.findAll().forEach(colors::add);
 		return colors;
+	}	
+	
+	public Color findByColorID(long colorID) {
+		return colorRepo.findByColorID(colorID);
 	}
 	
-	public void addColorDummyData() {
-		Color black = new Color("Black","000000");
-		colorRepo.save(black);
-		
-		Color red = new Color("Red","FF0000");
-		colorRepo.save(red);
-		
-		Color blue = new Color("Blue","0000FF");
-		colorRepo.save(blue);
-		
-		Color white = new Color("White","FFFFFF");
-		colorRepo.save(white);
-		
-		Color green = new Color("Green","00FF00");
-		colorRepo.save(green);
-		
-		Color yellow = new Color("Yellow","FFFF00");
-		colorRepo.save(yellow);
-				
+	public Color findByColorValue(String value) {
+		return colorRepo.findByValue(value);
 	}
 	
-	public Color findByName(String name) {
-		return colorRepo.findByName(name);
+//UPDATE
+	
+//DELETE
+	public void deleteColor(Color color) {
+		colorRepo.delete(color);
 	}
+
 }

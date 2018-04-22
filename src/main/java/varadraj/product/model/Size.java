@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="product_size")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "productType"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Size {
 
 	@Id

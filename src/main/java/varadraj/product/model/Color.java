@@ -16,11 +16,11 @@ public class Color {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long colorID;
+	private long colorID;	
 	
-	@Column(unique=true)
 	private String name;
 	
+	@Column(unique=true)
 	private String value;
 	
 	public Color() {}
