@@ -31,6 +31,10 @@ public class SizeService {
 		return sizeRepo.findBySizeCharacter(sizeChar);
 	}
 	
+	public Size findBySizeID(long sizeID) {
+		return sizeRepo.findBySizeID(sizeID);
+	}
+	
 //UPDATE
 	
 //DELETE

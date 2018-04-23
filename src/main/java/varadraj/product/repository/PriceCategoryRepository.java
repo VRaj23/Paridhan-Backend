@@ -7,5 +7,6 @@ import varadraj.product.model.PriceCategory;
 public interface PriceCategoryRepository extends CrudRepository<PriceCategory, Long>{
 	
 	public PriceCategory findByUpperLimit(int upperLimit);
+	public PriceCategory findByPriceCategoryID(long priceCategoryID);
 
 }

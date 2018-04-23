@@ -31,6 +31,10 @@ public class PriceCategoryService {
 		return pcRepo.findByUpperLimit(upperLimit);
 	}
 	
+	public PriceCategory findByPriceCategoryID(long priceCategoryID) {
+		return pcRepo.findByPriceCategoryID(priceCategoryID);
+	}
+	
 //UPDATE
 	
 //DELETE	

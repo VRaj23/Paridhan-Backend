@@ -31,6 +31,10 @@ public class BrandService {
 		return brandRepo.findByName(name);
 	}
 	
+	public Brand findByBrandID(long brandID) {
+		return brandRepo.findByBrandID(brandID);
+	}
+	
 //UPDATE
 	
 //DELETE

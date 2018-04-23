@@ -7,5 +7,5 @@ import varadraj.product.model.Brand;
 public interface BrandRepository extends CrudRepository<Brand, Long>{
 	
 	public Brand findByName(String name);
-
+	public Brand findByBrandID(long brandID);
 }

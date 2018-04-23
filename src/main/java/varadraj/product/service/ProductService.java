@@ -10,7 +10,11 @@ import org.springframework.stereotype.Service;
 
 import varadraj.product.model.Brand;
 import varadraj.product.model.Color;
+import varadraj.product.model.HeaderCreationRequest;
+import varadraj.product.model.ImageModel;
+import varadraj.product.model.LineCreationRequest;
 import varadraj.product.model.PriceCategory;
+import varadraj.product.model.ProductCreationRequest;
 import varadraj.product.model.ProductHeader;
 import varadraj.product.model.ProductLine;
 import varadraj.product.model.ProductModel;
@@ -36,8 +40,56 @@ public class ProductService {
 	private ColorService colorService;
 	@Autowired
 	private SizeService sizeService;
-
+	@Autowired
+	private ImageService imageService;
 	
+	public boolean isValidRequest(ProductCreationRequest request) {
+		//TODO FUNCTIONAL VALIDATIONS
+		return true;
+	}
+
+//CREATE
+	public void addProduct(ProductCreationRequest request) {
+		ProductHeader header = createProductHeader(request.getHeader());
+		header = pHRepo.save(header);
+		
+		for(LineCreationRequest lineRequest : request.getLines()) {
+			pLRepo.save(createProductLine(lineRequest, header));
+		}
+	}
+	
+	private ProductHeader createProductHeader(HeaderCreationRequest headerRequest) {
+		
+		ProductType type = pTypeService.findByTypeID(headerRequest.getProductTypeID());
+		Brand brand = brandService.findByBrandID(headerRequest.getBrandID());
+		ImageModel image = imageService.findByImageID(headerRequest.getImageID());
+		
+		return new ProductHeader
+				(type, 
+				 headerRequest.getPrice(), 
+				 headerRequest.getDiscount(), 
+				 null, //TODO auto find PriceCategory
+				 brand,
+				 image, 
+				 headerRequest.isEnabled(), 
+				 LocalDateTime.now());
+	}
+	
+	private ProductLine createProductLine(LineCreationRequest lineRequest,ProductHeader header) {
+		
+		Color color = colorService.findByColorID(lineRequest.getColorID());
+		Size size = sizeService.findBySizeID(lineRequest.getSizeID());	
+		
+		return new ProductLine(
+				 header,
+				 lineRequest.getName(), 
+				 lineRequest.isAvailable(), 
+				 color, 
+				 size, 
+				 LocalDateTime.now());
+	}
+	
+//READ
 	public List<ProductHeader> getAllHeader(){
 		List<ProductHeader> headers = new ArrayList<>();
 		pHRepo.findAll().forEach(headers::add);
@@ -78,4 +130,8 @@ public class ProductService {
 		return products;
 	}
 
+//UPDATE
+	
+//DELETE
+	
 }

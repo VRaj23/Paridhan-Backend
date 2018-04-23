@@ -7,5 +7,6 @@ import varadraj.product.model.Size;
 public interface SizeRepository extends CrudRepository<Size, Long>{
 	
 	public Size findBySizeCharacter(String sizeCharacter);
+	public Size findBySizeID(long sizeID);
 
 }

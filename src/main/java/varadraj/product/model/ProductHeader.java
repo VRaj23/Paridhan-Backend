@@ -61,22 +61,20 @@ public class ProductHeader {
 	@JsonBackReference
 	private Set<ProductLine> productLine = new HashSet<>();
 	
-	public ProductHeader(){}	
-	
+	public ProductHeader(){}		
 
 	public ProductHeader(ProductType productType, double price, double discountPercent, PriceCategory priceCategory, Brand brand,
-			boolean enabled, LocalDateTime creation_datetime) {
+			ImageModel image,boolean enabled, LocalDateTime creation_datetime) {
 		super();
 		this.productType = productType;
 		this.price = price;
 		this.discountPercent = discountPercent;
 		this.priceCategory = priceCategory;
+		this.primaryImage = image;
 		this.brand = brand;
 		this.enabled = enabled;
 		this.creation_datetime = creation_datetime;
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
