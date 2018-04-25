@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
-import varadraj.model.jwt.JwtAuthToken;
+import varadraj.jwt.model.JwtAuthToken;
 
 public class JwtAuthTokenFilter extends AbstractAuthenticationProcessingFilter{
 	

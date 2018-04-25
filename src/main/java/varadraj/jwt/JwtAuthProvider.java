@@ -11,8 +11,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import varadraj.model.jwt.JwtAuthToken;
-import varadraj.model.jwt.JwtCustomUserDetails;
+import varadraj.jwt.model.JwtAuthToken;
+import varadraj.jwt.model.JwtCustomUserDetails;
 
 @Component
 public class JwtAuthProvider extends AbstractUserDetailsAuthenticationProvider{

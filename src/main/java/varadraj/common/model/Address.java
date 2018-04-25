@@ -1,4 +1,4 @@
-package varadraj.model;
+package varadraj.common.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

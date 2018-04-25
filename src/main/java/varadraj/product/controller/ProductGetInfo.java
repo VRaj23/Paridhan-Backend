@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import varadraj.model.JsonResponse;
+import varadraj.common.model.JsonResponse;
 import varadraj.product.model.PriceCategory;
 import varadraj.product.service.BrandService;
 import varadraj.product.service.ColorService;

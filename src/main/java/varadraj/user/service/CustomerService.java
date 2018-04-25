@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import varadraj.model.Address;
-import varadraj.service.AddressService;
+import varadraj.common.model.Address;
+import varadraj.common.service.AddressService;
 import varadraj.user.model.Customer;
 import varadraj.user.model.LoginRequest;
 import varadraj.user.repository.CustomerRepository;
@@ -55,6 +55,10 @@ public class CustomerService {
 //READ
 	public Customer findByUsername(String username) {
 		return customerRepo.findByUsername(username);
+	}
+	
+	public Customer findByCustomerID(long customerID) {
+		return customerRepo.findByCustomerID(customerID);
 	}
 //UPDATE
 //DELETE

@@ -11,8 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import varadraj.common.model.Address;
 
-import varadraj.model.Address;
 
 @Entity
 public class Customer {

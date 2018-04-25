@@ -1,4 +1,4 @@
-package varadraj.model.jwt;
+package varadraj.jwt.model;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 

@@ -50,6 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.csrf().disable()
 			.authorizeRequests().antMatchers("**/**/admin/**").authenticated()
 			.and()
+			.authorizeRequests().antMatchers("**/order/**").authenticated()
+			.and()
 			.exceptionHandling().authenticationEntryPoint(exceptionHandler)
 			.and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

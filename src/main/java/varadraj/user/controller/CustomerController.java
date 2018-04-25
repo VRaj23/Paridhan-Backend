@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.jwt.JwtGenerator;
-import varadraj.model.JsonResponse;
+import varadraj.common.model.JsonResponse;
 import varadraj.user.model.Customer;
 import varadraj.user.model.LoginRequest;
 import varadraj.user.service.CustomerService;

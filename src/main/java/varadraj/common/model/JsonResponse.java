@@ -1,4 +1,4 @@
-package varadraj.model;
+package varadraj.common.model;
 
 public class JsonResponse {
 	

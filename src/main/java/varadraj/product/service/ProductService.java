@@ -50,8 +50,7 @@ public class ProductService {
 
 //CREATE
 	public void addProduct(ProductCreationRequest request) {
-		ProductHeader header = createProductHeader(request.getHeader());
-		header = pHRepo.save(header);
+		ProductHeader header = pHRepo.save( createProductHeader(request.getHeader()) );
 		
 		for(LineCreationRequest lineRequest : request.getLines()) {
 			pLRepo.save(createProductLine(lineRequest, header));
@@ -128,6 +127,10 @@ public class ProductService {
 			products.add(pModel);
 		}
 		return products;
+	}
+	
+	public ProductLine findByLineID(long productLineID) {
+		return pLRepo.findByLineID(productLineID);
 	}
 
 //UPDATE

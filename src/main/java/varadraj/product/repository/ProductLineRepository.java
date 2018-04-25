@@ -9,6 +9,8 @@ import varadraj.product.model.ProductLine;
 
 public interface ProductLineRepository extends CrudRepository<ProductLine, Long>{
 	
-	public List<ProductLine> findByProductHeader(ProductHeader productHeader);
+	List<ProductLine> findByProductHeader(ProductHeader productHeader);
+	
+	ProductLine findByLineID(long productLineID);
 	
 }

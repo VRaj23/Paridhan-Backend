@@ -1,8 +1,8 @@
-package varadraj.repository;
+package varadraj.common.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import varadraj.model.Address;
+import varadraj.common.model.Address;
 
 public interface AddressRepository extends CrudRepository<Address, Long>{
 
