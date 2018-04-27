@@ -15,12 +15,13 @@ public class JwtGenerator {
 	private long expireInMinutes = 60L;
 	private String signingKey = "TestKey";
 	
-	public String generateToken(String username) {
+	public String generateToken(String username,String role) {
 		Date expiration = new Date(System.currentTimeMillis() + 1000L*60L*this.expireInMinutes);
 		
 		Claims claim = Jwts.claims()
 				.setExpiration(expiration);
 		claim.put("username", username);
+		claim.put("role",role);
 		
 		return Jwts.builder()
                 .setClaims(claim)

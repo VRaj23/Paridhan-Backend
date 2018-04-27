@@ -38,15 +38,24 @@ public class JwtAuthProvider extends AbstractUserDetailsAuthenticationProvider{
 		
 		String token = jwtAuthToken.getToken();
 		
-		String username = jwtValidator.validateToken(token);
-		
-		if( username == null) {
+		String[] tokenDetails = jwtValidator.validateToken(token);
+		String username = tokenDetails[0]; 
+		String role = tokenDetails[1]; 
+				
+		if( username == null || role == null) {
 			throw new RuntimeException("Invalid Token");
 		}
+		//TODO why called twice ?
+		//System.out.println(username+" "+role+" "+System.currentTimeMillis());
+		//
+		List<GrantedAuthority> grantedAuthorities = null;
 		
-		List<GrantedAuthority> grantedAuthorities = AuthorityUtils
-                .commaSeparatedStringToAuthorityList("admin");
-		
+		if( role.equals("admin") )
+			grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN");
+		else
+			grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
+	
+	
 		return new JwtCustomUserDetails(token, username, grantedAuthorities);
 	}
 

@@ -1,6 +1,7 @@
 package varadraj.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +39,9 @@ public class CustomerController {
 	@PostMapping("/login")
 	public JsonResponse login(@RequestBody LoginRequest loginRequest) {
 		if(customerService.validateLogin(loginRequest)) {
-			return new JsonResponse(200, this.jwtGenerator.generateToken(loginRequest.getUsername()));
+			return new JsonResponse(200, this.jwtGenerator.generateToken(loginRequest.getUsername(),"user"));
 		}
 		return new JsonResponse(401,"Username or Password is incorrect");
 	}
+	
 }

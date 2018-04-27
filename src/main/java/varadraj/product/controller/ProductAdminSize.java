@@ -1,6 +1,7 @@
 package varadraj.product.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,8 @@ import varadraj.product.model.Size;
 import varadraj.product.service.SizeService;
 
 @RestController
-@RequestMapping("/product/admin/size")
+@PreAuthorize(value = "hasRole('ADMIN')")
+@RequestMapping("/auth/admin/product/size")
 public class ProductAdminSize {
 
 	@Autowired

@@ -3,6 +3,7 @@ package varadraj.order.controller;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,13 +15,14 @@ import varadraj.order.model.OrderCreationRequest;
 import varadraj.order.service.OrderService;
 
 @RestController
-@RequestMapping("/order")
+@PreAuthorize(value = "hasRole('USER')")
+@RequestMapping("/auth/customer/order")
 public class OrderCustomerController {
 	
 	@Autowired
 	private OrderService orderService;
 	
-	@GetMapping("/customerOrder")
+	@GetMapping("/getAll")
 	public JsonResponse getCustomerOrders(Principal user) {
 		
 		return new JsonResponse(501, "Not implemented");
@@ -34,7 +36,6 @@ public class OrderCustomerController {
 		orderService.addOrder(request);
 		return new JsonResponse(201,"Order Created");
 	}
-	
 	
 
 }

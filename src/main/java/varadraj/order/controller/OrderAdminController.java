@@ -1,6 +1,7 @@
 package varadraj.order.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,16 +10,13 @@ import varadraj.common.model.JsonResponse;
 import varadraj.order.service.OrderService;
 
 @RestController
-@RequestMapping("/order/seller")
-public class OrderSellerController {
+@PreAuthorize(value = "hasRole('ADMIN')")
+@RequestMapping("/auth/admin/order/")
+public class OrderAdminController {
 
 	@Autowired
 	private OrderService orderService;
 	
-	@GetMapping
-	public String hello() {
-		return "Hello Order Seller";
-	}
 	
 	@GetMapping("/allOrders")
 	public JsonResponse getOrders() {

@@ -10,21 +10,22 @@ public class JwtValidator {
 
 	private String signingKey = "TestKey";
 	
-	public String validateToken(String token) {
+	public String[] validateToken(String token) {
 		
-		String username = null;
+		String[] tokenDetails = new String[2];
 		try {
 			Claims body = Jwts.parser()
 					.setSigningKey(this.signingKey)
 					.parseClaimsJws(token)
 					.getBody();
 			
-			username = (String) body.get("username");
+			tokenDetails[0] = (String) body.get("username");
+			tokenDetails[1] = (String) body.get("role");
 			
 		}catch(Exception e) {
 			System.out.println(e);
 		}
 		
-		return username;
+		return tokenDetails;
 	}
 }

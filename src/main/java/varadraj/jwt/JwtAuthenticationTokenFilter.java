@@ -13,10 +13,10 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 
 import varadraj.jwt.model.JwtAuthToken;
 
-public class JwtAuthTokenFilter extends AbstractAuthenticationProcessingFilter{
+public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessingFilter{
 	
-	public JwtAuthTokenFilter() {
-		super("/**/admin/**");
+	public JwtAuthenticationTokenFilter() {
+		super("/auth/**");
 	}
 
 	@Override

@@ -1,4 +1,4 @@
- package varadraj.config;
+package varadraj.config;
 
 import java.util.Collections;
 
@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import varadraj.jwt.JwtAuthExceptinHandler;
 import varadraj.jwt.JwtAuthProvider;
-import varadraj.jwt.JwtAuthTokenFilter;
+import varadraj.jwt.JwtAuthenticationTokenFilter;
 import varadraj.jwt.JwtSuccessHandler;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -37,8 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 	
     @Bean
-    public JwtAuthTokenFilter authTokenFilter() {
-        JwtAuthTokenFilter filter = new JwtAuthTokenFilter();
+    public JwtAuthenticationTokenFilter authTokenFilter() {
+        JwtAuthenticationTokenFilter filter = new JwtAuthenticationTokenFilter();
         filter.setAuthenticationManager(authenticationManager());
         filter.setAuthenticationSuccessHandler(new JwtSuccessHandler());
         return filter;
@@ -48,10 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		http.csrf().disable()
-			.authorizeRequests().antMatchers("**/**/admin/**").authenticated()
-			.and()
-			.authorizeRequests().antMatchers("**/order/**").authenticated()
-			.and()
 			.exceptionHandling().authenticationEntryPoint(exceptionHandler)
 			.and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

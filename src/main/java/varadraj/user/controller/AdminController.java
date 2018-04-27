@@ -1,9 +1,12 @@
 package varadraj.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.jwt.JwtGenerator;
@@ -12,7 +15,6 @@ import varadraj.user.model.LoginRequest;
 import varadraj.user.service.AdminUserService;
 
 @RestController
-@RequestMapping("/user")
 public class AdminController {
 	
 	@Autowired
@@ -24,19 +26,22 @@ public class AdminController {
 		this.jwtGenerator = jwtGenerator;
 	}
 
-	@PostMapping("/adminLogin")
+	@PostMapping("/admin/login")
 	public JsonResponse adminLogin(@RequestBody LoginRequest loginRequest) {
 		
 		if(adminService.validateLogin(loginRequest)) {
-			return new JsonResponse(200,jwtGenerator.generateToken(loginRequest.getUsername()));
+			return new JsonResponse(200,jwtGenerator.generateToken(loginRequest.getUsername(),"admin"));
 			}
 		else
 			return new JsonResponse(401,"Admin Login Failed");
 	}
 	
-	@PostMapping("/admin/resetPassword")
+	
+	@PreAuthorize(value = "hasRole('ADMIN')")
+	@PostMapping("/auth/admin/resetPassword")
 	public JsonResponse adminPasswordReset() {
 		
 		return new JsonResponse(501,"not implemented");
 	}
+
 }

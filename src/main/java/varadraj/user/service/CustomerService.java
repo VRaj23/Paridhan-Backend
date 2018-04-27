@@ -25,7 +25,7 @@ public class CustomerService {
 	AddressService addressService;
 	
 	public boolean validateRegistrationRequest(Customer customer) {
-		//TODO 
+		//TODO username must not contain special char
 		return true;
 	}
 	
