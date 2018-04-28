@@ -4,12 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import varadraj.order.model.OrderCreationRequest;
-import varadraj.order.model.OrderHeader;
-import varadraj.order.model.OrderHeaderCreationRequest;
-import varadraj.order.model.OrderLine;
-import varadraj.order.model.OrderLineCreationRequest;
-import varadraj.order.repository.OrderHeaderRepository;
-import varadraj.order.repository.OrderLineRepository;
+import varadraj.order.model.Orders;
+import varadraj.order.repository.OrderRepository;
 import varadraj.product.service.ProductService;
 import varadraj.user.service.CustomerService;
 
@@ -17,10 +13,8 @@ import varadraj.user.service.CustomerService;
 public class OrderService {
 
 	@Autowired
-	private OrderHeaderRepository headerRepo;
+	private OrderRepository orderRepo;
 	
-	@Autowired
-	private OrderLineRepository lineRepo;
 	
 	@Autowired
 	private CustomerService  customerService;
@@ -29,36 +23,27 @@ public class OrderService {
 	private ProductService productService;
 	
 	public boolean isValidRequest(OrderCreationRequest request) {
-		//TODO validations
+		if(request.getAmount()<=0)
+			return false;
+		if(request.getQuantity() <= 0)
+			return false;
+		
 		return true;
 	}
 		
 //CREATE
 	
 	public void addOrder(OrderCreationRequest request) {
-			OrderHeader header = headerRepo.save( createOrderHeader(request.getHeader()) ); 
+			Orders order = new Orders(
+					customerService.findByCustomerID(request.getCustomerID())
+					, productService.findByLineID(request.getProductLineID())
+					, request.getAmount()//TODO calculate; don't use value provided in request
+					, request.getQuantity()
+					, request.getDeliveryAddress());
 			
-			for(OrderLineCreationRequest lineRequest : request.getLines()) {
-				lineRepo.save( createOrderLine(lineRequest, header) );
-			}
+			orderRepo.save(order);
 	}
-	
-	private OrderHeader createOrderHeader(OrderHeaderCreationRequest headerRequest) {
-		return new OrderHeader
-				(customerService.findByCustomerID(headerRequest.getCustomerID())
-				,0
-				,headerRequest.getAmount()//TODO calculate; don't use value provided in request
-				,headerRequest.getDeliveryAddress()
-				);
-	}
-	
-	private OrderLine createOrderLine(OrderLineCreationRequest lineRequest, OrderHeader header) {
-		return new OrderLine
-				(header, 
-				productService.findByLineID(lineRequest.getProductLineID()),
-				lineRequest.getQuantity());
-	}
-	
+
 	
 //READ
 	

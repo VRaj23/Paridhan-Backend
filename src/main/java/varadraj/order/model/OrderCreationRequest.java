@@ -1,36 +1,64 @@
 package varadraj.order.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import varadraj.common.model.Address;
 
 public class OrderCreationRequest {
 	
-	private OrderHeaderCreationRequest header;
-	private List<OrderLineCreationRequest> lines = new ArrayList<>();
+	private long customerID;
+	private double amount;
+	private Address deliveryAddress;
+	private long productLineID;
+	private int quantity = 1;
 	
-	public OrderCreationRequest() {}
-	
-	public OrderCreationRequest(OrderHeaderCreationRequest header, List<OrderLineCreationRequest> lines) {
-		this.header = header;
-		this.lines = lines;
+	public OrderCreationRequest(long customerID, double amount, Address deliveryAddress, long productLineID,
+			int quantity) {
+		super();
+		this.customerID = customerID;
+		this.amount = amount;
+		this.deliveryAddress = deliveryAddress;
+		this.productLineID = productLineID;
+		this.quantity = quantity;
 	}
 
-	public OrderHeaderCreationRequest getHeader() {
-		return header;
+	public long getCustomerID() {
+		return customerID;
 	}
 
-	public void setHeader(OrderHeaderCreationRequest header) {
-		this.header = header;
+	public void setCustomerID(long customerID) {
+		this.customerID = customerID;
 	}
 
-	public List<OrderLineCreationRequest> getLines() {
-		return lines;
+	public double getAmount() {
+		return amount;
 	}
 
-	public void setLines(List<OrderLineCreationRequest> lines) {
-		this.lines = lines;
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
-	
-	
+
+	public Address getDeliveryAddress() {
+		return deliveryAddress;
+	}
+
+	public void setDeliveryAddress(Address deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}
+
+	public long getProductLineID() {
+		return productLineID;
+	}
+
+	public void setProductLineID(long productLineID) {
+		this.productLineID = productLineID;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
 
 }

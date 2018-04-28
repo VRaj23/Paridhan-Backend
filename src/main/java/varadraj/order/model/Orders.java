@@ -1,10 +1,7 @@
 package varadraj.order.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,60 +10,62 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import varadraj.common.model.Address;
+import varadraj.product.model.ProductLine;
 import varadraj.user.model.Customer;
 
 @Entity
-@Table(name="order_header")
-public class OrderHeader {
-	
+public class Orders {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "order_header_id")
-	private long orderHeaderID;
+	@Column(name = "order_id")
+	private long orderID;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="customer_id")
 	private Customer customer;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_line_id")
+	private ProductLine item;
+	
+	@Column(name="status_id")
 	private int statusID;
 	
 	private double amount;
+	
+	private int quantity = 1;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "delivery_address_id")
 	private Address deliveryAddress;
 	
 	private LocalDateTime creationDateTime;
+	
 	private LocalDateTime lastUpateDateTime;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="orderHeader")
-	@JsonBackReference
-	private List<OrderLine> orderLine = new ArrayList<>();
+	public Orders() {}
 
-	public OrderHeader() {}	
-
-	public OrderHeader(Customer customer, int statusID, double amount, Address deliveryAddress) {
+	public Orders(Customer customer, ProductLine item, double amount, int quantity, Address deliveryAddress) {
 		super();
 		this.customer = customer;
-		this.statusID = statusID;
+		this.item = item;
 		this.amount = amount;
+		this.quantity = quantity;
 		this.deliveryAddress = deliveryAddress;
+		this.statusID = 0;
 		this.creationDateTime = LocalDateTime.now();
 		this.lastUpateDateTime = LocalDateTime.now();
 	}
 
-	public long getOrderHeaderID() {
-		return orderHeaderID;
+	public long getOrderID() {
+		return orderID;
 	}
 
-	public void setOrderHeaderID(long orderHeaderID) {
-		this.orderHeaderID = orderHeaderID;
+	public void setOrderID(long orderID) {
+		this.orderID = orderID;
 	}
 
 	public Customer getCustomer() {
@@ -75,6 +74,14 @@ public class OrderHeader {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	public ProductLine getItem() {
+		return item;
+	}
+
+	public void setItem(ProductLine item) {
+		this.item = item;
 	}
 
 	public int getStatusID() {
@@ -91,6 +98,14 @@ public class OrderHeader {
 
 	public void setAmount(double amount) {
 		this.amount = amount;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 	public Address getDeliveryAddress() {
@@ -116,14 +131,8 @@ public class OrderHeader {
 	public void setLastUpateDateTime(LocalDateTime lastUpateDateTime) {
 		this.lastUpateDateTime = lastUpateDateTime;
 	}
-
-	public List<OrderLine> getOrderLine() {
-		return orderLine;
-	}
-
-	public void setOrderLine(List<OrderLine> orderLine) {
-		this.orderLine = orderLine;
-	}
-
-
+	
+	
+	
+	
 }

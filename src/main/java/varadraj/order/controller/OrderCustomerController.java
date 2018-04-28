@@ -18,7 +18,6 @@ import varadraj.order.service.OrderService;
 @PreAuthorize(value = "hasRole('USER')")
 @RequestMapping("/auth/customer/order")
 public class OrderCustomerController {
-	
 	@Autowired
 	private OrderService orderService;
 	
@@ -36,6 +35,5 @@ public class OrderCustomerController {
 		orderService.addOrder(request);
 		return new JsonResponse(201,"Order Created");
 	}
-	
 
 }

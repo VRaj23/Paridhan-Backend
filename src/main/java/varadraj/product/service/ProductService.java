@@ -44,7 +44,11 @@ public class ProductService {
 	private ImageService imageService;
 	
 	public boolean isValidRequest(ProductCreationRequest request) {
-		//TODO FUNCTIONAL VALIDATIONS
+		if(request.getHeader().getPrice() <= 0)
+			return false;
+		if(request.getHeader().getDiscount()<0 || request.getHeader().getDiscount()>=100)
+			return false;
+		
 		return true;
 	}
 
