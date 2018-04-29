@@ -26,15 +26,15 @@ public class OrderCustomerController {
 	@GetMapping("/getAll")
 	public JsonResponse getCustomerOrders(Principal user) {
 		
-		return new JsonResponse(501, "Not implemented");
+		return new JsonResponse(200, orderService.getAllCustomerOrders(user.getName()));
 	}
 	
 	@PostMapping("/addOrder")
-	public JsonResponse addOrder(@RequestBody OrderCreationRequest request) {
+	public JsonResponse addOrder(@RequestBody OrderCreationRequest request,Principal user) {
 		if(!orderService.isValidRequest(request))
 			return new JsonResponse(400, "Invalid Order");
 		
-		orderService.addOrder(request);
+		orderService.addOrder(request,user.getName());
 		return new JsonResponse(201,"Order Created");
 	}
 

@@ -11,11 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import varadraj.common.model.Address;
 import varadraj.product.model.ProductLine;
 import varadraj.user.model.Customer;
 
 @Entity
+@JsonIgnoreProperties({"creationDateTime","lastUpdateDateTime","hibernateLazyInitializer", "handler"})
 public class Orders {
 
 	@Id

@@ -13,4 +13,5 @@ public interface ProductLineRepository extends CrudRepository<ProductLine, Long>
 	
 	ProductLine findByLineID(long productLineID);
 	
+	
 }

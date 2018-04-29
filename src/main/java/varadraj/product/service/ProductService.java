@@ -136,6 +136,10 @@ public class ProductService {
 	public ProductLine findByLineID(long productLineID) {
 		return pLRepo.findByLineID(productLineID);
 	}
+	
+	public double getPrice(long productLineID) {
+		return this.findByLineID(productLineID).getProductHeader().getPrice();
+	}
 
 //UPDATE
 	

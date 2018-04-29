@@ -11,10 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import varadraj.common.model.Address;
 
 
 @Entity
+@JsonIgnoreProperties({"password"})
 public class Customer {
 	
 	@Id
@@ -44,6 +47,14 @@ public class Customer {
 		this.name = name;
 		this.address = address;
 		this.creationDateTime = LocalDateTime.now();
+	}
+	
+	public long getCustomerID() {
+		return customerID;
+	}
+
+	public void setCustomerID(long customerID) {
+		this.customerID = customerID;
 	}
 
 	public String getUsername() {
