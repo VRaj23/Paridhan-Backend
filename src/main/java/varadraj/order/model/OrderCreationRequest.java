@@ -4,28 +4,31 @@ import varadraj.common.model.Address;
 
 public class OrderCreationRequest {
 	
-	private long customerID;
+	private String username;
 	private double amount;
 	private Address deliveryAddress;
 	private long productLineID;
 	private int quantity = 1;
 	
-	public OrderCreationRequest(long customerID, double amount, Address deliveryAddress, long productLineID,
+
+
+	public OrderCreationRequest(String username, double amount, Address deliveryAddress, long productLineID,
 			int quantity) {
 		super();
-		this.customerID = customerID;
+		this.username = username;
 		this.amount = amount;
 		this.deliveryAddress = deliveryAddress;
 		this.productLineID = productLineID;
 		this.quantity = quantity;
 	}
 
-	public long getCustomerID() {
-		return customerID;
+		
+	public String getUsername() {
+		return username;
 	}
 
-	public void setCustomerID(long customerID) {
-		this.customerID = customerID;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public double getAmount() {

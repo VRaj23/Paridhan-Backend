@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ import varadraj.product.storage.StorageService;
 import varadraj.product.util.ImageUtil;
 
 @RestController
+@CrossOrigin
 @PreAuthorize(value = "hasRole('ADMIN')")
 @RequestMapping("/auth/admin/product/image")
 public class ProductAdminImage {

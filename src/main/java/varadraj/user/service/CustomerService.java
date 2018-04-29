@@ -45,7 +45,15 @@ public class CustomerService {
 //CREATE
 	public void addCustomer(Customer customer) {
 		String passwd = customer.getPassword().trim();
-		Address address = addressService.addAddress(customer.getAddress());
+		
+		//TODO address == null ? Remove HardCoding
+		Address address = new Address();
+		address.setCity("Kolkata");
+		addressService.addAddress(address);
+		if(customer.getAddress() != null)
+			address = addressService.addAddress(customer.getAddress());
+		//
+		
 		customer.setPassword(passwordEncoder.encode(passwd));
 		customer.setAddress(address);
 		customer.setCreationDateTime(LocalDateTime.now());
@@ -53,14 +61,20 @@ public class CustomerService {
 	}
 	
 //READ
-	public Customer findByUsername(String username) {
+	public Customer findByCustomerUsername(String username) {
 		return customerRepo.findByUsername(username);
 	}
 	
 	public Customer findByCustomerID(long customerID) {
 		return customerRepo.findByCustomerID(customerID);
 	}
+	
+	public String getName(String username) {
+		return customerRepo.findByUsername(username).getName();
+	}
+	
 //UPDATE
 //DELETE
+
 
 }

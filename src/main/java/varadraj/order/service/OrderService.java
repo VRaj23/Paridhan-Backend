@@ -35,7 +35,7 @@ public class OrderService {
 	
 	public void addOrder(OrderCreationRequest request) {
 			Orders order = new Orders(
-					customerService.findByCustomerID(request.getCustomerID())
+					customerService.findByCustomerUsername(request.getUsername())
 					, productService.findByLineID(request.getProductLineID())
 					, request.getAmount()//TODO calculate; don't use value provided in request
 					, request.getQuantity()

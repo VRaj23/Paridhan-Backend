@@ -2,6 +2,7 @@ package varadraj.product.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import varadraj.product.model.Color;
 import varadraj.product.service.ColorService;
 
 @RestController
+@CrossOrigin
 @PreAuthorize(value = "hasRole('ADMIN')")
 @RequestMapping("/admin/product/color")
 public class ProductAdminColor {
