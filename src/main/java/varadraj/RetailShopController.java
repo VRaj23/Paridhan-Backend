@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
 
-
-
 @RestController
 @CrossOrigin
 public class RetailShopController {

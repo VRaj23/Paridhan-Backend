@@ -134,12 +134,16 @@ public class ProductService {
 	}
 	
 	public ProductLine findByLineID(long productLineID) {
+		if(productLineID <=0 )
+			return null;
+		
 		return pLRepo.findByLineID(productLineID);
 	}
 	
 	public double getPrice(long productLineID) {
 		return this.findByLineID(productLineID).getProductHeader().getPrice();
 	}
+
 
 //UPDATE
 	

@@ -4,7 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import varadraj.user.model.Customer;
 
-public interface CustomerRepository extends CrudRepository<Customer, String>{
+public interface CustomerRepository extends CrudRepository<Customer, Long>{
 	
 	Customer findByUsername(String username);
 	

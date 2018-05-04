@@ -7,10 +7,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RetailShopBackendApplicationTests {
+public class RetailShopBackendApplicationTest {
 
 	@Test
-	public void contextLoads() {
-	}
-
+    public void contextLoads() {
+     
+    }
 }

@@ -26,38 +26,46 @@ public class OrderService {
 	
 	@Autowired
 	private ProductService productService;
-	
-	public boolean isValidRequest(OrderCreationRequest request) {
+
+//VALIDATIONS
+	private boolean isValidRequest(OrderCreationRequest request) {
+		if(request == null)
+			return false;
 		if(request.getAmount()<=0)
 			return false;
 		if(request.getQuantity() <= 0)
 			return false;
+		if(productService.findByLineID(request.getProductLineID()) == null)
+			return false;
 		
 		return true;
 	}
+	
+	private Address deliveryAddressNullCheck(Address requestAddress, String username) {
+		if(requestAddress == null)
+			return customerService.findByCustomerUsername(username).getAddress();//TODO NC
+		else
+			return requestAddress;
+	}
+
 		
 //CREATE
 	
-	public void addOrder(OrderCreationRequest request, String username) {
-			
-			
-			Orders order = new Orders(
-					customerService.findByCustomerUsername(username)
+	public Orders addOrder(OrderCreationRequest request, String username) {
+		Orders order = null; 	
+		if(this.isValidRequest(request)) {
+			order = new Orders(
+					customerService.findByCustomerUsername(username)//TODO NC
 					, productService.findByLineID(request.getProductLineID())
 					, productService.getPrice(request.getProductLineID()) * request.getQuantity()//TODO Warn Mismatch
 					, request.getQuantity()
 					, this.deliveryAddressNullCheck(request.getDeliveryAddress(), username));
 			
-			orderRepo.save(order);
+			order = orderRepo.save(order);
+		}
+		return order;
 	}
 	
-	private Address deliveryAddressNullCheck(Address requestAddress, String username) {
-		if(requestAddress == null)
-			return customerService.findByCustomerUsername(username).getAddress();
-		else
-			return requestAddress;
-	}
-
 	
 //READ
 	

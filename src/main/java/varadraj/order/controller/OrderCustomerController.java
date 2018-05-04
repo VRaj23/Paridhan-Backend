@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
 import varadraj.order.model.OrderCreationRequest;
+import varadraj.order.model.Orders;
 import varadraj.order.service.OrderService;
 
 @RestController
@@ -31,11 +32,13 @@ public class OrderCustomerController {
 	
 	@PostMapping("/addOrder")
 	public JsonResponse addOrder(@RequestBody OrderCreationRequest request,Principal user) {
-		if(!orderService.isValidRequest(request))
-			return new JsonResponse(400, "Invalid Order");
 		
-		orderService.addOrder(request,user.getName());
-		return new JsonResponse(201,"Order Created");
+		Orders newOrder = orderService.addOrder(request, user.getName());
+		
+		if(newOrder == null) {
+			return new JsonResponse(400, "Invalid Order");}
+		else {
+			return new JsonResponse(201,"Order Created");}
 	}
 
 }

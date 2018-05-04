@@ -11,13 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import varadraj.common.model.Address;
 
-
 @Entity
-@JsonIgnoreProperties({"password"})
 public class Customer {
 	
 	@Id
@@ -28,9 +25,11 @@ public class Customer {
 	private String username;
 	
 	@Column(nullable = false)
-	private String password;
+	private String password;//TODO custom serializer
 	
 	private String name;
+	
+	private String email;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "addressID")
@@ -40,13 +39,14 @@ public class Customer {
 	
 	public Customer() {}
 
-	public Customer(String username, String password, String name, Address address) {
+	public Customer(String username, String password, String name, Address address, String email) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.name = name;
 		this.address = address;
 		this.creationDateTime = LocalDateTime.now();
+		this.email = email;
 	}
 	
 	public long getCustomerID() {
@@ -55,6 +55,15 @@ public class Customer {
 
 	public void setCustomerID(long customerID) {
 		this.customerID = customerID;
+	}
+
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getUsername() {

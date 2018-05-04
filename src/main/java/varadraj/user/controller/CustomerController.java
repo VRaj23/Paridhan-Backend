@@ -31,11 +31,13 @@ public class CustomerController {
 	@PostMapping("customer/registerUser")
 	public JsonResponse registerUser(@RequestBody Customer customer) {
 		
-		if(!customerService.validateRegistrationRequest(customer))
-			return new JsonResponse(400,"Customer Registration Failed");
+		Customer registeredCustomer = customerService.addCustomer(customer);
 		
-		customerService.addCustomer(customer);
-		return new JsonResponse(201,"Customer Registered");
+		if(registeredCustomer == null) {
+			return new JsonResponse(400,"Customer Registration Failed");}
+		else {
+			return new JsonResponse(201,"Customer Registered");
+		}
 	}
 	
 	@PostMapping("customer/login")

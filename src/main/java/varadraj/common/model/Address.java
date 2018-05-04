@@ -1,10 +1,11 @@
 package varadraj.common.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -16,25 +17,27 @@ public class Address {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long addressID;
 	
-	@Column(nullable = false)
+	private String house_number;//flat, house no.
+	private String area; //area, colony
+	private String landmark;
 	
-	private String city;
+	@JoinColumn(name = "city_id")
+	@ManyToOne
+	private City city;
 	
-	private int pincode;
-	
-	private String address;	
+	private int pincode;	
 	
 	public Address() {}
-	
-	public Address(String city, int pincode, String address) {
+
+	public Address(String house_number, String area, String landmark, City city, int pincode) {
 		super();
+		this.house_number = house_number;
+		this.area = area;
+		this.landmark = landmark;
 		this.city = city;
 		this.pincode = pincode;
-		this.address = address;
 	}
-	
-	
-	
+
 	public long getAddressID() {
 		return addressID;
 	}
@@ -43,23 +46,46 @@ public class Address {
 		this.addressID = addressID;
 	}
 
-	public String getCity() {
+	public String getHouse_number() {
+		return house_number;
+	}
+
+	public void setHouse_number(String house_number) {
+		this.house_number = house_number;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public String getLandmark() {
+		return landmark;
+	}
+
+	public void setLandmark(String landmark) {
+		this.landmark = landmark;
+	}
+
+	public City getCity() {
 		return city;
 	}
-	public void setCity(String city) {
+
+	public void setCity(City city) {
 		this.city = city;
 	}
+
 	public int getPincode() {
 		return pincode;
 	}
+
 	public void setPincode(int pincode) {
 		this.pincode = pincode;
 	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
+	
+	
 	
 }
