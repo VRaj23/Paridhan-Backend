@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
 import varadraj.order.model.Orders;
-import varadraj.user.model.Customer;
+import varadraj.user.model.customer.Customer;
 
 public interface OrderRepository extends CrudRepository<Orders, Long>{
 	

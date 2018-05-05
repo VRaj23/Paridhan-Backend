@@ -1,15 +1,14 @@
 package varadraj.user.service;
 
-import java.time.LocalDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import varadraj.common.model.Address;
+import varadraj.common.model.address.Address;
 import varadraj.common.service.AddressService;
-import varadraj.user.model.Customer;
 import varadraj.user.model.LoginRequest;
+import varadraj.user.model.customer.Customer;
+import varadraj.user.model.customer.CustomerCreationRequest;
 import varadraj.user.repository.CustomerRepository;
 
 @Service
@@ -25,51 +24,41 @@ public class CustomerService {
 	AddressService addressService;
 
 //VALIDATIONS
-	private boolean isValidCustomer(Customer customer) {
+	private boolean isValidCustomer(CustomerCreationRequest customerRequest) {
 		//TODO username must not contain special char
-		if(customer == null)
+		if(customerRequest == null)
 			return false;
-		if(customer.getUsername() == null)
+		if(customerRequest.getUsername() == null)
 			return false;
-		else if(customer.getPassword() == null)
+		if(customerRequest.getPassword()  == null)
 			return false;
-		else if(customer.getName() == null)
+		if(customerRequest.getName() == null)
 			return false;
-		else if(customer.getAddress() == null)
-			return false;
-		else if(customer.getEmail() == null)//TODO validate email
-			return false;
-		else
-			return true;		
+		return true;		
 	}
 	
 	
 //CREATE
-	public Customer addCustomer(Customer customer) {
-		Customer registeredCustomer = null;
+	public Customer addCustomer(CustomerCreationRequest customerRequest) {
+		Customer savedCustomer = null;
 		
-		if(this.isValidCustomer(customer)) {
-			Address savedAddress = addressService.addAddress(customer.getAddress());
+		if(this.isValidCustomer(customerRequest)) {
+			
+			
+			Address savedAddress = addressService.addAddress(customerRequest.getAddressCreationRequest());
 			if(savedAddress == null) {
 				return null;}
 			
-			String textPassword = customer.getPassword();
+			Customer customer = new Customer(customerRequest.getUsername()
+					, passwordEncoder.encode(customerRequest.getPassword())
+					, customerRequest.getName()
+					, savedAddress
+					, customerRequest.getEmail());
 			
-			customer.setPassword(passwordEncoder.encode(textPassword));
-			
-			customer.setCreationDateTime(LocalDateTime.now());
-			
-			Customer temp = new Customer(customer.getUsername()
-					,passwordEncoder.encode(textPassword)
-					,customer.getName()
-					,savedAddress
-					,customer.getEmail());
-			
-			Customer savedCustomer = customerRepo.save(temp);
-			registeredCustomer = savedCustomer;
+			savedCustomer = customerRepo.save(customer);
 		}
 				
-		return registeredCustomer;
+		return savedCustomer;
 	}
 	
 //READ
@@ -99,10 +88,7 @@ public class CustomerService {
 		else
 			return customerRepo.findByCustomerID(customerID);
 	}
-	
-	public String getName(String username) {
-		return this.findByCustomerUsername(username).getName();
-	}
+
 	
 //UPDATE
 //DELETE

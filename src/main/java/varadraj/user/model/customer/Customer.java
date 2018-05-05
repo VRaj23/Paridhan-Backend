@@ -1,4 +1,4 @@
-package varadraj.user.model;
+package varadraj.user.model.customer;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 
-import varadraj.common.model.Address;
+import varadraj.common.model.address.Address;
 
 @Entity
 public class Customer {
@@ -25,7 +25,7 @@ public class Customer {
 	private String username;
 	
 	@Column(nullable = false)
-	private String password;//TODO custom serializer
+	private String password;
 	
 	private String name;
 	

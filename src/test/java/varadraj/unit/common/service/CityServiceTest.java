@@ -19,8 +19,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper;
 import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
-import varadraj.common.model.City;
-import varadraj.common.model.State;
+import varadraj.common.model.city.City;
+import varadraj.common.model.city.CityCreationRequest;
+import varadraj.common.model.state.State;
 import varadraj.common.repository.CityRepository;
 import varadraj.common.service.CityService;
 import varadraj.common.service.StateService;
@@ -52,8 +53,9 @@ public class CityServiceTest {
 	@Test
 	public void addCity_HappyPath() {
 	//CREATE
+		CityCreationRequest cityCreationRequest = new CityCreationRequest();
 		City city = new City();
-		city.setName("city");
+		city.setCityName("city");
 		
 		State state = new State();
 		state.setStateName("state");
@@ -63,10 +65,10 @@ public class CityServiceTest {
 		when(cityRepo.save(city)).thenReturn(city);
 		
 	//TEST
-		City savedCity = cityService.addCity(city);
+		City savedCity = cityService.addCity(cityCreationRequest);
 		
 	//ASSERT
-		assertEquals(city.getName(), savedCity.getName());
+		assertEquals(city.getCityName(), savedCity.getCityName());
 		assertEquals(city.getState(), state);
 	
 	//VERIFY
@@ -77,13 +79,13 @@ public class CityServiceTest {
 	public void addCity_CityNameNULL() {
 	//CREATE
 		City city = new City();
-		
+		CityCreationRequest cityCreationRequest = null;
 		State state = new State();
 		state.setStateName("state");
 		city.setState(state);
 		
 	//TEST
-		City savedCity = cityService.addCity(city);
+		City savedCity = cityService.addCity(cityCreationRequest);
 		
 	//ASSERT
 		assertNull(savedCity);
@@ -95,11 +97,12 @@ public class CityServiceTest {
 	@Test
 	public void addCity_StateNULL() {
 	//CREATE
+		CityCreationRequest cityCreationRequest = null;
 		City city = new City();
-		city.setName("city");
+		city.setCityName("city");
 		
 	//TEST
-		City savedCity = cityService.addCity(city);
+		City savedCity = cityService.addCity(cityCreationRequest);
 		
 	//ASSERT
 		assertNull(savedCity);

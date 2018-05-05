@@ -19,7 +19,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper;
 import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
-import varadraj.common.model.State;
+import varadraj.common.model.state.State;
+import varadraj.common.model.state.StateCreationRequest;
 import varadraj.common.repository.StateRepository;
 import varadraj.common.service.StateService;
 
@@ -54,7 +55,7 @@ public class StateServiceTest {
 		when(stateRepo.save(state)).thenReturn(state);
 		
 	//TEST
-		State savedState = stateService.addState(state);
+		State savedState = stateService.addState(new StateCreationRequest());
 		
 	//ASSERT
 		assertEquals(state.getStateName(), savedState.getStateName());
@@ -69,7 +70,7 @@ public class StateServiceTest {
 		State state = new State();
 		
 	//TEST
-		State savedState = stateService.addState(state);
+		State savedState = stateService.addState(new StateCreationRequest());
 		
 	//ASSERT
 		assertNull(savedState);

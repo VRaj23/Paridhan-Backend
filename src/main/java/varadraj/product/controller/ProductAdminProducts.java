@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
+import varadraj.common.model.JsonResponseMessage;
 import varadraj.product.model.ProductCreationRequest;
 import varadraj.product.service.ProductService;
 
@@ -22,12 +23,16 @@ public class ProductAdminProducts {
 	private ProductService productService;
 	
 	@PostMapping("/addProduct")
-	public JsonResponse addProduct(@RequestBody ProductCreationRequest request) {
+	public JsonResponse<Void> addProduct(@RequestBody ProductCreationRequest request) {
 		if(!productService.isValidRequest(request)) {
-			return new JsonResponse(400,"Invalid Product creation request");
+			return new JsonResponse<Void>(400
+					, JsonResponseMessage.INVALID_INPUT
+					, null);
 		}
 		productService.addProduct(request);
-		return new JsonResponse(201,"Product Created");
+		return new JsonResponse<Void>(201
+				, JsonResponseMessage.CREATED
+				, null);
 	}
 
 }

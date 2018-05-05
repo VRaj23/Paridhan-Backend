@@ -22,9 +22,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper;
 import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
-import varadraj.common.model.Address;
+import varadraj.common.model.address.Address;
+import varadraj.common.model.address.AddressCreationRequest;
 import varadraj.common.service.AddressService;
-import varadraj.user.model.Customer;
+import varadraj.user.model.customer.Customer;
+import varadraj.user.model.customer.CustomerCreationRequest;
 import varadraj.user.repository.CustomerRepository;
 import varadraj.user.service.CustomerService;
 
@@ -58,6 +60,7 @@ public class CustomerServiceTest {
 	@Test
 	public void addCustomer_HappyPath(){
 	//CREATE
+		CustomerCreationRequest customerCreationRequest = new CustomerCreationRequest();
 		Customer customer = new Customer();
 		customer.setName("someName");
 		customer.setPassword("somePassword");
@@ -67,10 +70,10 @@ public class CustomerServiceTest {
 		customer.setAddress(address);
 	//CONDITION
 		when(customerRepo.save(Mockito.any(Customer.class))).thenReturn(customer);
-		when(addressService.addAddress(Mockito.any(Address.class))).thenReturn(address);
+		when(addressService.addAddress(Mockito.any(AddressCreationRequest.class))).thenReturn(address);
 		when(passwordEncoder.encode(Mockito.anyString())).thenAnswer(i -> i.getArguments()[0]);
 	//TEST
-		Customer savedCustomer = customerService.addCustomer(customer);
+		Customer savedCustomer = customerService.addCustomer(customerCreationRequest);
 	//ASSERT
 		assertNotNull(savedCustomer);
 		assertEquals(customer.getUsername(), savedCustomer.getUsername());
@@ -81,12 +84,13 @@ public class CustomerServiceTest {
 	@Test
 	public void addCustomer_whenAddressNULL_thenReturnNULL(){
 	//CREATE
+		CustomerCreationRequest customerCreationRequest = new CustomerCreationRequest();
 		Customer customer = new Customer();
 		customer.setUsername("username");
 		customer.setName("someName");
 		customer.setPassword("somePassword");
 	//TEST
-		Customer savedCustomer = customerService.addCustomer(customer);
+		Customer savedCustomer = customerService.addCustomer(customerCreationRequest);
 	//ASSERT
 		assertNull(savedCustomer);
 	//VERIFY
@@ -96,9 +100,10 @@ public class CustomerServiceTest {
 	@Test
 	public void addCustomer_whenNULL_thenReturnNULL(){
 	//CREATE
+		CustomerCreationRequest customerCreationRequest = new CustomerCreationRequest();
 		Customer customer = null;
 	//TEST
-		Customer savedCustomer = customerService.addCustomer(customer);
+		Customer savedCustomer = customerService.addCustomer(customerCreationRequest);
 	//ASSERT
 		assertNull(savedCustomer);
 	//VERIFY

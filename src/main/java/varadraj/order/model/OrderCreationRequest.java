@@ -1,22 +1,20 @@
 package varadraj.order.model;
 
-import varadraj.common.model.Address;
-
 public class OrderCreationRequest {
 	
 	private double amount;
-	private Address deliveryAddress;
+	private long deliveryAddressID;
 	private long productLineID;
 	private int quantity = 1;
 	
 
 	public OrderCreationRequest() {}
 
-	public OrderCreationRequest(double amount, Address deliveryAddress, long productLineID,
-			int quantity) {
+
+	public OrderCreationRequest(double amount, long deliveryAddressID, long productLineID, int quantity) {
 		super();
 		this.amount = amount;
-		this.deliveryAddress = deliveryAddress;
+		this.deliveryAddressID = deliveryAddressID;
 		this.productLineID = productLineID;
 		this.quantity = quantity;
 	}
@@ -26,29 +24,36 @@ public class OrderCreationRequest {
 		return amount;
 	}
 
+
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 
-	public Address getDeliveryAddress() {
-		return deliveryAddress;
+
+	public long getDeliveryAddressID() {
+		return deliveryAddressID;
 	}
 
-	public void setDeliveryAddress(Address deliveryAddress) {
-		this.deliveryAddress = deliveryAddress;
+
+	public void setDeliveryAddressID(long deliveryAddressID) {
+		this.deliveryAddressID = deliveryAddressID;
 	}
+
 
 	public long getProductLineID() {
 		return productLineID;
 	}
 
+
 	public void setProductLineID(long productLineID) {
 		this.productLineID = productLineID;
 	}
 
+
 	public int getQuantity() {
 		return quantity;
 	}
+
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;

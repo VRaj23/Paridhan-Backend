@@ -13,7 +13,6 @@ import varadraj.product.model.Color;
 import varadraj.product.model.HeaderCreationRequest;
 import varadraj.product.model.ImageModel;
 import varadraj.product.model.LineCreationRequest;
-import varadraj.product.model.PriceCategory;
 import varadraj.product.model.ProductCreationRequest;
 import varadraj.product.model.ProductHeader;
 import varadraj.product.model.ProductLine;
@@ -34,8 +33,8 @@ public class ProductService {
 	private ProductTypeService pTypeService;
 	@Autowired
 	private BrandService brandService;
-	@Autowired
-	private PriceCategoryService priceService;
+	//@Autowired
+	//private PriceCategoryService priceService;
 	@Autowired
 	private ColorService colorService;
 	@Autowired

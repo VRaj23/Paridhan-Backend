@@ -1,5 +1,7 @@
 package varadraj.product.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -13,7 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
+import varadraj.common.model.JsonResponseMessage;
+import varadraj.product.model.Brand;
+import varadraj.product.model.Color;
 import varadraj.product.model.PriceCategory;
+import varadraj.product.model.ProductHeader;
+import varadraj.product.model.ProductLine;
+import varadraj.product.model.ProductModel;
+import varadraj.product.model.ProductType;
+import varadraj.product.model.Size;
 import varadraj.product.service.BrandService;
 import varadraj.product.service.ColorService;
 import varadraj.product.service.PriceCategoryService;
@@ -42,50 +52,61 @@ public class ProductGetInfo {
 	@Autowired
 	private PriceCategoryService priceCategoryService;
 
-	
-	@GetMapping("/")
-	public JsonResponse index() {
-		return new JsonResponse(200,"Product Info API");
-	}	
 
 	@GetMapping("/type")
-	public JsonResponse getAllTypes(){
-		return new JsonResponse (200,pTypeService.getAllTypes());
+	public JsonResponse<List<ProductType>> getAllTypes(){
+		return new JsonResponse<List<ProductType>> (200
+				,JsonResponseMessage.OK
+				,pTypeService.getAllTypes());
 	}
 	
 	@GetMapping("/color")
-	public JsonResponse getAllColor(){
-		return new JsonResponse (200,colorService.getAllColor());
+	public JsonResponse<List<Color>> getAllColor(){
+		return new JsonResponse<List<Color>> (200
+				,JsonResponseMessage.OK
+				,colorService.getAllColor());
 	}
 	
 	@GetMapping("/size")
-	public JsonResponse getAllSize(){
-		return new JsonResponse(200,sizeService.getAllSize());
+	public JsonResponse<List<Size>> getAllSize(){
+		return new JsonResponse<List<Size>>(200
+				,JsonResponseMessage.OK
+				,sizeService.getAllSize());
 	}
 	
 	@GetMapping("/brand")
-	public JsonResponse getAllBrand(){
-		return new JsonResponse(200,brandService.getAllBrand());
+	public JsonResponse<List<Brand>> getAllBrand(){
+		return new JsonResponse<List<Brand>>(200
+				,JsonResponseMessage.OK
+				,brandService.getAllBrand());
 	}
 	
 	@GetMapping("/header")
-	public JsonResponse getAllHeaders(@RequestParam("t") String typeID) {
-		return new JsonResponse(200,productService.findByTypeID(typeID));		
+	public JsonResponse<List<ProductHeader>> getAllHeaders(@RequestParam("t") String typeID) {
+		return new JsonResponse<List<ProductHeader>>(200
+				,JsonResponseMessage.OK
+				,productService.findByTypeID(typeID));		
 	}
 	
 	@GetMapping("/line")
-	public JsonResponse getAllLines(@RequestParam("h") String header_id){
-		return new JsonResponse(200,productService.getAllLines(header_id));
+	public JsonResponse<List<ProductLine>> getAllLines(@RequestParam("h") String header_id){
+		return new JsonResponse<List<ProductLine>>(200
+				,JsonResponseMessage.OK
+				,productService.getAllLines(header_id));
 	}
 	
 	@GetMapping("/products")
-	public JsonResponse getAllProduct(){
-		return new JsonResponse(200,productService.getAllProducts());
+	public JsonResponse<List<ProductModel>> getAllProduct(){
+		return new JsonResponse<List<ProductModel>>(200
+				,JsonResponseMessage.OK
+				,productService.getAllProducts());
 	}
 	
 	@GetMapping("/priceCategory")
-	public JsonResponse getAllPriceCategory() {
-		return new JsonResponse(200,priceCategoryService.getAllPriceCategory());
+	public JsonResponse<List<PriceCategory>> getAllPriceCategory() {
+		return new JsonResponse<List<PriceCategory>>(200
+				,JsonResponseMessage.OK
+				,priceCategoryService.getAllPriceCategory());
 	}
 	
 	@GetMapping("/downloadImage/{imageID}")

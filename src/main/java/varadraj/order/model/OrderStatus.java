@@ -1,7 +1,10 @@
 package varadraj.order.model;
 
-public class OrderStatus {
+public enum OrderStatus {
 	
-	private long orderStatusID;
-	private String orderStatusDescription;
+	NEW,
+	PENDING,
+	SHIPPING,
+	DELIVERED
+
 }

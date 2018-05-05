@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
+import varadraj.common.model.JsonResponseMessage;
 import varadraj.product.model.Color;
 import varadraj.product.service.ColorService;
 
@@ -24,25 +25,35 @@ public class ProductAdminColor {
 	private ColorService colorService;
 	
 	@PostMapping("/auth/addColor")
-	public JsonResponse addColor(@RequestBody Color color) {
+	public JsonResponse<Void> addColor(@RequestBody Color color) {
 		
 		if(color.getValue() == null || color.getValue().length() != 6)
-			return new JsonResponse(400, "Invalid Color Hex Value provided. Color creation Failed");
+			return new JsonResponse<Void>(400
+					, JsonResponseMessage.INVALID_INPUT
+					, null);
 		
 		if(colorService.findByColorValue(color.getValue()) != null)
-			return new JsonResponse(400, "Color already exists.");
+			return new JsonResponse<Void>(409
+					, JsonResponseMessage.ALREADY_EXISTS
+					, null);
 		
 		colorService.addColor(color);
-		return new JsonResponse(201, "Color Added");
+		return new JsonResponse<Void>(201
+				, JsonResponseMessage.CREATED
+				, null);
 	}
 	
 	@DeleteMapping("/deleteColor/{colorID}")
-	public JsonResponse deleteColor(@PathVariable long colorID) {
+	public JsonResponse<Void> deleteColor(@PathVariable long colorID) {
 		Color color = colorService.findByColorID(colorID);
 		if( color == null)
-			return new JsonResponse(400,"Invalid ColorID");
+			return new JsonResponse<Void>(400
+					, JsonResponseMessage.INVALID_INPUT
+					, null);
 		
 		colorService.deleteColor(color);
-		return new JsonResponse(200,"Color deleted");
+		return new JsonResponse<Void>(200
+				, JsonResponseMessage.OK
+				, null);
 	}
 }

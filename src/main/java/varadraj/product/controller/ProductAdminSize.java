@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
+import varadraj.common.model.JsonResponseMessage;
 import varadraj.product.model.Size;
 import varadraj.product.service.SizeService;
 
@@ -22,11 +23,15 @@ public class ProductAdminSize {
 	private SizeService sizeService;
 	
 	@PostMapping("/addSize")
-	public JsonResponse addSize(@RequestBody Size size) {
+	public JsonResponse<Void> addSize(@RequestBody Size size) {
 		if(size.getSizeCharacter() == null || size.getSizeNumber() == 0)
-			return new JsonResponse(400,"Invalid Size Object");
+			return new JsonResponse<Void>(400
+					, JsonResponseMessage.INVALID_INPUT
+					, null);
 
 		sizeService.addSize(size);
-		return new JsonResponse(201, "New size created");
+		return new JsonResponse<Void>(201
+				, JsonResponseMessage.CREATED
+				, null);
 	}
 }

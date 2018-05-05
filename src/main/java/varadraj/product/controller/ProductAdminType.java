@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
+import varadraj.common.model.JsonResponseMessage;
 import varadraj.product.model.ProductType;
 import varadraj.product.service.ProductTypeService;
 
@@ -25,34 +26,43 @@ public class ProductAdminType {
 	private ProductTypeService ptService;
 	
 	@PostMapping("/addProductType")
-	public JsonResponse addType(@RequestBody ProductType productType) {
+	public JsonResponse<Void> addType(@RequestBody ProductType productType) {
 		ptService.addProductType(productType);
-		return new JsonResponse(201,"New Product Type Created");
+		return new JsonResponse<Void>(201
+				, JsonResponseMessage.CREATED
+				, null);
 	}
 	
 	@PutMapping("/updateProductType")
-	public JsonResponse updateType(@RequestBody ProductType newProductType) {
+	public JsonResponse<Void> updateType(@RequestBody ProductType newProductType) {
 		if(newProductType.getTypeID() == 0)
-			return new JsonResponse(400,"No ProductType ID provided in request. "
-					+ "Valid ProductType ID required for update");
+			return new JsonResponse<Void>(400
+					,JsonResponseMessage.INVALID_INPUT
+					,null);
 		
 		ProductType type = ptService.findByTypeID(newProductType.getTypeID());
 		if(type == null)
-			return new JsonResponse(404,"Invalid ProductType ID. Update Failed");
+			return new JsonResponse<Void>(404
+					,JsonResponseMessage.NOT_FOUND
+					,null);
 		
 		ptService.updateProductType(type,newProductType);
-		return new JsonResponse(200, "ProductType Updated");
+		return new JsonResponse<Void>(200, JsonResponseMessage.CREATED ,null);
 	}
 	
 	@DeleteMapping("/deleteProductType/{productTypeID}")
-	public JsonResponse deleteType(@PathVariable long productTypeID) {
+	public JsonResponse<Void> deleteType(@PathVariable long productTypeID) {
 		
 		ProductType type = ptService.findByTypeID(productTypeID);
 		if(type == null)
-			return new JsonResponse(404,"Invalid ProductType ID. DELETE failed");
+			return new JsonResponse<Void>(404
+					, JsonResponseMessage.NOT_FOUND
+					, null);
 		
 		ptService.deleteProductType(productTypeID);
-		return new JsonResponse(200,"ProductType Deleted");
+		return new JsonResponse<Void>(200
+				,JsonResponseMessage.CREATED
+				,null);
 	}
 
 }

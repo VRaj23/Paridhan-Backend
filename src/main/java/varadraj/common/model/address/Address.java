@@ -1,4 +1,4 @@
-package varadraj.common.model;
+package varadraj.common.model.address;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,17 +7,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import varadraj.common.model.city.City;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Address {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long addressID;
 	
-	private String house_number;//flat, house no.
+	private String houseNumber;//flat, house no.
 	private String area; //area, colony
 	private String landmark;
 	
@@ -29,14 +28,15 @@ public class Address {
 	
 	public Address() {}
 
-	public Address(String house_number, String area, String landmark, City city, int pincode) {
+	public Address(String houseNumber, String area, String landmark, City city,  int pincode) {
 		super();
-		this.house_number = house_number;
+		this.houseNumber = houseNumber;
 		this.area = area;
 		this.landmark = landmark;
 		this.city = city;
 		this.pincode = pincode;
 	}
+
 
 	public long getAddressID() {
 		return addressID;
@@ -46,12 +46,12 @@ public class Address {
 		this.addressID = addressID;
 	}
 
-	public String getHouse_number() {
-		return house_number;
+	public String getHouseNumber() {
+		return houseNumber;
 	}
 
-	public void setHouse_number(String house_number) {
-		this.house_number = house_number;
+	public void setHouseNumber(String houseNumber) {
+		this.houseNumber = houseNumber;
 	}
 
 	public String getArea() {
@@ -85,7 +85,6 @@ public class Address {
 	public void setPincode(int pincode) {
 		this.pincode = pincode;
 	}
-	
-	
+
 	
 }

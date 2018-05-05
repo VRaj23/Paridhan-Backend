@@ -1,6 +1,7 @@
 package varadraj.order.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
+import varadraj.common.model.JsonResponseMessage;
 import varadraj.order.model.OrderCreationRequest;
 import varadraj.order.model.Orders;
 import varadraj.order.service.OrderService;
@@ -25,20 +27,22 @@ public class OrderCustomerController {
 	private OrderService orderService;
 	
 	@GetMapping("/getAll")
-	public JsonResponse getCustomerOrders(Principal user) {
+	public JsonResponse<List<Orders>> getCustomerOrders(Principal user) {
 		
-		return new JsonResponse(200, orderService.getAllCustomerOrders(user.getName()));
+		return new JsonResponse<List<Orders>>(200
+				,JsonResponseMessage.OK,
+				orderService.getAllCustomerOrders(user.getName()));
 	}
 	
 	@PostMapping("/addOrder")
-	public JsonResponse addOrder(@RequestBody OrderCreationRequest request,Principal user) {
+	public JsonResponse<Void> addOrder(@RequestBody OrderCreationRequest request,Principal user) {
 		
 		Orders newOrder = orderService.addOrder(request, user.getName());
 		
 		if(newOrder == null) {
-			return new JsonResponse(400, "Invalid Order");}
+			return new JsonResponse<Void>(400, JsonResponseMessage.INVALID_INPUT,null);}
 		else {
-			return new JsonResponse(201,"Order Created");}
+			return new JsonResponse<Void>(201, JsonResponseMessage.CREATED,null);}
 	}
 
 }

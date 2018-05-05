@@ -17,9 +17,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper;
 import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
-import varadraj.common.model.Address;
-import varadraj.common.model.City;
-import varadraj.common.model.State;
+import varadraj.common.model.address.Address;
+import varadraj.common.model.address.AddressCreationRequest;
+import varadraj.common.model.city.City;
+import varadraj.common.model.state.State;
 import varadraj.common.repository.AddressRepository;
 import varadraj.common.service.AddressService;
 
@@ -47,8 +48,9 @@ public class AddressServiceTest {
 	@Test
 	public void addAddress_HappyPath() {
 	//CREATE
+		AddressCreationRequest addressCreationRequest = new AddressCreationRequest(); 
 		Address address = new Address();
-		address.setHouse_number("Flat No. 1");
+		address.setHouseNumber("Flat No. 1");
 		address.setArea("areaORcolony");
 		address.setLandmark("someplace near house");
 		
@@ -56,7 +58,7 @@ public class AddressServiceTest {
 		state.setStateName("state");
 		City city = new City();
 		city.setState(state);
-		city.setName("city");		
+		city.setCityName("city");		
 		address.setCity(city);
 		
 		address.setCity(city);
@@ -65,7 +67,7 @@ public class AddressServiceTest {
 	//CONDITION
 		when(addressRepo.save(address)).thenReturn(address);
 	//TEST
-		Address savedAddress = addressService.addAddress(address);
+		Address savedAddress = addressService.addAddress(addressCreationRequest);
 		
 	//ASSERT
 		assertEquals(address, savedAddress);

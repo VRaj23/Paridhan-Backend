@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.jwt.JwtGenerator;
 import varadraj.common.model.JsonResponse;
+import varadraj.common.model.JsonResponseMessage;
 import varadraj.user.model.LoginRequest;
 import varadraj.user.service.AdminUserService;
 
@@ -26,21 +27,25 @@ public class AdminController {
 	}
 
 	@PostMapping("/admin/login")
-	public JsonResponse adminLogin(@RequestBody LoginRequest loginRequest) {
+	public JsonResponse<String> adminLogin(@RequestBody LoginRequest loginRequest) {
 		
 		if(adminService.validateLogin(loginRequest)) {
-			return new JsonResponse(200,jwtGenerator.generateToken(loginRequest.getUsername(),"admin"));
+			return new JsonResponse<String>(200
+					,JsonResponseMessage.OK
+					,jwtGenerator.generateToken(loginRequest.getUsername(),"admin"));
 			}
 		else
-			return new JsonResponse(401,"Admin Login Failed");
+			return new JsonResponse<String>(401
+					,JsonResponseMessage.BAD_CREDENTIALS
+					,null);
 	}
 	
 	
 	@PreAuthorize(value = "hasRole('ADMIN')")
 	@PostMapping("/auth/admin/resetPassword")
-	public JsonResponse adminPasswordReset() {
+	public JsonResponse<Void> adminPasswordReset() {
 		
-		return new JsonResponse(501,"not implemented");
+		return new JsonResponse<Void>(501,JsonResponseMessage.NOT_IMPLEMENTED,null);
 	}
 
 }

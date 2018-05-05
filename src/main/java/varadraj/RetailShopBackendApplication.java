@@ -9,7 +9,6 @@ public class RetailShopBackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RetailShopBackendApplication.class, args);
-	}
-	
+	}	
 
 }

@@ -1,10 +1,15 @@
-package varadraj.common.model;
+package varadraj.common.model.city;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import varadraj.common.model.state.State;
 
 
 @Entity
@@ -12,9 +17,12 @@ import javax.persistence.Table;
 public class City {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="city_id")
 	private long cityID;
 	
-	private String name;
+	@Column(name="city_name")
+	private String cityName;
 	
 	@JoinColumn(name="state_id")
 	@ManyToOne
@@ -22,11 +30,13 @@ public class City {
 	
 	public City() {}
 
-	public City(String name, State state) {
+
+	public City(String cityName, State state) {
 		super();
-		this.name = name;
+		this.cityName = cityName;
 		this.state = state;
 	}
+
 
 	public long getCityID() {
 		return cityID;
@@ -36,13 +46,15 @@ public class City {
 		this.cityID = cityID;
 	}
 
-	public String getName() {
-		return name;
+	public String getCityName() {
+		return cityName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
 	}
+
 
 	public State getState() {
 		return state;

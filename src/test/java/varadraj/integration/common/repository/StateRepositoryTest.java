@@ -11,7 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import varadraj.common.model.State;
+import varadraj.common.model.state.State;
 import varadraj.common.repository.StateRepository;
 
 @RunWith(SpringRunner.class)
@@ -33,7 +33,7 @@ public class StateRepositoryTest {
 		entityManager.persist(state);
 	
 	//TEST
-		State foundState = stateRepo.findByStateName("someState");
+		State foundState = stateRepo.findByStateID(0);
 	
 	//ASSERT
 		assertEquals(state.getStateName(), foundState.getStateName());

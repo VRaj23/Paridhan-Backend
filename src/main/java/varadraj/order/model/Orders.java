@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,14 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import varadraj.common.model.Address;
+import varadraj.common.model.address.Address;
 import varadraj.product.model.ProductLine;
-import varadraj.user.model.Customer;
+import varadraj.user.model.customer.Customer;
 
 @Entity
-@JsonIgnoreProperties({"creationDateTime","lastUpdateDateTime","hibernateLazyInitializer", "handler"})
 public class Orders {
 
 	@Id
@@ -34,8 +34,9 @@ public class Orders {
 	@JoinColumn(name = "product_line_id")
 	private ProductLine item;
 	
-	@Column(name="status_id")
-	private int statusID;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "order_status")
+	private OrderStatus orderStatus;
 	
 	private double amount;
 	
@@ -58,7 +59,7 @@ public class Orders {
 		this.amount = amount;
 		this.quantity = quantity;
 		this.deliveryAddress = deliveryAddress;
-		this.statusID = 0;
+		this.orderStatus = OrderStatus.NEW;
 		this.creationDateTime = LocalDateTime.now();
 		this.lastUpateDateTime = LocalDateTime.now();
 	}
@@ -87,12 +88,12 @@ public class Orders {
 		this.item = item;
 	}
 
-	public int getStatusID() {
-		return statusID;
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
 	}
 
-	public void setStatusID(int statusID) {
-		this.statusID = statusID;
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 
 	public double getAmount() {
@@ -133,9 +134,6 @@ public class Orders {
 
 	public void setLastUpateDateTime(LocalDateTime lastUpateDateTime) {
 		this.lastUpateDateTime = lastUpateDateTime;
-	}
-	
-	
-	
+	}	
 	
 }

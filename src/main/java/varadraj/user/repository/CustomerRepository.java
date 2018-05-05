@@ -2,7 +2,7 @@ package varadraj.user.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import varadraj.user.model.Customer;
+import varadraj.user.model.customer.Customer;
 
 public interface CustomerRepository extends CrudRepository<Customer, Long>{
 	
