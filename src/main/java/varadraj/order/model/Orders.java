@@ -52,7 +52,7 @@ public class Orders {
 	
 	public Orders() {}
 
-	public Orders(Customer customer, ProductLine item, double amount, int quantity, Address deliveryAddress) {
+	public Orders(Customer customer, ProductLine item, int quantity, double amount,  Address deliveryAddress) {
 		super();
 		this.customer = customer;
 		this.item = item;

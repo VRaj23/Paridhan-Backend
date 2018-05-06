@@ -8,7 +8,7 @@ import varadraj.user.model.customer.CustomerResponse;
 public class OrderResponseAdmin extends OrderResponseCustomer{
 	
 	private CustomerResponse customerResponse;
-	private AddressResponse addressResponse;
+	private AddressResponse deliveryAddress;
 	
 	public OrderResponseAdmin() {}
 
@@ -18,7 +18,7 @@ public class OrderResponseAdmin extends OrderResponseCustomer{
 		super(orderID, productName, colorName, sizeChar, brandName, imageID, typeName, statusName, amount, quantity,
 				creationDateTime);
 		this.customerResponse = customerResponse;
-		this.addressResponse = addressResponse;
+		this.deliveryAddress = addressResponse;
 	}
 
 	public CustomerResponse getCustomerResponse() {
@@ -29,13 +29,12 @@ public class OrderResponseAdmin extends OrderResponseCustomer{
 		this.customerResponse = customerResponse;
 	}
 
-	public AddressResponse getAddressResponse() {
-		return addressResponse;
+	public AddressResponse getDeliveryAddress() {
+		return deliveryAddress;
 	}
 
-	public void setAddressResponse(AddressResponse addressResponse) {
-		this.addressResponse = addressResponse;
-	}
-	
+	public void setDeliveryAddress(AddressResponse deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}	
 	
 }

@@ -2,12 +2,18 @@ package varadraj.order.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import varadraj.common.model.address.Address;
 import varadraj.common.service.AddressService;
+import varadraj.exception.InvalidInputException;
 import varadraj.order.model.OrderCreationRequest;
+import varadraj.order.model.OrderResponseAdmin;
+import varadraj.order.model.OrderResponseCustomer;
+import varadraj.order.model.OrderStatus;
 import varadraj.order.model.Orders;
 import varadraj.order.repository.OrderRepository;
 import varadraj.product.service.ProductService;
@@ -30,61 +36,94 @@ public class OrderService {
 	@Autowired
 	private AddressService addressService;
 
-//VALIDATIONS
-	private boolean isValidRequest(OrderCreationRequest request) {
-		if(request == null)
-			return false;
-		if(request.getAmount()<=0)
-			return false;
-		if(request.getQuantity() <= 0)
-			return false;
-		if(request.getDeliveryAddressID() < 1)
-			return false;
-		if(addressService.findByAddressID(request.getDeliveryAddressID()) == null)
-			return false;
-		if(productService.findByLineID(request.getProductLineID()) == null)
-			return false;
-		
-		return true;
-	}
-
 		
 //CREATE
 	
-	public Orders addOrder(OrderCreationRequest request, String username) {
-		Orders order = null; 	
-		if(this.isValidRequest(request)) {
-			
-			order = new Orders(
-					customerService.findByCustomerUsername(username)
-					, productService.findByLineID(request.getProductLineID())
-					, productService.getPrice(request.getProductLineID()) * request.getQuantity()//TODO Warn Mismatch
-					, request.getQuantity()
-					, addressService.findByAddressID(request.getDeliveryAddressID()));
-			
-			order = orderRepo.save(order);
-		}
-		return order;
+	public Optional<Orders> addOrder(Optional<OrderCreationRequest> request, String username) throws InvalidInputException{
+		Optional<Customer> customer = customerService.findByCustomerUsername(username);
+		if(!customer.isPresent())
+			return Optional.empty();
+		
+		Optional<Address> address = addressService.findByAddressID
+				(request.map(OrderCreationRequest::getDeliveryAddressID).orElseThrow(InvalidInputException::new ));
+		if(!address.isPresent())
+			return Optional.empty();
+		
+		int quantity = request.map(OrderCreationRequest::getQuantity).orElseThrow(InvalidInputException::new);
+		if(quantity <= 0)
+			throw new InvalidInputException();
+		
+		
+		return Optional.ofNullable(orderRepo.save(new Orders
+				(customer.get()
+				, productService.findByLineID(request.map(OrderCreationRequest::getProductLineID).orElseThrow(InvalidInputException::new))
+				, quantity
+				, productService.getPrice(request.get().getProductLineID()) * quantity //TODO warn mismatch
+				, address.get())));
 	}
 	
 	
 //READ
 	
-	//TODO get all orders
-	
-	public List<Orders> getAllCustomerOrders(String username) {
-		Customer customer = customerService.findByCustomerUsername(username);
-		List<Orders> orders = new ArrayList<>();
-		orderRepo.findByCustomer(customer).forEach(orders::add);
+	public List<OrderResponseCustomer> getAllCustomerOrders(String username) {
+		Optional<Customer> customer = customerService.findByCustomerUsername(username);
+		List<OrderResponseCustomer> orders = new ArrayList<>();
+		orderRepo.findByCustomer(customer.get())
+			.forEach( (order) -> orders.add(this.getOrderResponseCustomer(order)));
 		return orders;
 	}
 	
-	public List<Orders> getAllOrdersAdmin(){
-		List<Orders> orders = new ArrayList<>();
-		orderRepo.findAll().forEach(orders::add);
+	public List<OrderResponseAdmin> getAllOrdersAdmin(){
+		List<OrderResponseAdmin> orders = new ArrayList<>();
+		orderRepo.findAll().forEach((order) -> orders.add(this.getOrderResponseAdmin(order)));
 		return orders;
 	}
-	
+
 //UPDATE
-//DELTE
+//DELETE
+	public boolean cancelOrder(long orderID) {
+		Optional<Orders> order = orderRepo.findById(orderID);
+		if( (order.isPresent()) &&  (order.get().getOrderStatus() != OrderStatus.DELIVERED)) {
+				Orders cancelledOrder = order.get();
+				cancelledOrder.setOrderStatus(OrderStatus.CANCELLED);
+				orderRepo.save(cancelledOrder);
+				return true;
+		}
+		return false;
+	}
+//HELPER
+	private OrderResponseCustomer getOrderResponseCustomer(Orders order) {
+		return new OrderResponseCustomer(
+				order.getOrderID(), 
+				order.getItem().getName(), 
+				order.getItem().getColor().getName(), 
+				order.getItem().getSize().getSizeCharacter(), 
+				order.getItem().getProductHeader().getBrand().getName(), 
+				order.getItem().getProductHeader().getPrimaryImage().getImageID(),//TODO show correct image for the line 
+				order.getItem().getProductHeader().getProductType().getDescription(), 
+				order.getOrderStatus().toString(), 
+				order.getAmount(), 
+				order.getQuantity(), 
+				order.getCreationDateTime());
+	}
+	
+	
+	private OrderResponseAdmin getOrderResponseAdmin(Orders order) {
+		
+		return new OrderResponseAdmin(
+				order.getOrderID(), 
+				order.getItem().getName(), 
+				order.getItem().getColor().getName(), 
+				order.getItem().getSize().getSizeCharacter(), 
+				order.getItem().getProductHeader().getBrand().getName(), 
+				order.getItem().getProductHeader().getPrimaryImage().getImageID(), 
+				order.getItem().getProductHeader().getProductType().getDescription(), 
+				order.getOrderStatus().toString(), 
+				order.getAmount(), 
+				order.getQuantity(), 
+				order.getCreationDateTime(), 
+				customerService.getCustomerResponse(order.getCustomer()), 
+				addressService.getAddressResponse( order.getDeliveryAddress() )
+				);
+	}
 }

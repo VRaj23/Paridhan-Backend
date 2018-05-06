@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
 import varadraj.common.model.JsonResponseMessage;
-import varadraj.order.model.Orders;
+import varadraj.order.model.OrderResponseAdmin;
 import varadraj.order.service.OrderService;
 
 @RestController
@@ -25,9 +25,9 @@ public class OrderAdminController {
 	
 	
 	@GetMapping("/allOrders")
-	public JsonResponse<List<Orders>> getOrders() {
+	public JsonResponse<List<OrderResponseAdmin>> getOrders() {
 		
-		return new JsonResponse<List<Orders>>(200
+		return new JsonResponse<List<OrderResponseAdmin>>(200
 				,JsonResponseMessage.OK,
 				orderService.getAllOrdersAdmin());
 	}

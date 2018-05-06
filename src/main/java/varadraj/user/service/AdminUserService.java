@@ -1,8 +1,11 @@
 package varadraj.user.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 import varadraj.user.model.AdminUser;
 import varadraj.user.model.LoginRequest;
@@ -21,9 +24,10 @@ public class AdminUserService {
 		if(loginRequest.getUsername() == null || loginRequest.getPassword() == null)
 			return false;
 		
-		AdminUser admin = adminRepo.findByUsername(loginRequest.getUsername().trim());
+		Optional<AdminUser> admin = adminRepo.findByUsername(loginRequest.getUsername().trim());
+		if(!admin.isPresent())
+			return false;
 		
-		
-		return passwordEncoder.matches(loginRequest.getPassword().trim(), admin.getPasswordHash());
+		return passwordEncoder.matches(loginRequest.getPassword().trim(), admin.get().getPasswordHash());
 	}
 }

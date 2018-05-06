@@ -1,11 +1,15 @@
 package varadraj.common.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import varadraj.common.model.city.City;
 import varadraj.common.model.city.CityCreationRequest;
+import varadraj.common.model.state.State;
 import varadraj.common.repository.CityRepository;
+import varadraj.exception.InvalidInputException;
 
 @Service
 public class CityService {
@@ -16,35 +20,26 @@ public class CityService {
 	@Autowired
 	private StateService stateService;
 
-//VALIDATIONS
-	private boolean isValidCityRequest(CityCreationRequest cityRequest) {
-		if(cityRequest == null)
-			return false;
-		if(cityRequest.getCityName() == null)
-			return false;
-		if(stateService.findByStateID(cityRequest.getStateID()) == null)
-			return false;
-		
-		return true;
-	}
 	
 //CREATE
-	public City addCity(CityCreationRequest cityRequest) {
-		City savedCity = null;
+	public Optional<City> addCity(Optional<CityCreationRequest> cityRequest) throws InvalidInputException{
+
+		String cityName = cityRequest.map(CityCreationRequest::getCityName).orElseThrow(InvalidInputException::new);
 		
-		if(this.isValidCityRequest(cityRequest)) {
-			City city = new City(cityRequest.getCityName()
-					, stateService.findByStateID(cityRequest.getStateID()));
-			
-			savedCity = cityRepo.save(city);
-		}
+		long stateID = cityRequest.map(CityCreationRequest::getStateID).orElseThrow(InvalidInputException::new);
+		Optional<State> stateInDB = stateService.findByStateID(stateID); 
+		State state = null;
+		if(stateInDB.isPresent())
+			state = stateInDB.get();
+		else 
+			throw new InvalidInputException();
 		
-		return savedCity;
+		return Optional.ofNullable( cityRepo.save( new City(cityName, state) ) );
 	}
 
 	
 //READ
-	public City findByCityID(long cityID) {
+	public Optional<City> findByCityID(long cityID) {
 		return cityRepo.findByCityID(cityID);
 	}
 }

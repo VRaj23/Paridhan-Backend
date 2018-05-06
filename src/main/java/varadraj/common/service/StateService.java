@@ -1,11 +1,14 @@
 package varadraj.common.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import varadraj.common.model.state.State;
 import varadraj.common.model.state.StateCreationRequest;
 import varadraj.common.repository.StateRepository;
+import varadraj.exception.InvalidInputException;;
 
 @Service
 public class StateService {
@@ -13,31 +16,18 @@ public class StateService {
 	@Autowired
 	private StateRepository stateRepo;
 
-//VALIDATIONS
-	private boolean isValidRequest(StateCreationRequest stateRequest) {
-		if(stateRequest.getStateName() == null)
-			return false;
-		else
-			return true;
-	}
 
-	
-	
 //CREATE	
-	public State addState(StateCreationRequest stateRequest) {
-		State savedState = null;
+	public Optional<State> addState(Optional<StateCreationRequest> stateRequest) throws InvalidInputException {
 		
-		if(this.isValidRequest(stateRequest)) {
-			State state = new State(stateRequest.getStateName());
-			savedState = stateRepo.save(state);
-		}
+		String name = stateRequest.map(StateCreationRequest::getStateName).orElseThrow(InvalidInputException::new);
 		
-		return savedState;
+		return Optional.ofNullable(stateRepo.save(new State(name)));
 	}
-
+	
 //READ
 
-	public State findByStateID(long stateID) {
+	public Optional<State> findByStateID(long stateID) {
 			return stateRepo.findByStateID(stateID);
 	}
 

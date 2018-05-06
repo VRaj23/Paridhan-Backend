@@ -1,5 +1,7 @@
 package varadraj.common.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +15,7 @@ import varadraj.common.model.JsonResponseMessage;
 import varadraj.common.model.address.Address;
 import varadraj.common.model.address.AddressCreationRequest;
 import varadraj.common.service.AddressService;
+import varadraj.exception.InvalidInputException;
 
 @RestController
 @CrossOrigin
@@ -25,11 +28,17 @@ public class AddDeliveryAddress {
 	
 	@PostMapping
 	public JsonResponse<Long> addDeliveryAddress(@RequestBody AddressCreationRequest request) {
-		Address savedAddress = addressService.addAddress(request);
-		if(savedAddress == null)
-			return new JsonResponse<Long>(400, JsonResponseMessage.INVALID_INPUT,null);
-		else
-			return new JsonResponse<Long>(201, JsonResponseMessage.OK,savedAddress.getAddressID());
+		try {
+			Optional<Address> address = addressService.addAddress( Optional.ofNullable(request));
+			if( address.isPresent() )
+				return new JsonResponse<Long>(201
+						,JsonResponseMessage.CREATED
+						,address.map(Address::getAddressID).get() );
+			else
+				return new JsonResponse<Long>(500, JsonResponseMessage.ERROR,null);
+		}catch(InvalidInputException e) {
+			return new JsonResponse<Long>(400, JsonResponseMessage.INVALID_INPUT, null);
+		}
 	}
 
 }

@@ -10,4 +10,5 @@ public enum JsonResponseMessage {
 	NOT_FOUND,
 	ERROR,
 	NOT_IMPLEMENTED
+	
 }
