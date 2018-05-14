@@ -18,13 +18,13 @@ import varadraj.product.service.ColorService;
 @RestController
 @CrossOrigin
 @PreAuthorize(value = "hasRole('ADMIN')")
-@RequestMapping("/admin/product/color")
+@RequestMapping("/auth/admin/product/color")
 public class ProductAdminColor {
 
 	@Autowired
 	private ColorService colorService;
 	
-	@PostMapping("/auth/addColor")
+	@PostMapping("/addColor")
 	public JsonResponse<Void> addColor(@RequestBody Color color) {
 		
 		if(color.getValue() == null || color.getValue().length() != 6)

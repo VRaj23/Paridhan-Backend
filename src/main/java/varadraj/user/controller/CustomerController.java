@@ -36,8 +36,10 @@ public class CustomerController {
 	@PostMapping("customer/registerUser")
 	public JsonResponse<Void> registerUser(@RequestBody CustomerCreationRequest request) {
 		try {
-			if( customerService.addCustomer(Optional.ofNullable(request)).isPresent())
+			if( customerService.addCustomer(Optional.ofNullable(request)).isPresent()) {
+				customerService.sendWelcomeEmail(Optional.ofNullable(request));
 				return new JsonResponse<Void>(201, JsonResponseMessage.CREATED, null);
+			}
 			else
 				return new JsonResponse<Void>(500, JsonResponseMessage.ERROR, null);
 		} catch (InvalidInputException e) {

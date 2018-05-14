@@ -33,8 +33,8 @@ public class ProductService {
 	private ProductTypeService pTypeService;
 	@Autowired
 	private BrandService brandService;
-	//@Autowired
-	//private PriceCategoryService priceService;
+	@Autowired
+	private PriceCategoryService priceService;
 	@Autowired
 	private ColorService colorService;
 	@Autowired
@@ -70,7 +70,7 @@ public class ProductService {
 				(type, 
 				 headerRequest.getPrice(), 
 				 headerRequest.getDiscount(), 
-				 null, //TODO auto find PriceCategory
+				 this.priceService.findByUpperLimit(1000), //TODO auto find PriceCategory
 				 brand,
 				 image, 
 				 headerRequest.isEnabled(), 

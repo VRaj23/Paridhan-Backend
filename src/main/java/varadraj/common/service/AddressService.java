@@ -39,14 +39,13 @@ public class AddressService {
 	
 //CREATE
 	public Optional<Address> addAddress(Optional<AddressCreationRequest> request) throws InvalidInputException{
-		
 		City city = this.getCityIfValid(
 				request.map(AddressCreationRequest::getCityID).orElseThrow(InvalidInputException::new));
-		
+		System.out.println(city.getCityName());
 		
 		int pincode = this.getPincodeIfValid(
 				request.map(AddressCreationRequest::getPincode).orElseThrow(InvalidInputException::new));
-		
+
 		return Optional.ofNullable(addressRepo.save(new Address(
 				  request.map(AddressCreationRequest::getHouseNumber).orElseThrow(InvalidInputException::new)
 				, request.map(AddressCreationRequest::getArea).orElseThrow(InvalidInputException::new)

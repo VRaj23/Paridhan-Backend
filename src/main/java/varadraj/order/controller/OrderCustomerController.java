@@ -39,6 +39,11 @@ public class OrderCustomerController {
 	
 	@PostMapping("/addOrder")
 	public JsonResponse<Void> addOrder(@RequestBody OrderCreationRequest request,Principal user) {
+		System.out.println(user.getName()+ "\n"
+				+request.getAmount()+"\n"
+				+request.getProductLineID()+"\n"
+				+request.getDeliveryAddressID()+"\n"
+				+request.getQuantity());
 		try {
 			if( orderService.addOrder(Optional.ofNullable(request), user.getName()).isPresent())
 				return new JsonResponse<Void>(201, JsonResponseMessage.CREATED,null);

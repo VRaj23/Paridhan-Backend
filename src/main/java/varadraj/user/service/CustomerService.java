@@ -3,6 +3,7 @@ package varadraj.user.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import varadraj.common.model.address.Address;
 import varadraj.common.model.address.AddressCreationRequest;
 import varadraj.common.model.address.AddressResponse;
 import varadraj.common.service.AddressService;
+import varadraj.common.service.EmailService;
 import varadraj.exception.InvalidInputException;
 import varadraj.user.model.LoginRequest;
 import varadraj.user.model.customer.Customer;
@@ -28,19 +30,22 @@ public class CustomerService {
 	
 	@Autowired
 	AddressService addressService;
+	
+	@Autowired
+	EmailService emailService;
 
 	
 //CREATE
 	public Optional<Customer> addCustomer(Optional<CustomerCreationRequest> request) throws InvalidInputException {
-		
 		Optional<AddressCreationRequest> addressRequest = 
 				Optional.ofNullable(request.map(CustomerCreationRequest::getAddressCreationRequest)
 				.orElseThrow(InvalidInputException::new));
 		
 		Optional<Address> savedAddress = addressService.addAddress(addressRequest);
 		Address address = null;
-		if(savedAddress.isPresent())
+		if(savedAddress.isPresent()) {
 			address = savedAddress.get();
+		}
 		else
 			throw new InvalidInputException();
 	
@@ -117,6 +122,19 @@ public class CustomerService {
 				customer.getEmail(), 
 				addressService.getAddressResponse(customer.getAddress()));
 		
+	}
+	
+//UTIL
+	public void sendWelcomeEmail(Optional<CustomerCreationRequest> request) {
+		String email = request.map(CustomerCreationRequest::getEmail).orElse(null);
+		String name = request.map(CustomerCreationRequest::getName).orElse(null);
+		if((email != null)&&(name != null)) {
+			try {
+				emailService.sendMail(email, name);
+			}catch(MailException e) {
+				System.out.println("Welcome e-mail could not be sent to "+name);
+			}
+		}
 	}
 
 

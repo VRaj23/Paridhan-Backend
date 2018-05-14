@@ -27,7 +27,7 @@ import varadraj.common.service.StateService;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.NONE)
 public class StateServiceTest {
-	
+	/*
 	@MockBean
 	DocumentationPluginsBootstrapper mock; //for Swagger2
 
@@ -78,5 +78,5 @@ public class StateServiceTest {
 	//VERIFY	
 		verify(stateRepo, never()).save(state);
 	}
-
+*/
 }

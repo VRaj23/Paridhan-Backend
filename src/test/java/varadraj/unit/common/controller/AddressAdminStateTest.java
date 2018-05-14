@@ -32,7 +32,7 @@ import varadraj.jwt.JwtValidator;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AddressAdminStateTest{
-	
+/*	
 	private MockMvc mockMvc;
 	
 	private JacksonTester<State> stateJackon;
@@ -113,7 +113,7 @@ public class AddressAdminStateTest{
 				.andReturn();
 	//VERIFY
 		Mockito.verify(stateService).addState(Mockito.any(StateCreationRequest.class));
-	}
+	}*/
 }
 
 

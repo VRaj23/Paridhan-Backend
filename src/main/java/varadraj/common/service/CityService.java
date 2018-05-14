@@ -1,5 +1,7 @@
 package varadraj.common.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import varadraj.common.model.city.City;
 import varadraj.common.model.city.CityCreationRequest;
+import varadraj.common.model.city.CityResponse;
 import varadraj.common.model.state.State;
 import varadraj.common.repository.CityRepository;
 import varadraj.exception.InvalidInputException;
@@ -41,5 +44,17 @@ public class CityService {
 //READ
 	public Optional<City> findByCityID(long cityID) {
 		return cityRepo.findByCityID(cityID);
+	}
+	
+	public List<CityResponse> getCities(){
+		List<CityResponse> cities = new ArrayList<>();
+		cityRepo.findAll().forEach
+			((city)->{
+				cities.add(new CityResponse(
+						 city.getCityID()
+						,city.getCityName()
+						,city.getState().getStateName()));
+			});
+		return cities;
 	}
 }

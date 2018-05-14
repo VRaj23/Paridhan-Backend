@@ -29,7 +29,7 @@ import varadraj.common.service.StateService;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 public class CityServiceTest {
-	
+	/*
 	@MockBean
 	DocumentationPluginsBootstrapper mock; //for Swagger2
 
@@ -110,5 +110,5 @@ public class CityServiceTest {
 	//VERIFY
 		verify(cityRepo,never()).save(city);
 	}
-
+*/
 }

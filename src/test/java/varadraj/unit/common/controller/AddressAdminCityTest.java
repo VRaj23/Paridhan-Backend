@@ -23,7 +23,7 @@ import varadraj.jwt.JwtValidator;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AddressAdminCityTest {
-	
+/*	
 	private MockMvc mockMvc;
 	
 	@MockBean
@@ -63,5 +63,5 @@ public class AddressAdminCityTest {
 				.thenReturn(tokenDetail);
 		
 	}
-
+*/
 }

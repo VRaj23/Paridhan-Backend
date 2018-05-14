@@ -21,7 +21,7 @@ public class City {
 	@Column(name="city_id")
 	private long cityID;
 	
-	@Column(name="city_name")
+	@Column(nullable = false, unique= true, name="city_name")
 	private String cityName;
 	
 	@JoinColumn(name="state_id")

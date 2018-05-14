@@ -18,6 +18,11 @@ public class ProductLineSerializer extends JsonSerializer<ProductLine>{
 		jsonGen.writeStringField("color", line.getColor().getValue());
 		jsonGen.writeNumberField("sizeNum", line.getSize().getSizeNumber());
 		jsonGen.writeStringField("sizeChar", line.getSize().getSizeCharacter());
+		jsonGen.writeStringField("productName", 
+				line.getProductHeader().getBrand().getName()+" "
+				+line.getProductHeader().getProductType().getDescription()+" "
+				+line.getSize().getSizeCharacter()+" "+line.getColor().getName());
+		
 		jsonGen.writeEndObject();
 		
 	}
