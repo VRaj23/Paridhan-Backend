@@ -41,7 +41,6 @@ public class AddressService {
 	public Optional<Address> addAddress(Optional<AddressCreationRequest> request) throws InvalidInputException{
 		City city = this.getCityIfValid(
 				request.map(AddressCreationRequest::getCityID).orElseThrow(InvalidInputException::new));
-		System.out.println(city.getCityName());
 		
 		int pincode = this.getPincodeIfValid(
 				request.map(AddressCreationRequest::getPincode).orElseThrow(InvalidInputException::new));

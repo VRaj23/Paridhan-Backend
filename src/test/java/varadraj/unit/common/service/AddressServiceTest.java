@@ -1,14 +1,18 @@
 package varadraj.unit.common.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -23,11 +27,13 @@ import varadraj.common.model.city.City;
 import varadraj.common.model.state.State;
 import varadraj.common.repository.AddressRepository;
 import varadraj.common.service.AddressService;
+import varadraj.common.service.CityService;
+import varadraj.exception.InvalidInputException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 public class AddressServiceTest {
-	/*
+
 	@MockBean
 	DocumentationPluginsBootstrapper mock; //for Swagger2
 
@@ -36,6 +42,9 @@ public class AddressServiceTest {
 	
 	@Mock
 	private AddressRepository addressRepo;
+	
+	@Mock
+	private CityService cityService;
 	
 	@InjectMocks
 	private AddressService addressService;
@@ -46,34 +55,33 @@ public class AddressServiceTest {
 	}
 	
 	@Test
-	public void addAddress_HappyPath() {
+	public void addAddress_whenRequestValid_thenSave() throws InvalidInputException {
 	//CREATE
-		AddressCreationRequest addressCreationRequest = new AddressCreationRequest(); 
-		Address address = new Address();
-		address.setHouseNumber("Flat No. 1");
-		address.setArea("areaORcolony");
-		address.setLandmark("someplace near house");
+		AddressCreationRequest addressCreationRequest 
+			= new AddressCreationRequest("123", "area", "landmark", 2, 456123);
 		
-		State state = new State();
-		state.setStateName("state");
-		City city = new City();
-		city.setState(state);
-		city.setCityName("city");		
-		address.setCity(city);
+		State state = new State("state");
+		state.setStateID(1);
 		
-		address.setCity(city);
-		address.setPincode(123456);
+		City city = new City("city", state);
+		city.setCityID(2);
+		
+		Address address = new Address("123", "area", "landmark", city, 456123);
 	
 	//CONDITION
-		when(addressRepo.save(address)).thenReturn(address);
+		when(cityService.findByCityID(2)).thenReturn(Optional.of(city));
+		when(addressRepo.save(Mockito.any(Address.class))).thenReturn(address);
+		
 	//TEST
-		Address savedAddress = addressService.addAddress(addressCreationRequest);
+		Optional<Address> savedAddress = addressService.addAddress(Optional.of(addressCreationRequest));
 		
 	//ASSERT
-		assertEquals(address, savedAddress);
+		assertTrue(savedAddress.isPresent());
+		assertEquals(address, savedAddress.get());
+		assertEquals(address.getCity(), savedAddress.get().getCity());
 		
 	//VERIFY
-		verify(addressRepo).save(address);
+		verify(addressRepo).save(Mockito.any(Address.class));
 	}
-*/
+
 }

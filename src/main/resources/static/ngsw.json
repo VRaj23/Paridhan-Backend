@@ -1,0 +1,46 @@
+{
+  "configVersion": 1,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "urls": [
+        "/favicon.ico",
+        "/index.html",
+        "/inline.318b50c57b4eba3d437b.bundle.js",
+        "/main.8990ede08441a4fd57fa.bundle.js",
+        "/polyfills.3047d45fb443bc2432f1.bundle.js",
+        "/scripts.1d1a54c844e95843fe37.bundle.js",
+        "/styles.6405963dc7c930a26970.bundle.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "urls": [
+        "/assets/cart.svg",
+        "/assets/searchicon.svg"
+      ],
+      "patterns": [
+        "\\/product\\/.*",
+        "https:\\/\\/fonts\\.googleapis\\.com\\/.*"
+      ]
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/inline.318b50c57b4eba3d437b.bundle.js": "998c6060446975e566fd17509558ddc68d72eec3",
+    "/assets/cart.svg": "2a4be138a7ca0dc41fc1ec68c1b4b03580e62f95",
+    "/main.8990ede08441a4fd57fa.bundle.js": "b2469ec9d10052ac5034f38c440c255d6fd94759",
+    "/assets/searchicon.svg": "a5f5a8653972b8905a051dfcda9e999e37057ed7",
+    "/polyfills.3047d45fb443bc2432f1.bundle.js": "deb3bb32039edd76a8f1c0a02d1e98148d8f03f7",
+    "/scripts.1d1a54c844e95843fe37.bundle.js": "e105595a8c6d4b8ed14a949747bfd828b178db69",
+    "/styles.6405963dc7c930a26970.bundle.css": "e9c77979be06a6552d9bae7ee741f364602c5372",
+    "/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
+    "/index.html": "3a8c4231d6c01601602bd69bb16dfd63df0fc1a8"
+  }
+}

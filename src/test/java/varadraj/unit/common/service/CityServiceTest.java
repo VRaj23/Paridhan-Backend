@@ -1,16 +1,18 @@
 package varadraj.unit.common.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.never;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -25,11 +27,12 @@ import varadraj.common.model.state.State;
 import varadraj.common.repository.CityRepository;
 import varadraj.common.service.CityService;
 import varadraj.common.service.StateService;
+import varadraj.exception.InvalidInputException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 public class CityServiceTest {
-	/*
+	
 	@MockBean
 	DocumentationPluginsBootstrapper mock; //for Swagger2
 
@@ -51,64 +54,56 @@ public class CityServiceTest {
 	}
 	
 	@Test
-	public void addCity_HappyPath() {
+	public void addCity_whenValidRequest_thenSave() throws InvalidInputException {
 	//CREATE
-		CityCreationRequest cityCreationRequest = new CityCreationRequest();
+		CityCreationRequest cityCreationRequest = new CityCreationRequest("city", 1);
+		
+		State state = new State("state");
+		state.setStateID(1);
+		
 		City city = new City();
 		city.setCityName("city");
-		
-		State state = new State();
-		state.setStateName("state");
 		city.setState(state);
 		
 	//CONDITON
-		when(cityRepo.save(city)).thenReturn(city);
+		when(StateService.findByStateID(1)).thenReturn(Optional.of(state));
+		when(cityRepo.save(Mockito.any(City.class))).thenReturn(city);
+		
 		
 	//TEST
-		City savedCity = cityService.addCity(cityCreationRequest);
+		Optional<City> savedCity = cityService.addCity(Optional.of(cityCreationRequest));
 		
 	//ASSERT
-		assertEquals(city.getCityName(), savedCity.getCityName());
-		assertEquals(city.getState(), state);
+		assertTrue(savedCity.isPresent());
+		assertEquals(city.getCityName(), savedCity.get().getCityName());
+		assertEquals(city.getState(), savedCity.get().getState());
 	
 	//VERIFY
-		verify(cityRepo).save(city);
+		verify(cityRepo).save(Mockito.any(City.class));
+		verify(StateService).findByStateID(1);
 	}
 	
-	@Test
-	public void addCity_CityNameNULL() {
-	//CREATE
-		City city = new City();
-		CityCreationRequest cityCreationRequest = null;
-		State state = new State();
-		state.setStateName("state");
-		city.setState(state);
+	@Test(expected = InvalidInputException.class)
+	public void addCity_whenCityNameNULL_throwException() throws InvalidInputException {
+		CityCreationRequest cityCreationRequest = new CityCreationRequest(null, 1);
 		
-	//TEST
-		City savedCity = cityService.addCity(cityCreationRequest);
+		State state = new State("state");
+		state.setStateID(1);
 		
-	//ASSERT
-		assertNull(savedCity);
-	
-	//VERIFY
-		verify(cityRepo,never()).save(city);
+		when(StateService.findByStateID(1)).thenReturn(Optional.of(state));
+		
+		cityService.addCity(Optional.of(cityCreationRequest));
+		
 	}
 	
-	@Test
-	public void addCity_StateNULL() {
-	//CREATE
-		CityCreationRequest cityCreationRequest = null;
-		City city = new City();
-		city.setCityName("city");
+	@Test(expected = InvalidInputException.class)
+	public void addCity_whenStateIDisInvalid_thenThrowException() throws InvalidInputException {
+	
+		CityCreationRequest cityCreationRequest = new CityCreationRequest("city", 1);
 		
-	//TEST
-		City savedCity = cityService.addCity(cityCreationRequest);
+		when(StateService.findByStateID(1)).thenReturn(Optional.empty());
 		
-	//ASSERT
-		assertNull(savedCity);
-		
-	//VERIFY
-		verify(cityRepo,never()).save(city);
+		cityService.addCity(Optional.of(cityCreationRequest));
 	}
-*/
+
 }

@@ -1,16 +1,18 @@
 package varadraj.unit.common.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.never;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -23,11 +25,12 @@ import varadraj.common.model.state.State;
 import varadraj.common.model.state.StateCreationRequest;
 import varadraj.common.repository.StateRepository;
 import varadraj.common.service.StateService;
+import varadraj.exception.InvalidInputException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.NONE)
 public class StateServiceTest {
-	/*
+	
 	@MockBean
 	DocumentationPluginsBootstrapper mock; //for Swagger2
 
@@ -46,37 +49,24 @@ public class StateServiceTest {
 	}
 	
 	@Test
-	public void addState_HappyPath() {
-	//CREATE
-		State state = new State();
-		state.setStateName("Sample");
+	public void addState_whenValidRequest_thenSave() throws InvalidInputException {
+		State state = new State("Sample");
+		StateCreationRequest request = new StateCreationRequest("Sample");
 		
-	//CONDITION
-		when(stateRepo.save(state)).thenReturn(state);
+		when(stateRepo.save(Mockito.any(State.class)) ).thenReturn(state);
 		
-	//TEST
-		State savedState = stateService.addState(new StateCreationRequest());
+		Optional<State> savedState = stateService.addState(Optional.of(request));
 		
-	//ASSERT
-		assertEquals(state.getStateName(), savedState.getStateName());
+		assertTrue(savedState.isPresent());
+		assertEquals(state.getStateName(), savedState.get().getStateName());
 		
-	//VERIFY
-		verify(stateRepo).save(state);
+		verify(stateRepo).save(Mockito.any(State.class));
 	}
 	
-	@Test
-	public void addState_StateNameNULL() {
-	//CREATE
-		State state = new State();
-		
-	//TEST
-		State savedState = stateService.addState(new StateCreationRequest());
-		
-	//ASSERT
-		assertNull(savedState);
-		
-	//VERIFY	
-		verify(stateRepo, never()).save(state);
+	@Test(expected = InvalidInputException.class)
+	public void addState_whenStateNameNULL_throwException() throws InvalidInputException {
+
+		stateService.addState(Optional.of(new StateCreationRequest()));
 	}
-*/
+
 }
