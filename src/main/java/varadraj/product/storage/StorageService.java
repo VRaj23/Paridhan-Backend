@@ -113,10 +113,10 @@ public class StorageService implements StorageServiceInterface{
 			if (resource.exists() || resource.isReadable()) {
 				return resource;
 			} else {
-				throw new RuntimeException("FAIL!");
+				throw new RuntimeException("FAIL! RESOURCE DOES NOT EXIST");
 			}
 		} catch (MalformedURLException e) {
-			throw new RuntimeException("FAIL!");
+			throw new RuntimeException("FAIL! BAD URL");
 		}
 	}
 	

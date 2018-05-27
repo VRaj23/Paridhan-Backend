@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper;
@@ -39,8 +40,11 @@ public class CityServiceTest {
 	@MockBean
 	WebMvcRequestHandlerProvider handler;  //for Swagger2
 	
+	@MockBean
+	JavaMailSender emailSender; //for Email Service
+	
 	@Mock
-	private StateService StateService;
+	private StateService stateService;
 	
 	@Mock
 	private CityRepository cityRepo;
@@ -61,12 +65,10 @@ public class CityServiceTest {
 		State state = new State("state");
 		state.setStateID(1);
 		
-		City city = new City();
-		city.setCityName("city");
-		city.setState(state);
+		City city = new City("city", state);
 		
 	//CONDITON
-		when(StateService.findByStateID(1)).thenReturn(Optional.of(state));
+		when(stateService.findByStateID(1)).thenReturn(Optional.of(state));
 		when(cityRepo.save(Mockito.any(City.class))).thenReturn(city);
 		
 		
@@ -80,7 +82,7 @@ public class CityServiceTest {
 	
 	//VERIFY
 		verify(cityRepo).save(Mockito.any(City.class));
-		verify(StateService).findByStateID(1);
+		verify(stateService).findByStateID(1);
 	}
 	
 	@Test(expected = InvalidInputException.class)
@@ -90,7 +92,7 @@ public class CityServiceTest {
 		State state = new State("state");
 		state.setStateID(1);
 		
-		when(StateService.findByStateID(1)).thenReturn(Optional.of(state));
+		when(stateService.findByStateID(1)).thenReturn(Optional.of(state));
 		
 		cityService.addCity(Optional.of(cityCreationRequest));
 		
@@ -101,7 +103,7 @@ public class CityServiceTest {
 	
 		CityCreationRequest cityCreationRequest = new CityCreationRequest("city", 1);
 		
-		when(StateService.findByStateID(1)).thenReturn(Optional.empty());
+		when(stateService.findByStateID(1)).thenReturn(Optional.empty());
 		
 		cityService.addCity(Optional.of(cityCreationRequest));
 	}

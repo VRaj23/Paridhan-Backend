@@ -40,6 +40,11 @@ public class OrderService {
 //CREATE
 	
 	public Optional<Orders> addOrder(Optional<OrderCreationRequest> request, String username) throws InvalidInputException{
+
+		int quantity = request.map(OrderCreationRequest::getQuantity).orElseThrow(InvalidInputException::new);
+		if(quantity <= 0)
+			throw new InvalidInputException();
+		
 		Optional<Customer> customer = customerService.findByCustomerUsername(username);
 		if(!customer.isPresent())
 			return Optional.empty();
@@ -48,10 +53,6 @@ public class OrderService {
 				(request.map(OrderCreationRequest::getDeliveryAddressID).orElseThrow(InvalidInputException::new ));
 		if(!address.isPresent())
 			return Optional.empty();
-		
-		int quantity = request.map(OrderCreationRequest::getQuantity).orElseThrow(InvalidInputException::new);
-		if(quantity <= 0)
-			throw new InvalidInputException();
 		
 		
 		return Optional.ofNullable(orderRepo.save(new Orders

@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper;
@@ -39,6 +40,9 @@ public class AddressServiceTest {
 
 	@MockBean
 	WebMvcRequestHandlerProvider handler;  //for Swagger2
+	
+	@MockBean
+	JavaMailSender emailSender; //for Email Service
 	
 	@Mock
 	private AddressRepository addressRepo;

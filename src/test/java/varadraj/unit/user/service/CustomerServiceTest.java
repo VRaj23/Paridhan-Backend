@@ -1,11 +1,10 @@
 package varadraj.unit.user.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
+
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -25,6 +25,7 @@ import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
 import varadraj.common.model.address.Address;
 import varadraj.common.model.address.AddressCreationRequest;
 import varadraj.common.service.AddressService;
+import varadraj.exception.InvalidInputException;
 import varadraj.user.model.customer.Customer;
 import varadraj.user.model.customer.CustomerCreationRequest;
 import varadraj.user.repository.CustomerRepository;
@@ -39,6 +40,9 @@ public class CustomerServiceTest {
 
 	@MockBean
 	WebMvcRequestHandlerProvider handler;  //for Swagger2
+	
+	@MockBean
+	JavaMailSender emailSender; //for Email Service
 
 	@Mock
 	private CustomerRepository customerRepo;
@@ -58,56 +62,31 @@ public class CustomerServiceTest {
 	}
 	
 	@Test
-	public void addCustomer_HappyPath(){
-	//CREATE
-		CustomerCreationRequest customerCreationRequest = new CustomerCreationRequest();
-		Customer customer = new Customer();
-		customer.setName("someName");
-		customer.setPassword("somePassword");
-		customer.setUsername("someUsername");
-		customer.setEmail("some@email.com");
+	public void addCustomerTest_whenValidRequest_thenSave() throws InvalidInputException {
+		
+		AddressCreationRequest addressCreationRequest = new AddressCreationRequest();
+		
+		CustomerCreationRequest request = new CustomerCreationRequest(
+				 "username" //user name
+				,"password" //password
+				,"name" //name
+				,"email" //email
+				,addressCreationRequest //addressCreation Request
+				);
+		
 		Address address = new Address();
-		customer.setAddress(address);
-	//CONDITION
+		
+		Customer customer = new Customer("username", passwordEncoder.encode("password"), "name", address, "email");
+		
+		when(addressService.addAddress(Optional.of(addressCreationRequest))).thenReturn(Optional.of(address));
 		when(customerRepo.save(Mockito.any(Customer.class))).thenReturn(customer);
-		//when(addressService.addAddress(Mockito.any(AddressCreationRequest.class))).thenReturn(address);
-		when(passwordEncoder.encode(Mockito.anyString())).thenAnswer(i -> i.getArguments()[0]);
-	//TEST
-		//Customer savedCustomer = customerService.addCustomer(customerCreationRequest);
-	//ASSERT
-		//assertNotNull(savedCustomer);
-		//assertEquals(customer.getUsername(), savedCustomer.getUsername());
-	//VERIFY
-		verify(customerRepo).save(Mockito.any(Customer.class));
-	}
-	
-	@Test
-	public void addCustomer_whenAddressNULL_thenReturnNULL(){
-	//CREATE
-		CustomerCreationRequest customerCreationRequest = new CustomerCreationRequest();
-		Customer customer = new Customer();
-		customer.setUsername("username");
-		customer.setName("someName");
-		customer.setPassword("somePassword");
-	//TEST
-		//Customer savedCustomer = customerService.addCustomer(customerCreationRequest);
-	//ASSERT
-		//assertNull(savedCustomer);
-	//VERIFY
-		verify(customerRepo,never()).save(customer);
-	}
-	
-	@Test
-	public void addCustomer_whenNULL_thenReturnNULL(){
-	//CREATE
-		CustomerCreationRequest customerCreationRequest = new CustomerCreationRequest();
-		Customer customer = null;
-	//TEST
-		//Customer savedCustomer = customerService.addCustomer(customerCreationRequest);
-	//ASSERT
-		//assertNull(savedCustomer);
-	//VERIFY
-		verify(customerRepo,never()).save(customer);
+		
+		Optional<Customer> savedCustomer = customerService.addCustomer(Optional.of(request));
+		
+		assertTrue(savedCustomer.isPresent());
+		assertEquals(savedCustomer.get().getUsername(), customer.getUsername());
+		
+		
 	}
 	
 }
