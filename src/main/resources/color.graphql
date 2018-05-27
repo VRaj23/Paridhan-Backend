@@ -1,0 +1,14 @@
+schema{
+	query: Query
+}
+
+type Query{
+	allColors: [Color]
+	color(id: Int): Color
+}
+
+type Color{
+	colorID: Int!
+	name: String
+	value: String!
+}

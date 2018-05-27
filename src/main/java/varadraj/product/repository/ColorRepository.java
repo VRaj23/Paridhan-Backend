@@ -1,10 +1,10 @@
 package varadraj.product.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import varadraj.product.model.Color;
 
-public interface ColorRepository extends CrudRepository<Color, Long>{
+public interface ColorRepository extends JpaRepository<Color, Long>{
 	
 	public Color findByColorID(long colorID);
 	public Color findByValue(String value);
