@@ -1,0 +1,42 @@
+schema{
+	query: Query
+}
+
+type Query{
+	allOrders: [OrderDetail]
+	#order(id: Int): OrderDetail
+}
+
+type OrderDetail{
+      orderID: Int
+      imageID: Int      
+      productName: String
+      quantity: Int
+      sizeChar: String
+      statusName: String
+      typeName: String
+      amount: Float
+      brandName: String
+      colorName: String
+      creationDateTime: String
+      customerResponse: Customer
+      deliveryAddress: Address
+}
+
+type Address{
+	    addressID: Int
+        area: String
+        cityName: String
+        houseNumber: String
+        landmark: String
+        pincode: Int
+        stateName: String
+}
+
+type Customer{
+	 customerID: Int
+     email: String
+     name: String
+     username: String
+     addressResponse: Address
+}
