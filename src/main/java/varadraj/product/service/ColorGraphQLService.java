@@ -20,7 +20,7 @@ import varadraj.product.service.datafetcher.AllColorDataFetcher;
 import varadraj.product.service.datafetcher.ColorDataFetcher;
 
 @Service
-public class GraphQLColorService {
+public class ColorGraphQLService {
 
 	@Value("classpath:color.graphql")
 	private Resource resource;

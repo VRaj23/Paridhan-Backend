@@ -24,7 +24,7 @@ public class OrderAdminController {
 	private OrderService orderService;
 	
 	
-	@GetMapping("/allOrders")
+	@GetMapping("/all")
 	public JsonResponse<List<OrderResponseAdmin>> getOrders() {
 		
 		return new JsonResponse<List<OrderResponseAdmin>>(200

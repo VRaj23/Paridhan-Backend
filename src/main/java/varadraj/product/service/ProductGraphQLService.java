@@ -17,6 +17,7 @@ import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import varadraj.product.service.datafetcher.AllProductsDataFetcher;
+import varadraj.product.service.datafetcher.ProductDataFetcher;
 
 @Service
 public class ProductGraphQLService {
@@ -29,8 +30,12 @@ public class ProductGraphQLService {
 	@Autowired
 	private AllProductsDataFetcher allProductsDataFetcher;
 	
+	@Autowired
+	private ProductDataFetcher productDataFetcher;
+	
 	public GraphQL getGraphQL() {
 		return this.graphQL;
+		
 	}
 	
 	@PostConstruct
@@ -45,7 +50,8 @@ public class ProductGraphQLService {
 	private RuntimeWiring buildRunTimeWiring() {
 		return RuntimeWiring.newRuntimeWiring()
 				.type("Query", typeWiring -> typeWiring
-						.dataFetcher("getAllProducts", allProductsDataFetcher)
+						.dataFetcher("allProducts", allProductsDataFetcher)
+						.dataFetcher("product", productDataFetcher)
 					 )				
 				.build();
 	}

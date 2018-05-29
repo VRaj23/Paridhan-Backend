@@ -22,7 +22,7 @@ public class ProductAdminBrand {
 	@Autowired
 	private BrandService brandService;
 	
-	@PostMapping("/addBrand")
+	@PostMapping("/add")
 	public JsonResponse<Void> addBrand(@RequestBody Brand brand) {
 		if(brand.getName() == null)
 			return new JsonResponse<Void>(400

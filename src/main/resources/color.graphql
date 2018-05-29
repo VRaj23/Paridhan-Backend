@@ -8,7 +8,7 @@ type Query{
 }
 
 type Color{
-	colorID: Int!
+	colorID: Int
 	name: String
-	value: String!
+	value: String
 }

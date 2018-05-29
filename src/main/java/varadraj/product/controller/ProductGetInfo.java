@@ -28,6 +28,7 @@ import varadraj.product.model.ProductModel;
 import varadraj.product.model.ProductType;
 import varadraj.product.model.Size;
 import varadraj.product.service.BrandService;
+import varadraj.product.service.ColorGraphQLService;
 import varadraj.product.service.ColorService;
 import varadraj.product.service.PriceCategoryService;
 import varadraj.product.service.ProductGraphQLService;
@@ -57,7 +58,10 @@ public class ProductGetInfo {
 	private PriceCategoryService priceCategoryService;
 	
 	@Autowired
-	private ProductGraphQLService graphQL;
+	private ProductGraphQLService graphQLProduct;
+	
+	@Autowired
+	private ColorGraphQLService graphQLColor;
 
 
 	@GetMapping("/type")
@@ -74,6 +78,12 @@ public class ProductGetInfo {
 				 200
 				,JsonResponseMessage.OK
 				,colorService.getAllColor());
+	}
+	
+	@PostMapping("/color/graphql")
+	public JsonResponse<Object> colorGraphQL(@RequestBody String query) {
+		return new GraphQLResponse( graphQLColor.getGraphQL().execute(query) ).getJsonResponse();
+		
 	}
 	
 	@GetMapping("/size")
@@ -117,7 +127,7 @@ public class ProductGetInfo {
 	
 	@PostMapping("/products/graphql")
 	public JsonResponse<Object> getAllProductsGraphQL(@RequestBody String query){
-		return new GraphQLResponse( this.graphQL.getGraphQL().execute(query) ).getJsonResponse();
+		return new GraphQLResponse( this.graphQLProduct.getGraphQL().execute(query) ).getJsonResponse();
 	}
 	
 	@GetMapping("/priceCategory")

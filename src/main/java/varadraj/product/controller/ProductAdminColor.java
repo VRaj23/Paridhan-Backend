@@ -24,7 +24,7 @@ public class ProductAdminColor {
 	@Autowired
 	private ColorService colorService;
 	
-	@PostMapping("/addColor")
+	@PostMapping("/add")
 	public JsonResponse<Void> addColor(@RequestBody Color color) {
 		
 		if(color.getValue() == null || color.getValue().length() != 6)
@@ -43,7 +43,7 @@ public class ProductAdminColor {
 				, null);
 	}
 	
-	@DeleteMapping("/deleteColor/{colorID}")
+	@DeleteMapping("/{colorID}")
 	public JsonResponse<Void> deleteColor(@PathVariable long colorID) {
 		Color color = colorService.findByColorID(colorID);
 		if( color == null)

@@ -3,7 +3,8 @@ schema{
 }
 
 type Query{
-	getAllProducts: [ProductModel]
+	allProducts: [ProductModel]
+	product(headerID: Int): ProductModel
 }
 
 type ProductModel{

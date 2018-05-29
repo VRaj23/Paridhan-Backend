@@ -25,7 +25,7 @@ public class ProductAdminType {
 	@Autowired
 	private ProductTypeService ptService;
 	
-	@PostMapping("/addProductType")
+	@PostMapping("/add")
 	public JsonResponse<Void> addType(@RequestBody ProductType productType) {
 		ptService.addProductType(productType);
 		return new JsonResponse<Void>(201
@@ -33,7 +33,7 @@ public class ProductAdminType {
 				, null);
 	}
 	
-	@PutMapping("/updateProductType")
+	@PutMapping("/update")
 	public JsonResponse<Void> updateType(@RequestBody ProductType newProductType) {
 		if(newProductType.getTypeID() == 0)
 			return new JsonResponse<Void>(400
@@ -50,7 +50,7 @@ public class ProductAdminType {
 		return new JsonResponse<Void>(200, JsonResponseMessage.CREATED ,null);
 	}
 	
-	@DeleteMapping("/deleteProductType/{productTypeID}")
+	@DeleteMapping("/{productTypeID}")
 	public JsonResponse<Void> deleteType(@PathVariable long productTypeID) {
 		
 		ProductType type = ptService.findByTypeID(productTypeID);

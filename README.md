@@ -12,3 +12,4 @@ Requires value of the following parameters to be passed at runtime:
     spring.mail.port
     spring.mail.properties.mail.smtp.starttls.enable
     server.ssl.key-store-password 
+    jwt.key

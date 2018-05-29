@@ -22,7 +22,7 @@ public class ProductAdminSize {
 	@Autowired
 	private SizeService sizeService;
 	
-	@PostMapping("/addSize")
+	@PostMapping("/add")
 	public JsonResponse<Void> addSize(@RequestBody Size size) {
 		if(size.getSizeCharacter() == null || size.getSizeNumber() == 0)
 			return new JsonResponse<Void>(400

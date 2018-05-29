@@ -17,15 +17,19 @@ import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import varadraj.order.service.datafetcher.AllOrderDataFetcher;
+import varadraj.order.service.datafetcher.OrderDataFetcher;
 
 @Service
-public class OrderServiceGraphQL {
+public class OrderGraphQLService {
 
 	@Value("classpath:order.graphql")
 	private Resource resource;
 	
 	@Autowired
 	private AllOrderDataFetcher allOrderDataFetcher;
+	
+	@Autowired
+	private OrderDataFetcher orderDataFetcher;
 	
 	private GraphQL graphQL;
 	
@@ -46,7 +50,7 @@ public class OrderServiceGraphQL {
 		return RuntimeWiring.newRuntimeWiring()
 				.type("Query", typeWiring -> typeWiring
 						.dataFetcher("allOrders", allOrderDataFetcher)
-						//.dataFetcher("order", orderDataFetcher)
+						.dataFetcher("order", orderDataFetcher)
 					 )
 				.build();
 	}

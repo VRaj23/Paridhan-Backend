@@ -6,22 +6,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import graphql.ExecutionResult;
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
-import varadraj.order.service.OrderServiceGraphQL;
+import varadraj.common.util.GraphQLResponse;
+import varadraj.order.service.OrderGraphQLService;
 
 @RestController
 @RequestMapping("/graphql/order")
-public class GraphQLOrderController {
+public class OrderGraphQLController {
 	
 	@Autowired
-	private OrderServiceGraphQL graphQL;
+	private OrderGraphQLService graphQL;
 	
 	@PostMapping("/")
-	public JsonResponse<ExecutionResult> orderGraphQL(@RequestBody String query){
-		ExecutionResult result = this.graphQL.getGraphQL().execute(query);
-		return new JsonResponse<ExecutionResult>(200, JsonResponseMessage.OK, result);
+	public JsonResponse<Object> orderGraphQL(@RequestBody String query){
+		return new GraphQLResponse( this.graphQL.getGraphQL().execute(query) ).getJsonResponse();
+		
 	}
 
 }

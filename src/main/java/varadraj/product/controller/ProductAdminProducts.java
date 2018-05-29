@@ -22,7 +22,7 @@ public class ProductAdminProducts {
 	@Autowired
 	private ProductService productService;
 	
-	@PostMapping("/addProduct")
+	@PostMapping("/add")
 	public JsonResponse<Void> addProduct(@RequestBody ProductCreationRequest request) {
 		if(!productService.isValidRequest(request)) {
 			return new JsonResponse<Void>(400

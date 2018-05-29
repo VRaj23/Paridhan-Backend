@@ -22,7 +22,7 @@ public class ProductAdminPriceCategory {
 	@Autowired
 	private PriceCategoryService priceCategoryService;
 	
-	@PostMapping("/addPriceCategory")
+	@PostMapping("/add")
 	public JsonResponse<Void> addPriceCategory(@RequestBody PriceCategory priceCategory) {
 		if(priceCategory.getUpperLimit() == 0)
 			return new JsonResponse<Void>(400

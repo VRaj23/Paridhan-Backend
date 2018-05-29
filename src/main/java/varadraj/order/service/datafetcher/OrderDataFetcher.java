@@ -1,15 +1,23 @@
 package varadraj.order.service.datafetcher;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
-import varadraj.order.model.Orders;
+import varadraj.order.model.OrderResponseAdmin;
+import varadraj.order.service.OrderService;
 
-public class OrderDataFetcher implements DataFetcher<Orders>{
+@Component
+public class OrderDataFetcher implements DataFetcher<OrderResponseAdmin>{
 
+	@Autowired
+	private OrderService orderService;
+	
 	@Override
-	public Orders get(DataFetchingEnvironment environment) {
+	public OrderResponseAdmin get(DataFetchingEnvironment environment) {
 		int orderID = environment.getArgument("id");
-		return null;
+		return this.orderService.getOrderAdmin(new Long(orderID));
 	}
 
 }

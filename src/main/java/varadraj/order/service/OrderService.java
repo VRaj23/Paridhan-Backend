@@ -79,6 +79,12 @@ public class OrderService {
 		orderRepo.findAll().forEach((order) -> orders.add(this.getOrderResponseAdmin(order)));
 		return orders;
 	}
+	
+	public OrderResponseAdmin getOrderAdmin(Long orderID) {
+		Optional<Orders> order = orderRepo.findById(orderID);
+		return order.isPresent() ? this.getOrderResponseAdmin(order.get()) : null;
+	}
+
 
 //UPDATE
 //DELETE

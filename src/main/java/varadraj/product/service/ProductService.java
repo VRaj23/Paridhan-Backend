@@ -132,6 +132,18 @@ public class ProductService {
 		return products;
 	}
 	
+	public ProductModel getProductModel(Long headerID) {
+		Optional<ProductHeader> header = pHRepo.findById(headerID);
+		if(header.isPresent()) {
+			ProductModel pModel = new ProductModel();
+			pModel.setpHeader(header.get());
+			pModel.setpLine(getAllLines(header.get()));
+			return pModel;
+		}else {
+			return null;
+		}
+	}
+	
 	public ProductLine findByLineID(long productLineID) {
 		if(productLineID <=0 )
 			return null;
