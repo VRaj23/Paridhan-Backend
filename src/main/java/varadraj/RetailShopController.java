@@ -13,6 +13,6 @@ public class RetailShopController {
 	
 	@GetMapping("/test")
 	public JsonResponse<String> hello() {
-		return new JsonResponse<String>(200,JsonResponseMessage.OK,"Retail Shop Backend");
+		return new JsonResponse<String>(200,JsonResponseMessage.OK,"Paridhan Backend");
 	}
 }

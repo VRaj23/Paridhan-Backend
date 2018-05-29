@@ -1,6 +1,8 @@
 package varadraj.exception;
 
-public class JwtTokenMissing extends Exception{
+import org.springframework.security.core.AuthenticationException;
+
+public class JwtTokenMissing extends AuthenticationException{
 
 	private static final long serialVersionUID = 1L;
 	

@@ -28,8 +28,8 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo customAPIDetails() {
-		ApiInfo apiInfo = new ApiInfo("RetailShop Backend", "poweredBy Spring Boot", "1.0", "TOS"
-				, new Contact("VRaj23", "", "")
+		ApiInfo apiInfo = new ApiInfo("Paridhan Backend", "poweredBy Spring Boot", "1.0", "TOS"
+				, new Contact("VRaj23", "https://github.com/VRaj23/Paridhan-Backend", "")
 				, "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0", Collections.emptyList());
 		
 		return apiInfo;

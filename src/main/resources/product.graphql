@@ -1,0 +1,73 @@
+schema{
+	query: Query
+}
+
+type Query{
+	getAllProducts: [ProductModel]
+}
+
+type ProductModel{
+	pHeader: ProductHeader
+	pLine: [ProductLine]
+}
+
+type ProductHeader{
+	headerID: Int
+	productType: ProductType
+	price: Float
+	discountPercent: Float
+	brand: Brand
+	primaryImage: Image
+	creation_datetime: String
+	enabled: Boolean	
+	priceCategory: PriceCategory
+}
+
+type ProductLine{
+	lineID: Int
+	productHeader: ProductHeader
+	availability: Boolean
+	color: Color
+	size: Size
+	creation_datetime: String
+}
+
+type Brand{
+	brandID: Int
+	name: String
+}
+
+type Color{
+	colorID: Int
+	name: String
+	value: String
+}
+
+type ProductType{
+	typeID: Int
+	description: String
+	typeImage: Image
+}
+
+type Image{
+	imageID: Int
+	name: String
+	type: ProductType
+}
+
+type Size{
+	sizeID: Int
+	sizeCharacter: String
+	SizeNumber: Int
+	type: ProductType
+}
+
+type PriceCategory{
+	priceCategoryID: Int
+	lowerLimit: Int
+	upperLimit: Int
+}
+
+
+
+
