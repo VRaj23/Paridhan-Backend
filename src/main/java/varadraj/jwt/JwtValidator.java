@@ -1,5 +1,6 @@
 package varadraj.jwt;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -8,7 +9,8 @@ import io.jsonwebtoken.Jwts;
 @Component
 public class JwtValidator {
 
-	private String signingKey = "TestKey";
+	@Value("${jwt.key}")
+	private String signingKey;
 	
 	public String[] validateToken(String token) {
 		

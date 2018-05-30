@@ -1,5 +1,6 @@
 package varadraj.product.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +83,12 @@ public class ProductGetInfo {
 	
 	@PostMapping("/color/graphql")
 	public JsonResponse<Object> colorGraphQL(@RequestBody String query) {
-		return new GraphQLResponse( graphQLColor.getGraphQL().execute(query) ).getJsonResponse();
+		try {
+			return new GraphQLResponse( graphQLColor.getGraphQL().execute(query) ).getJsonResponse();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return new JsonResponse<Object>(500, JsonResponseMessage.ERROR, "unable to load ColorGraphQL");
+		}
 		
 	}
 	
@@ -127,7 +133,12 @@ public class ProductGetInfo {
 	
 	@PostMapping("/products/graphql")
 	public JsonResponse<Object> getAllProductsGraphQL(@RequestBody String query){
-		return new GraphQLResponse( this.graphQLProduct.getGraphQL().execute(query) ).getJsonResponse();
+		try {
+			return new GraphQLResponse( this.graphQLProduct.getGraphQL().execute(query) ).getJsonResponse();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return new JsonResponse<Object>(500, JsonResponseMessage.ERROR, "unable to load Product GraphQL Schema");
+		}
 	}
 	
 	@GetMapping("/priceCategory")

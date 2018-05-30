@@ -10,7 +10,7 @@
         "/favicon.ico",
         "/index.html",
         "/inline.318b50c57b4eba3d437b.bundle.js",
-        "/main.42b354813841facb7021.bundle.js",
+        "/main.f52780ab5a41ea22a7f0.bundle.js",
         "/polyfills.3dd67955a6f591a685dd.bundle.js",
         "/scripts.1d1a54c844e95843fe37.bundle.js",
         "/styles.6405963dc7c930a26970.bundle.css"
@@ -35,12 +35,12 @@
   "hashTable": {
     "/inline.318b50c57b4eba3d437b.bundle.js": "998c6060446975e566fd17509558ddc68d72eec3",
     "/assets/cart.svg": "2a4be138a7ca0dc41fc1ec68c1b4b03580e62f95",
-    "/main.42b354813841facb7021.bundle.js": "b2a817c104443d38fc050d19024c2b40cd65a37c",
+    "/main.f52780ab5a41ea22a7f0.bundle.js": "80a8639000f8fc9c52858de43353fd964a63f7e1",
     "/assets/searchicon.svg": "a5f5a8653972b8905a051dfcda9e999e37057ed7",
     "/polyfills.3dd67955a6f591a685dd.bundle.js": "9c869f9389755e66b0d80d367652f807386d8604",
     "/scripts.1d1a54c844e95843fe37.bundle.js": "e105595a8c6d4b8ed14a949747bfd828b178db69",
     "/styles.6405963dc7c930a26970.bundle.css": "e9c77979be06a6552d9bae7ee741f364602c5372",
     "/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
-    "/index.html": "a4bc6d2541f28eb485eec0740e9006e73c3d416e"
+    "/index.html": "427ab1b0f5b2b98dc52d22aa4d048761345c6731"
   }
 }

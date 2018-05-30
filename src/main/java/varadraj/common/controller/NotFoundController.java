@@ -20,8 +20,10 @@ public class NotFoundController implements ErrorController{
     	Exception exception = (Exception) request.getAttribute("javax.servlet.error.exception");
     	if (exception == null)
     		return new ModelAndView("forward:/");
+    	else if(exception.getMessage().equals("Request processing failed; nested exception is java.lang.NullPointerException"))
+    		return new JsonResponse<String>(500, JsonResponseMessage.ERROR, "NullPointerException");
     	else
-    		return new JsonResponse<String>(401, JsonResponseMessage.BAD_CREDENTIALS, exception.getMessage());
+    		return new JsonResponse<String>(400, JsonResponseMessage.BAD_REQUEST, exception.getMessage());
     }
 
     @Override
