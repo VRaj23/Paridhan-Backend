@@ -1,13 +1,11 @@
 package varadraj.order.controller;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,13 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
+import varadraj.common.model.ResponseMessage;
 import varadraj.common.model.address.Address;
 import varadraj.common.model.address.AddressCreationRequest;
 import varadraj.common.service.AddressService;
 import varadraj.exception.InvalidInputException;
 import varadraj.order.model.OrderCreationRequest;
-import varadraj.order.model.OrderResponseCustomer;
 import varadraj.order.service.OrderService;
 
 @RestController
@@ -37,13 +34,6 @@ public class OrderCustomerController {
 	@Autowired
 	private AddressService addressService;
 	
-	@GetMapping("/all")
-	public JsonResponse<List<OrderResponseCustomer>> getCustomerOrders(Principal user) {
-		return new JsonResponse<List<OrderResponseCustomer>>(200
-				,JsonResponseMessage.OK,
-				orderService.getAllCustomerOrders(user.getName()));
-	}
-	
 	@PostMapping("/add")
 	public JsonResponse<Void> addOrder(@RequestBody OrderCreationRequest request,Principal user) {
 		System.out.println(user.getName()+ "\n"
@@ -53,11 +43,11 @@ public class OrderCustomerController {
 				+request.getQuantity());
 		try {
 			if( orderService.addOrder(Optional.ofNullable(request), user.getName()).isPresent())
-				return new JsonResponse<Void>(201, JsonResponseMessage.CREATED,null);
+				return new JsonResponse<Void>(201, ResponseMessage.CREATED,null);
 			else
-				return new JsonResponse<Void>(500, JsonResponseMessage.ERROR ,null);
+				return new JsonResponse<Void>(500, ResponseMessage.ERROR ,null);
 		}catch(InvalidInputException e) {
-			return new JsonResponse<Void>(400, JsonResponseMessage.INVALID_INPUT,null);
+			return new JsonResponse<Void>(400, ResponseMessage.INVALID_INPUT,null);
 		}			
 	}
 	
@@ -67,21 +57,21 @@ public class OrderCustomerController {
 			Optional<Address> address = addressService.addAddress( Optional.ofNullable(request));
 			if( address.isPresent() )
 				return new JsonResponse<Long>(201
-						,JsonResponseMessage.CREATED
+						,ResponseMessage.CREATED
 						,address.map(Address::getAddressID).get() );
 			else
-				return new JsonResponse<Long>(500, JsonResponseMessage.ERROR,null);
+				return new JsonResponse<Long>(500, ResponseMessage.ERROR,null);
 		}catch(InvalidInputException e) {
-			return new JsonResponse<Long>(400, JsonResponseMessage.INVALID_INPUT, null);
+			return new JsonResponse<Long>(400, ResponseMessage.INVALID_INPUT, null);
 		}
 	}
 	
 	@PatchMapping("/cancel/{orderID}")
 	public JsonResponse<Void> cancelOrder(@PathVariable long orderID){
 		if(orderService.cancelOrder(orderID)) {
-			return new JsonResponse<Void>(200,JsonResponseMessage.OK,null);
+			return new JsonResponse<Void>(200,ResponseMessage.OK,null);
 		}else {
-			return new JsonResponse<Void>(400, JsonResponseMessage.INVALID_INPUT,null);
+			return new JsonResponse<Void>(400, ResponseMessage.INVALID_INPUT,null);
 		}		
 	}
 

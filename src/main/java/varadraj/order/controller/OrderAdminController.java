@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
-import varadraj.order.model.OrderResponseAdmin;
+import varadraj.common.model.ResponseMessage;
+import varadraj.order.model.OrderResponse;
 import varadraj.order.service.OrderService;
 
 @RestController
@@ -25,10 +25,10 @@ public class OrderAdminController {
 	
 	
 	@GetMapping("/all")
-	public JsonResponse<List<OrderResponseAdmin>> getOrders() {
+	public JsonResponse<List<OrderResponse>> getOrders() {
 		
-		return new JsonResponse<List<OrderResponseAdmin>>(200
-				,JsonResponseMessage.OK,
+		return new JsonResponse<List<OrderResponse>>(200
+				,ResponseMessage.OK,
 				orderService.getAllOrdersAdmin());
 	}
 }

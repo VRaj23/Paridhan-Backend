@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
+import varadraj.common.model.ResponseMessage;
 
 @RestController
 public class NotFoundController implements ErrorController{
@@ -21,9 +21,9 @@ public class NotFoundController implements ErrorController{
     	if (exception == null)
     		return new ModelAndView("forward:/");
     	else if(exception.getMessage().equals("Request processing failed; nested exception is java.lang.NullPointerException"))
-    		return new JsonResponse<String>(500, JsonResponseMessage.ERROR, "NullPointerException");
+    		return new JsonResponse<String>(500, ResponseMessage.ERROR, "NullPointerException");
     	else
-    		return new JsonResponse<String>(400, JsonResponseMessage.BAD_REQUEST, exception.getMessage());
+    		return new JsonResponse<String>(400, ResponseMessage.BAD_REQUEST, exception.getMessage());
     }
 
     @Override

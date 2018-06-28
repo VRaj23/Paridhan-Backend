@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
+import varadraj.common.model.ResponseMessage;
 import varadraj.product.model.Size;
 import varadraj.product.service.SizeService;
 
@@ -26,12 +26,12 @@ public class ProductAdminSize {
 	public JsonResponse<Void> addSize(@RequestBody Size size) {
 		if(size.getSizeCharacter() == null || size.getSizeNumber() == 0)
 			return new JsonResponse<Void>(400
-					, JsonResponseMessage.INVALID_INPUT
+					, ResponseMessage.INVALID_INPUT
 					, null);
 
 		sizeService.addSize(size);
 		return new JsonResponse<Void>(201
-				, JsonResponseMessage.CREATED
+				, ResponseMessage.CREATED
 				, null);
 	}
 }

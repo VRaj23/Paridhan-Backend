@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.jwt.JwtGenerator;
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
+import varadraj.common.model.ResponseMessage;
 import varadraj.user.model.LoginRequest;
 import varadraj.user.service.AdminUserService;
 
@@ -31,12 +31,12 @@ public class AdminController {
 		
 		if(adminService.validateLogin(loginRequest)) {
 			return new JsonResponse<String>(200
-					,JsonResponseMessage.OK
+					,ResponseMessage.OK
 					,jwtGenerator.generateToken(loginRequest.getUsername(),"admin"));
 			}
 		else
 			return new JsonResponse<String>(401
-					,JsonResponseMessage.BAD_CREDENTIALS
+					,ResponseMessage.BAD_CREDENTIALS
 					,null);
 	}
 	
@@ -45,7 +45,7 @@ public class AdminController {
 	@PostMapping("/auth/admin/resetPassword")
 	public JsonResponse<Void> adminPasswordReset() {
 		
-		return new JsonResponse<Void>(501,JsonResponseMessage.NOT_IMPLEMENTED,null);
+		return new JsonResponse<Void>(501,ResponseMessage.NOT_IMPLEMENTED,null);
 	}
 
 }

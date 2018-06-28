@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
+import varadraj.common.model.ResponseMessage;
 import varadraj.exception.InvalidInputException;
 import varadraj.jwt.JwtGenerator;
 import varadraj.user.model.LoginRequest;
@@ -38,12 +38,12 @@ public class CustomerController {
 		try {
 			if( customerService.addCustomer(Optional.ofNullable(request)).isPresent()) {
 				customerService.sendWelcomeEmail(Optional.ofNullable(request));
-				return new JsonResponse<Void>(201, JsonResponseMessage.CREATED, null);
+				return new JsonResponse<Void>(201, ResponseMessage.CREATED, null);
 			}
 			else
-				return new JsonResponse<Void>(500, JsonResponseMessage.ERROR, null);
+				return new JsonResponse<Void>(500, ResponseMessage.ERROR, null);
 		} catch (InvalidInputException e) {
-			return new JsonResponse<Void>(500,JsonResponseMessage.INVALID_INPUT,null);
+			return new JsonResponse<Void>(500,ResponseMessage.INVALID_INPUT,null);
 		}
 	}
 	
@@ -51,11 +51,11 @@ public class CustomerController {
 	public JsonResponse<String> login(@RequestBody LoginRequest loginRequest) {
 		if(customerService.validateLogin(loginRequest)) {
 			return new JsonResponse<String>(200
-					, JsonResponseMessage.OK
+					, ResponseMessage.OK
 					, this.jwtGenerator.generateToken(loginRequest.getUsername(),"user"));
 		}
 		return new JsonResponse<String>(401
-				, JsonResponseMessage.BAD_CREDENTIALS
+				, ResponseMessage.BAD_CREDENTIALS
 				, null);
 	}
 	
@@ -65,10 +65,10 @@ public class CustomerController {
 		Optional<CustomerResponse> response = customerService.getCustomerInfo(principalUser.getName());
 		if( response.isPresent())
 			return new JsonResponse<CustomerResponse>(200
-				, JsonResponseMessage.OK
+				, ResponseMessage.OK
 				, response.get());
 		else
-			return new JsonResponse<CustomerResponse>(500, JsonResponseMessage.ERROR,null);
+			return new JsonResponse<CustomerResponse>(500, ResponseMessage.ERROR,null);
 	}
 	
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
+import varadraj.common.model.ResponseMessage;
 import varadraj.product.model.ProductType;
 import varadraj.product.service.ProductTypeService;
 
@@ -29,7 +29,7 @@ public class ProductAdminType {
 	public JsonResponse<Void> addType(@RequestBody ProductType productType) {
 		ptService.addProductType(productType);
 		return new JsonResponse<Void>(201
-				, JsonResponseMessage.CREATED
+				, ResponseMessage.CREATED
 				, null);
 	}
 	
@@ -37,17 +37,17 @@ public class ProductAdminType {
 	public JsonResponse<Void> updateType(@RequestBody ProductType newProductType) {
 		if(newProductType.getTypeID() == 0)
 			return new JsonResponse<Void>(400
-					,JsonResponseMessage.INVALID_INPUT
+					,ResponseMessage.INVALID_INPUT
 					,null);
 		
 		ProductType type = ptService.findByTypeID(newProductType.getTypeID());
 		if(type == null)
 			return new JsonResponse<Void>(404
-					,JsonResponseMessage.NOT_FOUND
+					,ResponseMessage.NOT_FOUND
 					,null);
 		
 		ptService.updateProductType(type,newProductType);
-		return new JsonResponse<Void>(200, JsonResponseMessage.CREATED ,null);
+		return new JsonResponse<Void>(200, ResponseMessage.CREATED ,null);
 	}
 	
 	@DeleteMapping("/{productTypeID}")
@@ -56,12 +56,12 @@ public class ProductAdminType {
 		ProductType type = ptService.findByTypeID(productTypeID);
 		if(type == null)
 			return new JsonResponse<Void>(404
-					, JsonResponseMessage.NOT_FOUND
+					, ResponseMessage.NOT_FOUND
 					, null);
 		
 		ptService.deleteProductType(productTypeID);
 		return new JsonResponse<Void>(200
-				,JsonResponseMessage.CREATED
+				,ResponseMessage.CREATED
 				,null);
 	}
 

@@ -2,7 +2,10 @@ package varadraj.order.model;
 
 import java.time.LocalDateTime;
 
-public class OrderResponseCustomer {
+import varadraj.common.model.address.AddressResponse;
+import varadraj.user.model.customer.CustomerResponse;
+
+public class OrderResponse{
 	
     private long orderID;
     private String productName;
@@ -15,12 +18,14 @@ public class OrderResponseCustomer {
     private double amount;
     private int quantity;
     private LocalDateTime creationDateTime;
-    
-    public OrderResponseCustomer() {}
-    
-	public OrderResponseCustomer(long orderID, String productName, String colorName, String sizeChar, String brandName,
-			long imageID, String typeName, String statusName, double amount, int quantity,
-			LocalDateTime creationDateTime) {
+	private CustomerResponse customerResponse;
+	private AddressResponse deliveryAddress;
+	
+	public OrderResponse() {}
+
+	public OrderResponse(long orderID, String productName, String colorName, String sizeChar, String brandName,
+			long imageID, String typeName, String status, double amount, int quantity, LocalDateTime creationDateTime,
+			CustomerResponse customerResponse, AddressResponse deliveryAddress) {
 		super();
 		this.orderID = orderID;
 		this.productName = productName;
@@ -29,10 +34,12 @@ public class OrderResponseCustomer {
 		this.brandName = brandName;
 		this.imageID = imageID;
 		this.typeName = typeName;
-		this.status = statusName;
+		this.status = status;
 		this.amount = amount;
 		this.quantity = quantity;
 		this.creationDateTime = creationDateTime;
+		this.customerResponse = customerResponse;
+		this.deliveryAddress = deliveryAddress;
 	}
 
 	public long getOrderID() {
@@ -91,12 +98,12 @@ public class OrderResponseCustomer {
 		this.typeName = typeName;
 	}
 
-	public String getStatusName() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatusName(String statusName) {
-		this.status = statusName;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public double getAmount() {
@@ -122,7 +129,21 @@ public class OrderResponseCustomer {
 	public void setCreationDateTime(LocalDateTime creationDateTime) {
 		this.creationDateTime = creationDateTime;
 	}
-    
+
+	public CustomerResponse getCustomerResponse() {
+		return customerResponse;
+	}
+
+	public void setCustomerResponse(CustomerResponse customerResponse) {
+		this.customerResponse = customerResponse;
+	}
+
+	public AddressResponse getDeliveryAddress() {
+		return deliveryAddress;
+	}
+
+	public void setDeliveryAddress(AddressResponse deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}
 	
-    
-  }
+}

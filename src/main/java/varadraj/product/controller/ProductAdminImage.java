@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
+import varadraj.common.model.ResponseMessage;
 import varadraj.product.service.ImageService;
 import varadraj.product.storage.StorageService;
 import varadraj.product.util.ImageUtil;
@@ -37,14 +37,14 @@ public class ProductAdminImage {
 			try {
 				storageService.storeImage(file, imageID.toString());
 				return new JsonResponse<Void>(201
-						, JsonResponseMessage.CREATED
+						, ResponseMessage.CREATED
 						, null);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		return new JsonResponse<Void>(500
-				, JsonResponseMessage.ERROR
+				, ResponseMessage.ERROR
 				, null);
     }
 

@@ -7,17 +7,17 @@ import org.springframework.stereotype.Component;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
-import varadraj.order.model.OrderResponseAdmin;
+import varadraj.order.model.OrderResponse;
 import varadraj.order.service.OrderService;
 
 @Component
-public class AllOrderDataFetcher implements DataFetcher<List<OrderResponseAdmin>>{
+public class AllOrderDataFetcher implements DataFetcher<List<OrderResponse>>{
 
 	@Autowired
 	private OrderService orderService;
 	
 	@Override
-	public List<OrderResponseAdmin> get(DataFetchingEnvironment environment) {
+	public List<OrderResponse> get(DataFetchingEnvironment environment) {
 		return orderService.getAllOrdersAdmin();
 	}
 

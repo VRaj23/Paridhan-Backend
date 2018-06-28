@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import graphql.ExecutionResult;
+import varadraj.common.model.GraphQLRequest;
+import varadraj.common.model.GraphQLResponse;
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
-import varadraj.common.util.GraphQLResponse;
+import varadraj.common.model.ResponseMessage;
 import varadraj.product.model.Brand;
 import varadraj.product.model.Color;
 import varadraj.product.model.PriceCategory;
@@ -29,7 +31,6 @@ import varadraj.product.model.ProductModel;
 import varadraj.product.model.ProductType;
 import varadraj.product.model.Size;
 import varadraj.product.service.BrandService;
-import varadraj.product.service.ColorGraphQLService;
 import varadraj.product.service.ColorService;
 import varadraj.product.service.PriceCategoryService;
 import varadraj.product.service.ProductGraphQLService;
@@ -57,19 +58,15 @@ public class ProductGetInfo {
 	private StorageService storageService;
 	@Autowired
 	private PriceCategoryService priceCategoryService;
-	
 	@Autowired
 	private ProductGraphQLService graphQLProduct;
-	
-	@Autowired
-	private ColorGraphQLService graphQLColor;
 
 
 	@GetMapping("/type")
 	public JsonResponse<List<ProductType>> getAllTypes(){
 		return new JsonResponse<List<ProductType>> (
 				 200
-				,JsonResponseMessage.OK
+				,ResponseMessage.OK
 				,pTypeService.getAllTypes());
 	}
 	
@@ -77,26 +74,15 @@ public class ProductGetInfo {
 	public JsonResponse<List<Color>> getAllColor(){
 		return new JsonResponse<List<Color>> (
 				 200
-				,JsonResponseMessage.OK
+				,ResponseMessage.OK
 				,colorService.getAllColor());
-	}
-	
-	@PostMapping("/color/graphql")
-	public JsonResponse<Object> colorGraphQL(@RequestBody String query) {
-		try {
-			return new GraphQLResponse( graphQLColor.getGraphQL().execute(query) ).getJsonResponse();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return new JsonResponse<Object>(500, JsonResponseMessage.ERROR, "unable to load ColorGraphQL");
-		}
-		
 	}
 	
 	@GetMapping("/size")
 	public JsonResponse<List<Size>> getAllSize(){
 		return new JsonResponse<List<Size>>(
 				 200
-				,JsonResponseMessage.OK
+				,ResponseMessage.OK
 				,sizeService.getAllSize());
 	}
 	
@@ -104,7 +90,7 @@ public class ProductGetInfo {
 	public JsonResponse<List<Brand>> getAllBrand(){
 		return new JsonResponse<List<Brand>>(
 				 200
-				,JsonResponseMessage.OK
+				,ResponseMessage.OK
 				,brandService.getAllBrand());
 	}
 	
@@ -112,7 +98,7 @@ public class ProductGetInfo {
 	public JsonResponse<List<ProductHeader>> getAllHeaders(@RequestParam("t") String typeID) {
 		return new JsonResponse<List<ProductHeader>>(
 				 200
-				,JsonResponseMessage.OK
+				,ResponseMessage.OK
 				,productService.findByTypeID(typeID));		
 	}
 	
@@ -120,24 +106,25 @@ public class ProductGetInfo {
 	public JsonResponse<List<ProductLine>> getAllLines(@RequestParam("h") String header_id){
 		return new JsonResponse<List<ProductLine>>(
 				 200
-				,JsonResponseMessage.OK
+				,ResponseMessage.OK
 				,productService.getAllLines(header_id));
 	}
 	
 	@GetMapping("/products")
 	public JsonResponse<List<ProductModel>> getAllProducts(){
 		return new JsonResponse<List<ProductModel>>(200
-				,JsonResponseMessage.OK
+				,ResponseMessage.OK
 				,productService.getAllProducts());
 	}
 	
 	@PostMapping("/products/graphql")
-	public JsonResponse<Object> getAllProductsGraphQL(@RequestBody String query){
+	public GraphQLResponse getAllProductsGraphQL(@RequestBody GraphQLRequest request){
+		String query = request.getQuery();
 		try {
-			return new GraphQLResponse( this.graphQLProduct.getGraphQL().execute(query) ).getJsonResponse();
+			ExecutionResult result = this.graphQLProduct.getGraphQL().execute(query);
+			return new GraphQLResponse(result);
 		} catch (IOException e) {
-			e.printStackTrace();
-			return new JsonResponse<Object>(500, JsonResponseMessage.ERROR, "unable to load Product GraphQL Schema");
+			return new GraphQLResponse(500, ResponseMessage.ERROR, "unable to load Product GraphQL Schema");
 		}
 	}
 	
@@ -145,7 +132,7 @@ public class ProductGetInfo {
 	public JsonResponse<List<PriceCategory>> getAllPriceCategory() {
 		return new JsonResponse<List<PriceCategory>>(
 				 200
-				,JsonResponseMessage.OK
+				,ResponseMessage.OK
 				,priceCategoryService.getAllPriceCategory());
 	}
 	

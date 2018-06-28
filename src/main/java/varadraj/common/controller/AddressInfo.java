@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
+import varadraj.common.model.ResponseMessage;
 import varadraj.common.model.city.CityResponse;
 import varadraj.common.service.CityService;
 
@@ -23,7 +23,7 @@ public class AddressInfo {
 	
 	@GetMapping("/cities")
 	public JsonResponse<List<CityResponse>> getCities(){
-		return new JsonResponse<List<CityResponse>>(200, JsonResponseMessage.OK, cityService.getCities());
+		return new JsonResponse<List<CityResponse>>(200, ResponseMessage.OK, cityService.getCities());
 	}
 
 }

@@ -3,14 +3,14 @@ package varadraj.common.model;
 public class JsonResponse<T> {
 	
 	private int status;
-	private JsonResponseMessage message;
+	private ResponseMessage message;
 	private T response;
 	
 	
 	public JsonResponse() {}
 
 
-	public JsonResponse(int status, JsonResponseMessage message, T response) {
+	public JsonResponse(int status, ResponseMessage message, T response) {
 		super();
 		this.status = status;
 		this.message = message;
@@ -28,12 +28,12 @@ public class JsonResponse<T> {
 	}
 
 
-	public JsonResponseMessage getMessage() {
+	public ResponseMessage getMessage() {
 		return message;
 	}
 
 
-	public void setMessage(JsonResponseMessage message) {
+	public void setMessage(ResponseMessage message) {
 		this.message = message;
 	}
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
+import varadraj.common.model.ResponseMessage;
 import varadraj.product.model.Color;
 import varadraj.product.service.ColorService;
 
@@ -29,17 +29,17 @@ public class ProductAdminColor {
 		
 		if(color.getValue() == null || color.getValue().length() != 6)
 			return new JsonResponse<Void>(400
-					, JsonResponseMessage.INVALID_INPUT
+					, ResponseMessage.INVALID_INPUT
 					, null);
 		
 		if(colorService.findByColorValue(color.getValue()) != null)
 			return new JsonResponse<Void>(409
-					, JsonResponseMessage.ALREADY_EXISTS
+					, ResponseMessage.ALREADY_EXISTS
 					, null);
 		
 		colorService.addColor(color);
 		return new JsonResponse<Void>(201
-				, JsonResponseMessage.CREATED
+				, ResponseMessage.CREATED
 				, null);
 	}
 	
@@ -48,12 +48,12 @@ public class ProductAdminColor {
 		Color color = colorService.findByColorID(colorID);
 		if( color == null)
 			return new JsonResponse<Void>(400
-					, JsonResponseMessage.INVALID_INPUT
+					, ResponseMessage.INVALID_INPUT
 					, null);
 		
 		colorService.deleteColor(color);
 		return new JsonResponse<Void>(200
-				, JsonResponseMessage.OK
+				, ResponseMessage.OK
 				, null);
 	}
 }

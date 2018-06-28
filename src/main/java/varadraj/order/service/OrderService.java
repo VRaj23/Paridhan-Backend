@@ -11,8 +11,7 @@ import varadraj.common.model.address.Address;
 import varadraj.common.service.AddressService;
 import varadraj.exception.InvalidInputException;
 import varadraj.order.model.OrderCreationRequest;
-import varadraj.order.model.OrderResponseAdmin;
-import varadraj.order.model.OrderResponseCustomer;
+import varadraj.order.model.OrderResponse;
 import varadraj.order.model.OrderStatus;
 import varadraj.order.model.Orders;
 import varadraj.order.repository.OrderRepository;
@@ -66,21 +65,34 @@ public class OrderService {
 	
 //READ
 	
-	public List<OrderResponseCustomer> getAllCustomerOrders(String username) {
+	public List<OrderResponse> getAllCustomerOrders(String username) {
 		Optional<Customer> customer = customerService.findByCustomerUsername(username);
-		List<OrderResponseCustomer> orders = new ArrayList<>();
-		orderRepo.findByCustomer(customer.get())
-			.forEach( (order) -> orders.add(this.getOrderResponseCustomer(order)));
+		List<OrderResponse> orders = new ArrayList<>();
+		if(customer.isPresent()) {
+			orderRepo.findByCustomerOrderByLastUpateDateTimeDesc(customer.get())
+			.forEach( (order) -> orders.add(this.getOrderResponseAdmin(order)));
+		}		
 		return orders;
 	}
 	
-	public List<OrderResponseAdmin> getAllOrdersAdmin(){
-		List<OrderResponseAdmin> orders = new ArrayList<>();
+	public OrderResponse getCustomerOrder(String username, Long orderID) {
+		Optional<Customer> customer = customerService.findByCustomerUsername(username);
+		Optional<Orders> order = orderRepo.findById(orderID);
+		if(customer.isPresent() 
+		   && order.isPresent() 
+		   && order.get().getCustomer().equals(customer.get())) {
+			return this.getOrderResponseAdmin(order.get());
+		}
+		return null;
+	}
+	
+	public List<OrderResponse> getAllOrdersAdmin(){
+		List<OrderResponse> orders = new ArrayList<>();
 		orderRepo.findAll().forEach((order) -> orders.add(this.getOrderResponseAdmin(order)));
 		return orders;
 	}
 	
-	public OrderResponseAdmin getOrderAdmin(Long orderID) {
+	public OrderResponse getOrderAdmin(Long orderID) {
 		Optional<Orders> order = orderRepo.findById(orderID);
 		return order.isPresent() ? this.getOrderResponseAdmin(order.get()) : null;
 	}
@@ -99,25 +111,11 @@ public class OrderService {
 		return false;
 	}
 //HELPER
-	private OrderResponseCustomer getOrderResponseCustomer(Orders order) {
-		return new OrderResponseCustomer(
-				order.getOrderID(), 
-				order.getItem().getName(), 
-				order.getItem().getColor().getName(), 
-				order.getItem().getSize().getSizeCharacter(), 
-				order.getItem().getProductHeader().getBrand().getName(), 
-				order.getItem().getProductHeader().getPrimaryImage().getImageID(),//TODO show correct image for the line 
-				order.getItem().getProductHeader().getProductType().getDescription(), 
-				order.getOrderStatus().toString(), 
-				order.getAmount(), 
-				order.getQuantity(), 
-				order.getCreationDateTime());
-	}
 	
 	
-	private OrderResponseAdmin getOrderResponseAdmin(Orders order) {
+	private OrderResponse getOrderResponseAdmin(Orders order) {
 		
-		return new OrderResponseAdmin(
+		return new OrderResponse(
 				order.getOrderID(), 
 				order.getItem().getName(), 
 				order.getItem().getColor().getName(), 

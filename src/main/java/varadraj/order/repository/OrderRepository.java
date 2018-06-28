@@ -9,6 +9,6 @@ import varadraj.user.model.customer.Customer;
 
 public interface OrderRepository extends CrudRepository<Orders, Long>{
 	
-	List<Orders> findByCustomer(Customer customer);
+	List<Orders> findByCustomerOrderByLastUpateDateTimeDesc(Customer customer);
 
 }

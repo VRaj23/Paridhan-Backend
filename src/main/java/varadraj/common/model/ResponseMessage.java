@@ -1,12 +1,13 @@
 package varadraj.common.model;
 
-public enum JsonResponseMessage {
+public enum ResponseMessage {
 
 	OK,
 	CREATED,
 	INVALID_INPUT,
 	ALREADY_EXISTS,
 	BAD_CREDENTIALS,
+	UNAUTHORIZED,
 	BAD_REQUEST,
 	NOT_FOUND,
 	ERROR,

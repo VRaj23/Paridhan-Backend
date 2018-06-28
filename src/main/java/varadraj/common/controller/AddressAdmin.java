@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
+import varadraj.common.model.ResponseMessage;
 import varadraj.common.model.city.CityCreationRequest;
 import varadraj.common.model.state.StateCreationRequest;
 import varadraj.common.service.CityService;
@@ -34,11 +34,11 @@ public class AddressAdmin {
 	public JsonResponse<Void> addState(@RequestBody StateCreationRequest stateRequest) {
 		try {
 			if ( stateService.addState( Optional.ofNullable(stateRequest) ).isPresent() )
-				return new JsonResponse<Void>(201, JsonResponseMessage.CREATED, null);
+				return new JsonResponse<Void>(201, ResponseMessage.CREATED, null);
 			else
-				return new JsonResponse<Void>(500, JsonResponseMessage.ERROR, null);
+				return new JsonResponse<Void>(500, ResponseMessage.ERROR, null);
 		}catch(InvalidInputException e) {
-			return new JsonResponse<Void>(400, JsonResponseMessage.INVALID_INPUT, null);
+			return new JsonResponse<Void>(400, ResponseMessage.INVALID_INPUT, null);
 		}
 		
 	}
@@ -47,11 +47,11 @@ public class AddressAdmin {
 	public JsonResponse<Void> addCity(@RequestBody CityCreationRequest cityCreationRequest) {
 		try {
 			if ( cityService.addCity( Optional.ofNullable(cityCreationRequest)).isPresent() )
-				return new JsonResponse<Void>(201, JsonResponseMessage.CREATED, null);
+				return new JsonResponse<Void>(201, ResponseMessage.CREATED, null);
 			else
-				return new JsonResponse<Void>(500, JsonResponseMessage.ERROR, null);
+				return new JsonResponse<Void>(500, ResponseMessage.ERROR, null);
 		}catch(InvalidInputException e) {
-			return new JsonResponse<Void>(400, JsonResponseMessage.INVALID_INPUT, null);
+			return new JsonResponse<Void>(400, ResponseMessage.INVALID_INPUT, null);
 		}
 	}
 

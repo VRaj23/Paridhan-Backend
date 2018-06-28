@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
+import varadraj.common.model.ResponseMessage;
 import varadraj.product.model.PriceCategory;
 import varadraj.product.service.PriceCategoryService;
 
@@ -26,12 +26,12 @@ public class ProductAdminPriceCategory {
 	public JsonResponse<Void> addPriceCategory(@RequestBody PriceCategory priceCategory) {
 		if(priceCategory.getUpperLimit() == 0)
 			return new JsonResponse<Void>(400
-					, JsonResponseMessage.INVALID_INPUT
+					, ResponseMessage.INVALID_INPUT
 					, null);
 		
 		priceCategoryService.addPriceCategory(priceCategory);
 		return new JsonResponse<Void>(201
-				, JsonResponseMessage.CREATED
+				, ResponseMessage.CREATED
 				, null);
 	}
 }

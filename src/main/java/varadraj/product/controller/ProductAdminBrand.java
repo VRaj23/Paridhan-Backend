@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import varadraj.common.model.JsonResponse;
-import varadraj.common.model.JsonResponseMessage;
+import varadraj.common.model.ResponseMessage;
 import varadraj.product.model.Brand;
 import varadraj.product.service.BrandService;
 
@@ -26,12 +26,12 @@ public class ProductAdminBrand {
 	public JsonResponse<Void> addBrand(@RequestBody Brand brand) {
 		if(brand.getName() == null)
 			return new JsonResponse<Void>(400
-					, JsonResponseMessage.INVALID_INPUT
+					, ResponseMessage.INVALID_INPUT
 					, null);
 		
 		brandService.addBrand(brand);
 		return new JsonResponse<Void>(201
-				, JsonResponseMessage.CREATED
+				, ResponseMessage.CREATED
 				, null);
 	}
 
