@@ -130,7 +130,7 @@ public class CustomerService {
 		String name = request.map(CustomerCreationRequest::getName).orElse(null);
 		if((email != null)&&(name != null)) {
 			try {
-				emailService.sendMail(email, name);
+				emailService.sendWelcomeMail(email, name);
 			}catch(MailException e) {
 				System.out.println("Welcome e-mail could not be sent to "+name);
 			}

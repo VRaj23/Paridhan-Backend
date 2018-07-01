@@ -1,6 +1,7 @@
 package varadraj.order.controller;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import varadraj.common.model.address.AddressCreationRequest;
 import varadraj.common.service.AddressService;
 import varadraj.exception.InvalidInputException;
 import varadraj.order.model.OrderCreationRequest;
+import varadraj.order.model.Orders;
 import varadraj.order.service.OrderService;
 
 @RestController
@@ -34,21 +36,21 @@ public class OrderCustomerController {
 	@Autowired
 	private AddressService addressService;
 	
+	
 	@PostMapping("/add")
-	public JsonResponse<Void> addOrder(@RequestBody OrderCreationRequest request,Principal user) {
-		System.out.println(user.getName()+ "\n"
-				+request.getAmount()+"\n"
-				+request.getProductLineID()+"\n"
-				+request.getDeliveryAddressID()+"\n"
-				+request.getQuantity());
+	public JsonResponse<Void> addOrders(@RequestBody List<OrderCreationRequest> requests, Principal user){
 		try {
-			if( orderService.addOrder(Optional.ofNullable(request), user.getName()).isPresent())
-				return new JsonResponse<Void>(201, ResponseMessage.CREATED,null);
-			else
-				return new JsonResponse<Void>(500, ResponseMessage.ERROR ,null);
-		}catch(InvalidInputException e) {
-			return new JsonResponse<Void>(400, ResponseMessage.INVALID_INPUT,null);
-		}			
+			List<Orders> savedOrder = orderService.addOrders(requests, user.getName());
+			
+			new Thread(() -> this.orderService.sendOrderPlacedMail(user.getName(), savedOrder)).start();
+			
+			return new JsonResponse<Void>(201, ResponseMessage.CREATED,null);
+			
+		} catch(InvalidInputException e) {
+			return new JsonResponse<Void>(400, ResponseMessage.INVALID_INPUT,null); 
+		} catch (Exception e) {
+			return new JsonResponse<Void>(500, ResponseMessage.ERROR ,null);
+		}
 	}
 	
 	@PostMapping("/deliveryAddress")

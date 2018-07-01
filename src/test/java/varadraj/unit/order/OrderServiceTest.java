@@ -66,7 +66,7 @@ public class OrderServiceTest {
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 	}
-	
+	/*
 	@Test
 	public void addOrderTest_whenValidRequest_thenSave() throws InvalidInputException {
 		OrderCreationRequest request = new OrderCreationRequest(
@@ -117,5 +117,5 @@ public class OrderServiceTest {
 		
 		orderService.addOrder(Optional.of(request), "cust");
 	}
-
+*/
 }

@@ -37,7 +37,7 @@ public class CustomerController {
 	public JsonResponse<Void> registerUser(@RequestBody CustomerCreationRequest request) {
 		try {
 			if( customerService.addCustomer(Optional.ofNullable(request)).isPresent()) {
-				customerService.sendWelcomeEmail(Optional.ofNullable(request));
+				new Thread(() -> customerService.sendWelcomeEmail(Optional.ofNullable(request))).start();;
 				return new JsonResponse<Void>(201, ResponseMessage.CREATED, null);
 			}
 			else

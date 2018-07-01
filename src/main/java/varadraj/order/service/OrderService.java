@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import varadraj.common.model.address.Address;
 import varadraj.common.service.AddressService;
+import varadraj.common.service.EmailService;
 import varadraj.exception.InvalidInputException;
 import varadraj.order.model.OrderCreationRequest;
 import varadraj.order.model.OrderResponse;
@@ -34,11 +35,28 @@ public class OrderService {
 	
 	@Autowired
 	private AddressService addressService;
+	
+	@Autowired
+	private EmailService emailService;
 
 		
 //CREATE
 	
-	public Optional<Orders> addOrder(Optional<OrderCreationRequest> request, String username) throws InvalidInputException{
+	public List<Orders> addOrders(List<OrderCreationRequest> requests, String username) throws Exception{
+		List<Orders> savedOrdersList = new ArrayList<Orders>();
+		
+		for(OrderCreationRequest request : requests) {
+			Optional<Orders> savedOrder = this.addOrder(Optional.ofNullable(request), username);
+			if(savedOrder.isPresent()) {
+				savedOrdersList.add(savedOrder.get());
+			}else {
+				throw new Exception();
+			}
+		}
+		return savedOrdersList;
+	}
+	
+	private Optional<Orders> addOrder(Optional<OrderCreationRequest> request, String username) throws InvalidInputException{
 
 		int quantity = request.map(OrderCreationRequest::getQuantity).orElseThrow(InvalidInputException::new);
 		if(quantity <= 0)
@@ -110,8 +128,7 @@ public class OrderService {
 		}
 		return false;
 	}
-//HELPER
-	
+//HELPER	
 	
 	private OrderResponse getOrderResponseAdmin(Orders order) {
 		
@@ -130,5 +147,16 @@ public class OrderService {
 				customerService.getCustomerResponse(order.getCustomer()), 
 				addressService.getAddressResponse( order.getDeliveryAddress() )
 				);
+	}
+	
+//UTIL
+	public void sendOrderPlacedMail(String username, List<Orders> orders) {
+		Optional<Customer> customer = customerService.findByCustomerUsername(username);
+		if(customer.isPresent()) {
+			this.emailService.sendOrderPlacedMail(
+					  customer.get().getEmail()
+					, customer.get().getName()
+					, orders);
+		}
 	}
 }
